@@ -27,6 +27,7 @@ What every entry in the repository root is for.
 | `.prettierrc.mjs`, `.prettierignore` | Prettier settings and what it skips |
 | [`e2e/`](../e2e/), `playwright.config.ts` | Browser tests. See [Testing](testing.md) |
 | `lighthouserc.cjs` | Lighthouse CI settings and score thresholds |
+| [`wrangler.jsonc`](../wrangler.jsonc) | Cloudflare deploy config: serves `dist/` as static assets, with `404.html` for unknown paths. Deploy with `npm run build` then `npx wrangler deploy` |
 | [`.github/`](../.github/) | CI workflow and Dependabot configuration |
 
 ## Local-only folders
