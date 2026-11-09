@@ -2,14 +2,14 @@
 
 Repository protections: what is on, and what waits for the repo to go public.
 
-## ✅ Enabled
+## Enabled
 
 | Setting | State |
 | :--- | :--- |
 | Dependabot alerts and security updates | On |
 | Delete branch after merge | On |
 
-## ⏳ Planned
+## Planned
 
 Secret scanning is not available while the repository is private ("Secret
 scanning is not available for this repository"). It is free on public
@@ -21,7 +21,7 @@ repositories, so these wait for the repo to go public.
 | Branch protection on `main` | After the first green CI run | See below. Not yet tested on the private repo |
 | `dependabot.yml` | With the Astro scaffold | Without a manifest Dependabot reports errors |
 
-## 🛡️ Branch protection on `main`
+## Branch protection on `main`
 
 Planned rules:
 

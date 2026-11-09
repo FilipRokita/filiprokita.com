@@ -44,7 +44,7 @@ If a score is lost to a design choice such as a large hero image or an animation
 the decision is made on purpose. A workaround that only exists to raise the score
 and hurts code clarity is not worth it.
 
-## 🔎 Open points
+## Open points
 
 > [!IMPORTANT]
 > To verify at the first build:
