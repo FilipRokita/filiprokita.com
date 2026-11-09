@@ -132,6 +132,9 @@ Questions about a plan are conversation, not orders: start executing a plan only
 on an explicit "start". A prototype is a guide, not a law: fix
 flaws as you build and note them in the commit, and ask before changing the product's direction.
 
+While discussing a plan, keep its files in `plans/` up to date as you go, so they
+always match what was agreed.
+
 A plan is exact and backed by analysis and research. Do not guess: what you do not
 know, you check in the code, the installed tooling or the official docs. Ask the
 user only when the answer would change the product's or a feature's direction, or
