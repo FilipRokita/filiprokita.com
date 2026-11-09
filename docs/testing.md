@@ -70,3 +70,11 @@ tag with a hash for every script and style it emits. The inline theme script
 headers a meta tag cannot (`frame-ancestors`, `nosniff`, referrer and permissions
 policies) and long caching for hashed assets. `e2e/security.spec.ts` loads every route
 and fails on any policy violation, so a change that needs `unsafe-inline` cannot pass.
+
+## Known limitations
+
+- Browser tests run in Chromium only (desktop and a phone profile). Firefox and Safari
+  are not tested automatically. The site uses `light-dark()`, native view transitions and
+  scroll-driven animations, and every one of them has a plain fallback (the page is
+  readable and complete without the effect). Check them by hand before a big redesign.
+- The Speculation Rules prerender works in Chromium only. Other browsers ignore it.

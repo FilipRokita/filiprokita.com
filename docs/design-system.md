@@ -120,6 +120,11 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Link | `src/components/Link.astro` | A quiet underline, and a violet line that fills in from the left on hover |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
+| Hero | `src/components/Hero.astro` | Column guides, local time, the name, the statement and links |
+| Section | `src/components/Section.astro` | Numbered label, one-line title and a slot. The `after` slot is full width |
+| ItemGrid | `src/components/ItemGrid.astro` | Numbered items in 3 or 4 columns, 2 on tablets, 1 on phones |
+| Figure | `src/components/Figure.astro` | A framed, captioned image with the project morph hook |
+| ProjectRow | `src/components/ProjectRow.astro` | One project on the home page |
 
 Site facts (name, links, section list) are in `src/config/site.ts`. The build date and
 commit come from `astro.config.mjs`.
