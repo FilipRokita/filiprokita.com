@@ -1,24 +1,12 @@
 ---
 import { site } from '../config/site';
+import Guides from './Guides.astro';
 import Link from './Link.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <section class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-block">
-  <!-- Faint column lines behind the hero: 12 on desktop, 6 on tablets, 4 on phones. -->
-  <div class="guides absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="mx-auto h-full w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid grid-cols-4 gap-x-gutter sm:grid-cols-6 md:grid-cols-12">
-      {Array.from({ length: 12 }, (_, i) => (
-        <i
-          class:list={[
-            'guide',
-            { 'max-md:hidden': i >= 6 },
-            { 'max-sm:hidden': i >= 4 },
-          ]}
-        />
-      ))}
-    </div>
-  </div>
+  <Guides />
   <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
     <div
       data-intro="fade"
@@ -98,24 +86,6 @@ import ThemeToggle from './ThemeToggle.astro';
 
   .line > span {
     display: block;
-  }
-
-  .guide {
-    position: relative;
-    border-left: 1px solid color-mix(in oklab, var(--rule) 45%, transparent);
-  }
-
-  /* A fainter line halfway across each column. */
-  .guide::after {
-    content: '';
-    position: absolute;
-    inset-block: 0;
-    left: calc(50% + var(--spacing-gutter) / 2);
-    border-left: 1px solid color-mix(in oklab, var(--rule) 55%, transparent);
-  }
-
-  .guide:last-child::after {
-    display: none;
   }
 </style>
 

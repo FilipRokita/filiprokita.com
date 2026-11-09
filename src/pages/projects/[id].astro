@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import Guides from '../../components/Guides.astro';
 import Figure from '../../components/Figure.astro';
 import Link from '../../components/Link.astro';
 import Section from '../../components/Section.astro';
@@ -44,23 +45,25 @@ const factCount = facts.length + (links.live ? 2 : 1);
 ---
 
 <BaseLayout title={title} description={`${title}: ${summary}`}>
-  <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))] pt-[clamp(1.5rem,1rem+2vw,3rem)]">
-    <Link
-      href="/#projects"
-      class="mono inline-flex min-h-11 items-center text-muted"
-    >
-      <span class="mr-[.6rem] text-accent" aria-hidden="true">
-        ←
-      </span>
-      All projects
-    </Link>
-    <h1 class="mt-[clamp(1.5rem,1rem+3vw,4rem)] -ml-[.04em] text-[clamp(3.5rem,1.5rem+13vw,15rem)] leading-[.86] font-[560] tracking-[-0.065em]">
-      {title}
-    </h1>
-    <dl
-      class="facts mt-[clamp(2rem,1rem+4vw,5rem)] border-t border-rule"
-      data-count={factCount}
-    >
+  <div class="relative pt-[clamp(1.5rem,1rem+2vw,3rem)] pb-[clamp(2rem,1rem+4vw,5rem)]">
+    <Guides />
+    <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+      <Link
+        href="/#projects"
+        class="mono inline-flex min-h-11 items-center text-muted"
+      >
+        <span class="mr-[.6rem] text-accent" aria-hidden="true">
+          ←
+        </span>
+        All projects
+      </Link>
+      <h1 class="mt-[clamp(1.5rem,1rem+3vw,4rem)] -ml-[.04em] text-[clamp(3.5rem,1.5rem+13vw,15rem)] leading-[.86] font-[560] tracking-[-0.065em]">
+        {title}
+      </h1>
+    </div>
+  </div>
+  <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+    <dl class="facts border-t border-rule" data-count={factCount}>
       {facts.map(({ label, value }) => (
         <div>
           <dt class="mono text-muted">{label}</dt>
