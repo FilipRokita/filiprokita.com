@@ -4,16 +4,25 @@ import type { HTMLAttributes } from 'astro/types';
 interface Props extends HTMLAttributes<'a'> {
   /** An arrow after the text. */
   arrow?: '↗';
+  /** A resting underline even with an arrow. For the main calls to action. */
+  underlined?: boolean;
 }
 
-const { arrow, class: className, href, rel, ...rest } = Astro.props;
+const {
+  arrow,
+  underlined = false,
+  class: className,
+  href,
+  rel,
+  ...rest
+} = Astro.props;
 
 // A link to another site opens in a new tab. Email and links within the site do not.
 const external = typeof href === 'string' && /^https?:\/\//.test(href);
 ---
 
 <a
-  class:list={['link', { rest: !arrow }, className]}
+  class:list={['link', { rest: !arrow || underlined }, className]}
   href={href}
   target={external ? '_blank' : undefined}
   rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
