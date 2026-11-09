@@ -89,15 +89,18 @@ const factCount = facts.length + (links.live ? 2 : 1);
         </dd>
       </div>
     </dl>
-    <div class="mt-[clamp(2rem,1rem+3vw,4rem)]">
-      <Figure
-        src={cover}
-        alt={coverAlt}
-        number={figureNumber}
-        caption={coverCaption}
-        eager
-        sizes="(min-width: 88rem) 80rem, 100vw"
-      />
+    <!-- The figure lines up with the text column of the sections below. -->
+    <div class="mt-[clamp(2rem,1rem+3vw,4rem)] md:grid md:grid-cols-12 md:gap-x-gutter">
+      <div class="md:col-span-9 md:col-start-4">
+        <Figure
+          src={cover}
+          alt={coverAlt}
+          number={figureNumber}
+          caption={coverCaption}
+          eager
+          sizes="(min-width: 64rem) 66vw, 100vw"
+        />
+      </div>
     </div>
   </div>
 
