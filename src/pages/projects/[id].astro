@@ -89,7 +89,8 @@ const factCount = facts.length + (links.live ? 2 : 1);
     </dl>
   </div>
 
-  <div class="mt-section">
+  <!-- The facts end the header block, so the first section needs no divider above it. -->
+  <div class="[&>section:first-child]:border-t-0">
     <Section
       id="what-it-is"
       index="01"
