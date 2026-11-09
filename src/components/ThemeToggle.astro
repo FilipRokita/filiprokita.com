@@ -1,0 +1,81 @@
+---
+// Rendered hidden: the script shows it, because without JavaScript it cannot work.
+---
+
+<button
+  type="button"
+  class="theme-toggle mono inline-flex cursor-pointer items-center gap-[.5ch] text-muted"
+  data-theme-toggle
+  hidden
+>
+  <span data-theme-name></span>
+  <span class="hidden sm:inline">mode</span>
+</button>
+
+<style>
+  .theme-toggle {
+    transition: color 0.2s;
+  }
+
+  @media (hover: hover) {
+    .theme-toggle:hover {
+      color: var(--fg);
+    }
+  }
+</style>
+
+<script>
+  type Theme = 'light' | 'dark';
+
+  const root = document.documentElement;
+  const toggles = document.querySelectorAll<HTMLButtonElement>(
+    '[data-theme-toggle]',
+  );
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const current = (): Theme => {
+    const chosen = root.dataset.theme;
+    if (chosen === 'light' || chosen === 'dark') return chosen;
+    return matchMedia('(prefers-color-scheme: light)').matches
+      ? 'light'
+      : 'dark';
+  };
+
+  // The label names the theme a click switches to.
+  const render = () => {
+    for (const toggle of toggles) {
+      const name = toggle.querySelector('[data-theme-name]');
+      if (name) name.textContent = current() === 'dark' ? 'Light' : 'Dark';
+      toggle.hidden = false;
+    }
+  };
+
+  const setTheme = (theme: Theme) => {
+    root.dataset.theme = theme;
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      // Storage can be blocked. The choice then lasts for this page only.
+    }
+    render();
+  };
+
+  const switchTheme = (origin: HTMLElement) => {
+    const next: Theme = current() === 'dark' ? 'light' : 'dark';
+    if (!document.startViewTransition || reducedMotion.matches)
+      return setTheme(next);
+
+    const box = origin.getBoundingClientRect();
+    root.style.setProperty('--tx', `${box.left + box.width / 2}px`);
+    root.style.setProperty('--ty', `${box.top + box.height / 2}px`);
+    root.classList.add('theme-vt');
+    document
+      .startViewTransition(() => setTheme(next))
+      .finished.finally(() => root.classList.remove('theme-vt'));
+  };
+
+  for (const toggle of toggles) {
+    toggle.addEventListener('click', () => switchTheme(toggle));
+  }
+  render();
+</script>

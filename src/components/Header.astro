@@ -1,0 +1,96 @@
+---
+import { site, sections } from '../config/site';
+import Container from './Container.astro';
+import Logo from './Logo.astro';
+---
+
+<header class="sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
+  <Container class="flex min-h-15 items-center justify-between gap-6">
+    <a
+      href="/"
+      class="inline-flex items-center gap-[.7rem] font-semibold tracking-tight whitespace-nowrap"
+      data-brand
+    >
+      <Logo />
+      <span>{site.name}</span>
+    </a>
+    <!-- On phones only Contact is shown, and it does not react to where you are on the page. -->
+    <nav
+      aria-label="Main"
+      class="mono flex items-center gap-[clamp(.9rem,.4rem+1.6vw,2rem)]"
+    >
+      {sections.map(({ id, label }) => (
+        <a
+          href={`/#${id}`}
+          data-section={id}
+          class:list={[
+            'nav-link inline-flex min-h-11 items-center',
+            { 'max-sm:hidden': id !== 'contact' },
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  </Container>
+</header>
+
+<style>
+  .nav-link {
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  @media (hover: hover) {
+    .nav-link:hover {
+      color: var(--fg);
+    }
+  }
+
+  /* The current section is marked with a dot. Not on phones, where only Contact is shown. */
+  @media (min-width: 40rem) {
+    .nav-link[aria-current='true'] {
+      color: var(--fg);
+    }
+
+    .nav-link[aria-current='true']::before {
+      content: '';
+      width: 0.4rem;
+      height: 0.4rem;
+      margin-right: 0.5rem;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+  }
+</style>
+
+<script>
+  // On the home page the logo scrolls to the top instead of reloading the page.
+  document.querySelector('[data-brand]')?.addEventListener('click', (event) => {
+    if (location.pathname !== '/') return;
+    event.preventDefault();
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    history.replaceState(null, '', location.pathname);
+  });
+
+  // Mark the nav link of the section in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-section]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        for (const link of links) {
+          if (link.dataset.section === entry.target.id)
+            link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        }
+      }
+    },
+    { rootMargin: '-40% 0px -55% 0px' },
+  );
+  for (const link of links) {
+    const section = document.getElementById(link.dataset.section ?? '');
+    if (section) observer.observe(section);
+  }
+</script>

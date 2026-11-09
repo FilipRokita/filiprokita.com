@@ -10,6 +10,8 @@ export default defineConfig([
   js.configs.recommended,
   tseslint.configs.strict,
   astro.configs['flat/recommended'],
+  // Defined at build time in astro.config.mjs.
+  { languageOptions: { globals: { __BUILD__: 'readonly' } } },
   {
     files: ['**/*.astro'],
     plugins: { 'jsx-a11y-x': jsxA11yX },

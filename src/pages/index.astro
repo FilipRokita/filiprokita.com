@@ -1,14 +1,10 @@
 ---
-import '../styles/global.css';
+import Container from '../components/Container.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Filip Rokita</title>
-  </head>
-  <body>
-    <h1>Filip Rokita</h1>
-  </body>
-</html>
+<BaseLayout>
+  <Container class="py-block">
+    <h1 class="text-step-3 font-semibold tracking-tight">Filip Rokita</h1>
+  </Container>
+</BaseLayout>
