@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# System packages (Chromium for Lighthouse CI)
+# System packages
 sudo apt-get update
 sudo apt-get install -y chromium
 
-# Project dependencies (skipped before the project is scaffolded)
+# Project dependencies
 if [ -f package.json ]; then
   npm ci
 fi
