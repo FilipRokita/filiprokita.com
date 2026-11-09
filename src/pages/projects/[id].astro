@@ -52,6 +52,7 @@ const factCount = facts.length + (links.live ? 2 : 1);
       <Link
         href="/#projects"
         arrow="←"
+        data-back
         class="mono inline-flex min-h-11 items-center text-muted"
       >
         All projects
@@ -246,3 +247,24 @@ const factCount = facts.length + (links.live ? 2 : 1);
     }
   }
 </style>
+
+<script>
+  // Coming from the home page, "All projects" goes back to where the visitor was,
+  // at the same scroll position. Opened directly, it is a normal link to the projects.
+  const link = document.querySelector<HTMLAnchorElement>('[data-back]');
+  const cameFromHome = (() => {
+    try {
+      const from = new URL(document.referrer);
+      return from.origin === location.origin && from.pathname === '/';
+    } catch {
+      return false;
+    }
+  })();
+
+  if (link && cameFromHome) {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      history.back();
+    });
+  }
+</script>
