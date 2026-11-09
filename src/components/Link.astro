@@ -1,0 +1,78 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  /** A quiet underline in the text color at rest. Without it the line appears only on hover. */
+  quiet?: boolean;
+  /** An arrow after the text. */
+  arrow?: '↗' | '↓';
+}
+
+const { quiet = false, arrow, class: className, ...rest } = Astro.props;
+---
+
+<a class:list={['link', { quiet }, className]} {...rest}>
+  <slot />
+  {arrow && (
+    <span class="arr" aria-hidden="true">
+      {arrow}
+    </span>
+  )}
+</a>
+
+<style>
+  .link {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.35rem;
+  }
+
+  /* The quiet underline, and the violet line that fills in from the left on hover. */
+  .link::before,
+  .link::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0.1rem;
+    height: 1px;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .link::after {
+    background: currentcolor;
+  }
+
+  .link.quiet::after {
+    opacity: 0.3;
+    transform: scaleX(1);
+  }
+
+  .link::before {
+    z-index: 1;
+    background: var(--accent);
+    transition: transform 0.35s var(--ease-out-expo);
+  }
+
+  .link:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .arr {
+    display: inline-block;
+    margin-left: 0.6rem;
+    color: var(--accent);
+    transition: transform 0.3s;
+  }
+
+  /* Hover effects only where there is a real hover, so nothing sticks after a tap. */
+  @media (hover: hover) {
+    .link:hover::before {
+      transform: scaleX(1);
+    }
+
+    .link:hover .arr {
+      transform: translate(0.2rem, -0.2rem);
+    }
+  }
+</style>

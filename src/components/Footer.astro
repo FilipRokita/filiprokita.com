@@ -1,0 +1,45 @@
+---
+import { site } from '../config/site';
+import Container from './Container.astro';
+import Link from './Link.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const { date, commit } = __BUILD__;
+const commitUrl =
+  site.repoIsPublic && commit ? `${site.repo}/commit/${commit}` : undefined;
+---
+
+<footer class="border-t border-rule pt-7 pb-10 text-muted">
+  <Container class="mono flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-8">
+    <p>
+      © {site.name}{' '}
+      <span class="block sm:inline">
+        <span class="hidden sm:inline">· </span>Built {date}
+        {commit && (
+          <>
+            {' · '}
+            {commitUrl ? (
+              <Link href={commitUrl} quiet class="!py-[.15rem]">
+                {commit}
+              </Link>
+            ) : (
+              commit
+            )}
+          </>
+        )}
+      </span>
+    </p>
+    <div class="flex flex-wrap items-baseline gap-6">
+      <Link href={`mailto:${site.email}`} quiet class="!py-[.15rem]">
+        Email
+      </Link>
+      <Link href={site.linkedin} rel="me" quiet class="!py-[.15rem]">
+        LinkedIn
+      </Link>
+      <Link href={site.github} rel="me" quiet class="!py-[.15rem]">
+        GitHub
+      </Link>
+      <ThemeToggle />
+    </div>
+  </Container>
+</footer>
