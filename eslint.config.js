@@ -19,6 +19,10 @@ export default defineConfig([
   },
   {
     // Tool configs that LHCI loads with require().
+    files: ['src/**/*.js'],
+    languageOptions: { globals: globals.browser },
+  },
+  {
     files: ['design/**/*.mjs'],
     languageOptions: { globals: globals.node },
   },

@@ -11,7 +11,7 @@ What is checked, how to run it and what CI enforces.
 | Lint | `npm run lint` | Code and accessibility problems in templates (ESLint) |
 | Format | `npm run format:check` | Files that are not formatted (Prettier) |
 | Browser tests | `npm run test:e2e` | A route that does not load, a missing title or heading, any WCAG 2.x A or AA violation found by axe |
-| Lighthouse | `npm run lighthouse` | A score below 0.9 in performance, accessibility, best practices or SEO |
+| Lighthouse | `npm run lighthouse` | A score or metric over its budget (see Lighthouse below) |
 | Secret scan | CI only | Secrets in the code or the git history (gitleaks) |
 
 Unit tests (Vitest) cover the pure code in `src/lib/`, the project schema and the design tokens.
@@ -36,13 +36,15 @@ focus are visible, and the nav matches the screen size.
 `npm run test:e2e` builds first and then runs the tests. To run them against an
 existing build, use `npx playwright test`.
 
-To cover a new route, add it to the `routes` list in `e2e/smoke.spec.ts`.
+To cover a new route, add it to the `routes` list in `e2e/routes.ts`. Every route then gets the smoke, axe and
+Content Security Policy checks.
 
 ## Lighthouse
 
 `lighthouserc.cjs` runs Lighthouse three times against the built `dist/` folder and
-asserts a minimum score of 0.9 in every category. The threshold is a floor, not the
-goal. The goal is 100, and the thresholds are tuned once the real design exists.
+asserts these budgets: performance at least 0.95, accessibility, best practices and SEO
+at 1, LCP under 2.5 s, CLS under 0.05 and total blocking time under 150 ms. The site
+scores 100 today, so a drop is a regression.
 Reports are written to `.lighthouseci/`, which git ignores.
 
 ## CI
@@ -59,3 +61,12 @@ every pull request and on every push to `main`, as four parallel jobs:
 
 Actions are pinned to commit SHAs, the workflow token is read-only and a newer run
 cancels an older one on the same ref.
+
+## Security headers and the CSP
+
+`security.csp` in `astro.config.mjs` makes Astro add a Content Security Policy `<meta>`
+tag with a hash for every script and style it emits. The inline theme script
+(`src/scripts/theme-init.js`) is hashed from the same file. `public/_headers` adds the
+headers a meta tag cannot (`frame-ancestors`, `nosniff`, referrer and permissions
+policies) and long caching for hashed assets. `e2e/security.spec.ts` loads every route
+and fails on any policy violation, so a change that needs `unsafe-inline` cannot pass.
