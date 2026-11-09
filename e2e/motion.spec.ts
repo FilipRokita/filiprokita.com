@@ -6,7 +6,7 @@ test.describe('motion', () => {
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    await expect(page.locator('[data-intro="rise"]')).toHaveCSS(
+    await expect(page.locator('[data-intro="rise"]').first()).toHaveCSS(
       'animation-name',
       'none',
     );
@@ -15,7 +15,7 @@ test.describe('motion', () => {
   test('the hero name rises in for everyone else', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/');
-    await expect(page.locator('[data-intro="rise"]')).toHaveCSS(
+    await expect(page.locator('[data-intro="rise"]').first()).toHaveCSS(
       'animation-name',
       'rise',
     );

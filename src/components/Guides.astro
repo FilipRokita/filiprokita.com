@@ -1,6 +1,12 @@
 ---
 // Faint column lines behind a block: 12 on desktop, 6 on tablets, 4 on phones.
 // The parent must be positioned (relative). The lines fill it.
+interface Props {
+  /** Draw the lines in the accent color. Used for the glow that follows the pointer. */
+  lit?: boolean;
+}
+
+const { lit = false } = Astro.props;
 ---
 
 <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -9,6 +15,7 @@
       <i
         class:list={[
           'guide',
+          { lit },
           { 'max-md:hidden': i >= 6 },
           { 'max-sm:hidden': i >= 4 },
         ]}
@@ -34,5 +41,10 @@
 
   .guide:last-child::after {
     display: none;
+  }
+
+  .guide.lit,
+  .guide.lit::after {
+    border-left-color: color-mix(in oklab, var(--accent) 32%, transparent);
   }
 </style>

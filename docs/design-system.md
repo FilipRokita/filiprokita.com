@@ -97,6 +97,11 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 - Intro: the hero name rises out of its line and the rest fades in (`data-intro`).
   Sections and project rows fade in as they scroll into view (`data-reveal`, CSS
   scroll-driven animation, where supported).
+- The hero name rises letter by letter. On a mouse (not on touch, not with reduced
+  motion) a soft accent glow follows the pointer over the hero and lights the column
+  lines near it.
+- Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
+  open email, LinkedIn or GitHub). It has no button on purpose.
 - On phones a thin accent line under the header fills as the page scrolls (CSS only).
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.
@@ -121,6 +126,7 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
 | Guides | `src/components/Guides.astro` | The faint column lines behind the hero and the project title |
+| CommandPalette | `src/components/CommandPalette.astro` | The Ctrl K dialog. Items come from the sections and the project collection |
 | Hero | `src/components/Hero.astro` | Local time, the name, the statement and links |
 | Section | `src/components/Section.astro` | Numbered label, one-line title and a slot. The `after` slot is full width |
 | ItemGrid | `src/components/ItemGrid.astro` | Numbered items in 3 or 4 columns, 2 on tablets, 1 on phones |

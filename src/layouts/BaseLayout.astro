@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import CommandPalette from '../components/CommandPalette.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../config/site';
@@ -74,5 +75,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <Footer />
+    <CommandPalette />
   </body>
 </html>
