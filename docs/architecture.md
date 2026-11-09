@@ -21,7 +21,6 @@ flowchart LR
 | :--- | :--- |
 | `/` | Home: hero, About, What I do, How I work, Projects, Contact |
 | `/projects/<id>/` | One case study per visible project, from the content collection |
-| `/how-this-site-is-built/` | The checks behind the site |
 | `/404` | Not found page |
 | `/robots.txt`, `/sitemap-index.xml` | Generated at build time |
 

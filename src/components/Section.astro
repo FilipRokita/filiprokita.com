@@ -12,8 +12,6 @@ interface Props {
   oneLine?: boolean;
   /** Fade in on scroll. Off for the projects section, whose rows fade in one by one. */
   reveal?: boolean;
-  /** The title is the page's h1 on pages that have no other one. */
-  asH1?: boolean;
 }
 
 const {
@@ -24,9 +22,7 @@ const {
   accent,
   oneLine = true,
   reveal = true,
-  asH1 = false,
 } = Astro.props;
-const Heading = asH1 ? 'h1' : 'h2';
 ---
 
 <section
@@ -40,7 +36,7 @@ const Heading = asH1 ? 'h1' : 'h2';
       <span class="text-muted">{label}</span>
     </p>
     <div class="col-span-12 md:col-span-9">
-      <Heading
+      <h2
         class:list={[
           'text-step-3 font-[480] tracking-[-0.045em]',
           oneLine
@@ -50,7 +46,7 @@ const Heading = asH1 ? 'h1' : 'h2';
       >
         {accent ? `${title} ` : title}
         {accent && <em class="text-muted not-italic">{accent}</em>}
-      </Heading>
+      </h2>
       <slot />
     </div>
   </div>

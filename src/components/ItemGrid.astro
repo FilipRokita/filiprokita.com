@@ -10,12 +10,9 @@ interface Props {
   items: readonly Item[];
   /** Columns on a desktop. Tablets show two and phones one. */
   columns: 3 | 4;
-  /** The heading level of the item titles: h3 under a section title, h2 under a page title. */
-  headingLevel?: 2 | 3;
 }
 
-const { section, items, columns, headingLevel = 3 } = Astro.props;
-const Heading = `h${headingLevel}` as const;
+const { section, items, columns } = Astro.props;
 ---
 
 <ul
@@ -29,9 +26,9 @@ const Heading = `h${headingLevel}` as const;
       <span class="mono text-accent">
         {section}.{i + 1}
       </span>
-      <Heading class="mt-[.9rem] mb-[.6rem] text-step-1 font-[520] tracking-[-0.03em]">
+      <h3 class="mt-[.9rem] mb-[.6rem] text-step-1 font-[520] tracking-[-0.03em]">
         {item.title}
-      </Heading>
+      </h3>
       <p class="text-muted">{item.text}</p>
     </li>
   ))}
