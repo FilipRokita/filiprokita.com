@@ -6,7 +6,7 @@ What is checked, how to run it and what CI enforces.
 
 | Check | Command | What it catches |
 | :--- | :--- | :--- |
-| Unit tests | `npm test` | The contrast helper, and every text and surface pair in the tokens failing WCAG AA |
+| Unit tests | `npm test` | A broken project schema, the project filtering, the contrast helper, and any text and surface pair in the tokens failing WCAG AA |
 | Types | `npm run check` | Type errors in `.astro` and `.ts` files. Part of `npm run build` |
 | Lint | `npm run lint` | Code and accessibility problems in templates (ESLint) |
 | Format | `npm run format:check` | Files that are not formatted (Prettier) |
@@ -14,8 +14,7 @@ What is checked, how to run it and what CI enforces.
 | Lighthouse | `npm run lighthouse` | A score below 0.9 in performance, accessibility, best practices or SEO |
 | Secret scan | CI only | Secrets in the code or the git history (gitleaks) |
 
-Unit tests (Vitest) cover the pure code in `src/lib/` and the design tokens. More
-arrive with the content helpers.
+Unit tests (Vitest) cover the pure code in `src/lib/`, the project schema and the design tokens.
 
 ## Unit tests
 
