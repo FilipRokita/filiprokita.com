@@ -6,7 +6,7 @@ What every entry in the repository root is for.
 
 | Path | What it is |
 | :--- | :--- |
-| [`README.md`](../README.md) | Project overview, stack, principles and roadmap |
+| [`README.md`](../README.md) | Project overview, stack and principles |
 | [`SECURITY.md`](../SECURITY.md) | How to report a vulnerability |
 | `.gitattributes` | Line ending rules |
 | [`AGENTS.md`](../AGENTS.md) | Rules for AI coding agents working in this repository |

@@ -33,8 +33,7 @@ accessible and checked on every change.
 2. [🧱 Stack](#-stack)
 3. [🧭 Principles](#-principles)
 4. [🚀 Run it locally](#-run-it-locally)
-5. [🗺️ Roadmap](#️-roadmap)
-6. [📚 Documentation](#-documentation)
+5. [📚 Documentation](#-documentation)
 
 ## 🎯 Goals
 
@@ -79,23 +78,6 @@ npm run dev   # dev server on http://localhost:4321
 npm run build # type check and production build into dist/
 npm run lint  # ESLint, with `npm run format:check` for Prettier
 npm test      # unit tests, with `npm run test:e2e` for the browser tests
-```
-
-## 🗺️ Roadmap
-
-```mermaid
-flowchart LR
-    A[✅ Scaffold Astro,<br/>Tailwind, TypeScript] --> B[✅ README and docs]
-    B --> C[✅ ESLint and Prettier]
-    C --> D[✅ GitHub Actions]
-    D --> E[✅ Lighthouse CI]
-    E --> F[✅ Design system and shell]
-    F --> M[✅ Content model]
-    M --> G[✅ Pages]
-    G --> P[✅ Motion]
-    P --> Q[✅ Quality gates]
-    Q --> B[✅ Branding and skill]
-    B --> H[Deploy]
 ```
 
 ## 📚 Documentation
