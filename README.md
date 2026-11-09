@@ -19,14 +19,13 @@
   <img src="docs/brand/preview.png" alt="The home page in the dark theme" width="900">
 </div>
 
-The personal portfolio of Filip Rokita, a software engineer building apps, data and
-AI, from idea to production. A short home page, a case study for every project and an
-easy way to get in touch.
+A site meant to be as good as the code behind it: fast, accessible and tested, with
+nothing it does not need. Astro, strict TypeScript, unit and browser tests, a hashed
+CSP and Lighthouse budgets in CI.
 
-It follows an evergreen rule: areas of work instead of tool lists, and dates,
-employers and career details left to LinkedIn. Adding a project is one Markdown file
-and a screenshot. Under that is a static Astro site that is typed, tested, accessible
-and checked on every change.
+Nothing here goes stale. Areas of work replace technology lists, and projects are
+Markdown files with a validated schema, so adding one is a file and a screenshot,
+never a change to page code.
 
 ## 📖 Table of contents
 
