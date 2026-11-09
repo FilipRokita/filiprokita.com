@@ -8,6 +8,7 @@ Repository protections: what is on, and what waits for the repo to go public.
 | :--- | :--- |
 | Dependabot alerts and security updates | On |
 | Delete branch after merge | On |
+| `dependabot.yml` (weekly, grouped, npm and GitHub Actions) | On |
 
 ## Planned
 
@@ -18,21 +19,20 @@ repositories, so these wait for the repo to go public.
 | Setting | When | Notes |
 | :--- | :--- | :--- |
 | Secret scanning and push protection | When the repo goes public | |
-| Branch protection on `main` | After the first green CI run | See below. Not yet tested on the private repo |
-| `dependabot.yml` | With the Astro scaffold | Without a manifest Dependabot reports errors |
+| Branch protection on `main` | After the first green CI run on `main` | See below. Not yet tested on the private repo |
 
 ## Branch protection on `main`
 
 Planned rules:
 
 - Pull request required before merging.
-- Required status checks: build, `astro check`, lint, secret scan.
+- Required status checks, named as the CI jobs: `Lint, format and build`, `Browser tests`, `Lighthouse`, `Secret scan`.
 - No force pushes, no deletion of `main`.
 - Rules apply to admins too.
 
 ```mermaid
 flowchart LR
-    A[Scaffold Astro] --> B[CI workflow]
+    A[✅ Scaffold Astro] --> B[✅ CI workflow]
     B --> C[First green run]
     C --> D[Require checks on main]
 ```

@@ -13,7 +13,7 @@ The definition lives in `.devcontainer/`:
 | File | What it does |
 | :--- | :--- |
 | `devcontainer.json` | Image, features, VS Code extensions and the `postCreateCommand` |
-| `setup.sh` | Runs once after the container is created. Installs the project dependencies |
+| `setup.sh` | Runs once after the container is created. Installs the project dependencies and the test browser |
 
 ### Image and tooling
 
@@ -31,14 +31,9 @@ The definition lives in `.devcontainer/`:
 
 ### What `setup.sh` does
 
-Runs `npm ci`, which installs exactly what `package-lock.json` locks.
-
-Chromium is not installed. It is only needed for Lighthouse CI and browser tests,
-and arrives with them.
-
-> [!NOTE]
-> The ESLint and Prettier extensions do nothing until their configuration is added
-> with the lint and format setup.
+1. Runs `npm ci`, which installs exactly what `package-lock.json` locks.
+2. Runs `npx playwright install --with-deps chromium`. That one Chromium, with its
+   system libraries, serves both the browser tests and Lighthouse CI.
 
 ## Node version
 
@@ -55,6 +50,18 @@ The commands live in `package.json`.
 | `npm run build` | Type checks with `astro check`, then builds into `dist/` |
 | `npm run preview` | Serves the production build |
 | `npm run check` | Type checks the project only |
+| `npm run lint` | ESLint over the whole project |
+| `npm run format` | Rewrites files with Prettier |
+| `npm run format:check` | Fails if a file is not formatted. CI runs this |
+| `npm run test:e2e` | Builds, then runs the browser tests. See [Testing](testing.md) |
+| `npm run lighthouse` | Builds, then runs Lighthouse CI |
+
+## Editor
+
+The ESLint and Prettier extensions read `eslint.config.js` and `.prettierrc.mjs`.
+Prettier does not format Markdown, which is written by hand. The Tailwind plugin
+needs `tailwindStylesheet` in `.prettierrc.mjs`, which points at
+`src/styles/global.css`.
 
 ## Agents
 
