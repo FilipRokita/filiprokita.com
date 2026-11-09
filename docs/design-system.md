@@ -49,7 +49,7 @@ when the accent changes:
   with stronger values. `tests/tokens.test.ts` checks that the muted text reaches 7:1
   in both themes with it on.
 - [`src/styles/print.css`](../src/styles/print.css) styles print and PDF: the light
-  colors whatever the theme, no motion or grain. The header, the column lines, the glow
+  colors whatever the theme, no motion or grain. The header, the column lines
   and the theme toggle carry Tailwind's `print:hidden`.
 
 ## Themes
@@ -112,8 +112,7 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
   Sections and project rows fade in as they scroll into view (`data-reveal`, CSS
   scroll-driven animation, where supported).
 - The hero name rises letter by letter. On a mouse (not on touch, not with reduced
-  motion) a soft accent glow follows the pointer over the hero and lights the column
-  lines near it.
+  motion) the column lines near the pointer light up in the accent color over the hero.
 - Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
   open email, LinkedIn or GitHub). It has no button on purpose.
 - On phones a thin accent line under the header fills as the page scrolls (CSS only).

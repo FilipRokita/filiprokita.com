@@ -7,11 +7,7 @@ import ThemeToggle from './ThemeToggle.astro';
 
 <section class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-section">
   <Guides />
-  <!-- On a mouse, a soft glow follows the pointer and lights the column lines near it. -->
-  <div
-    class="glow absolute inset-0 pointer-events-none print:hidden"
-    aria-hidden="true"
-  ></div>
+  <!-- On a mouse, the column lines light up near the pointer. -->
   <div
     class="lit absolute inset-0 pointer-events-none print:hidden"
     aria-hidden="true"
@@ -142,25 +138,10 @@ import ThemeToggle from './ThemeToggle.astro';
     }
   }
 
-  /* The pointer glow. Off until a mouse moves over the hero. */
-  .glow,
+  /* The lit column lines. Off until a mouse moves over the hero. */
   .lit {
     opacity: 0;
     transition: opacity 0.4s;
-  }
-
-  .glow {
-    background: radial-gradient(
-      420px circle at var(--mx, -999px) var(--my, -999px),
-      light-dark(
-        color-mix(in oklab, var(--accent) 8%, transparent),
-        color-mix(in oklab, var(--accent) 5.5%, transparent)
-      ),
-      transparent 70%
-    );
-  }
-
-  .lit {
     mask-image: radial-gradient(
       260px circle at var(--mx, -999px) var(--my, -999px),
       #000,
@@ -168,8 +149,7 @@ import ThemeToggle from './ThemeToggle.astro';
     );
   }
 
-  .hero[data-glow] .glow,
-  .hero[data-glow] .lit {
+  .hero[data-lit] .lit {
     opacity: 1;
   }
 </style>
@@ -194,7 +174,7 @@ import ThemeToggle from './ThemeToggle.astro';
 </script>
 
 <script>
-  // The glow needs a real mouse and no preference for reduced motion.
+  // The lit lines need a real mouse and no preference for reduced motion.
   const hero = document.querySelector<HTMLElement>('.hero');
   const fine = matchMedia(
     '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
@@ -207,11 +187,11 @@ import ThemeToggle from './ThemeToggle.astro';
         const box = hero.getBoundingClientRect();
         hero.style.setProperty('--mx', `${event.clientX - box.left}px`);
         hero.style.setProperty('--my', `${event.clientY - box.top}px`);
-        hero.dataset.glow = '';
+        hero.dataset.lit = '';
       });
     });
     hero.addEventListener('pointerleave', () => {
-      delete hero.dataset.glow;
+      delete hero.dataset.lit;
     });
   }
 </script>

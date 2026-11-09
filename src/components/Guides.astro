@@ -2,7 +2,7 @@
 // Faint column lines behind a block: 12 on desktop, 6 on tablets, 4 on phones.
 // The parent must be positioned (relative). The lines fill it.
 interface Props {
-  /** Draw the lines in the accent color. Used for the glow that follows the pointer. */
+  /** Draw the lines in the accent color. Used for the lines that light up near the pointer. */
   lit?: boolean;
 }
 
@@ -48,9 +48,6 @@ const { lit = false } = Astro.props;
 
   .guide.lit,
   .guide.lit::after {
-    border-left-color: light-dark(
-      color-mix(in oklab, var(--accent) 32%, transparent),
-      color-mix(in oklab, var(--accent) 22%, transparent)
-    );
+    border-left-color: color-mix(in oklab, var(--accent) 30%, transparent);
   }
 </style>
