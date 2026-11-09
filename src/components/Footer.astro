@@ -9,7 +9,7 @@ const commitUrl =
   site.repoIsPublic && commit ? `${site.repo}/commit/${commit}` : undefined;
 ---
 
-<footer class="border-t border-rule pt-7 pb-10 text-muted">
+<footer class="border-t border-rule pt-7 pb-[calc(2.5rem+env(safe-area-inset-bottom))] text-muted">
   <Container class="mono flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-8">
     <p>
       © {site.name}{' '}

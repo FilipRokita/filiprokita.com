@@ -61,14 +61,14 @@
     render();
   };
 
-  const switchTheme = (origin: HTMLElement) => {
+  // The circle grows from the point the switch was asked for: a toggle, or a palette entry.
+  const switchTheme = (x: number, y: number) => {
     const next: Theme = current() === 'dark' ? 'light' : 'dark';
     if (!document.startViewTransition || reducedMotion.matches)
       return setTheme(next);
 
-    const box = origin.getBoundingClientRect();
-    root.style.setProperty('--tx', `${box.left + box.width / 2}px`);
-    root.style.setProperty('--ty', `${box.top + box.height / 2}px`);
+    root.style.setProperty('--tx', `${x}px`);
+    root.style.setProperty('--ty', `${y}px`);
     root.classList.add('theme-vt');
     document
       .startViewTransition(() => setTheme(next))
@@ -76,8 +76,17 @@
   };
 
   for (const toggle of toggles) {
-    toggle.addEventListener('click', () => switchTheme(toggle));
+    toggle.addEventListener('click', () => {
+      const box = toggle.getBoundingClientRect();
+      switchTheme(box.left + box.width / 2, box.top + box.height / 2);
+    });
   }
+  // The command palette asks for a switch with the point to grow the circle from.
+  addEventListener('switch-theme', (event) => {
+    const { x, y } = (event as CustomEvent<{ x: number; y: number }>).detail;
+    switchTheme(x, y);
+  });
+
   // With no saved choice the system theme applies, so the label follows it.
   matchMedia('(prefers-color-scheme: light)').addEventListener(
     'change',
