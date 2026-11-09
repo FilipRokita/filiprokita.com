@@ -269,8 +269,17 @@ const factCount = facts.length + (links.live ? 2 : 1);
     }
   })();
 
-  if (link && cameFromHome) {
+  // A new tab opened from the home page has no history to go back to, and a click with
+  // a modifier key (open in a new tab or window) must keep its normal meaning.
+  if (link && cameFromHome && history.length > 1) {
     link.addEventListener('click', (event) => {
+      const modified =
+        event.button !== 0 ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey;
+      if (modified) return;
       event.preventDefault();
       history.back();
     });

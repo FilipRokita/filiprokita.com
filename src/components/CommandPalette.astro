@@ -155,9 +155,12 @@ const items: Item[] = [
 
   const select = (index: number) => {
     const shown = visible();
-    if (shown.length === 0) return;
-    active = (index + shown.length) % shown.length;
     for (const option of options) option.setAttribute('aria-selected', 'false');
+    if (shown.length === 0) {
+      input?.removeAttribute('aria-activedescendant');
+      return;
+    }
+    active = (index + shown.length) % shown.length;
     const current = shown[active];
     current.setAttribute('aria-selected', 'true');
     input?.setAttribute('aria-activedescendant', current.id);
@@ -180,7 +183,11 @@ const items: Item[] = [
   const run = (option: HTMLLIElement) => {
     dialog?.close();
     if (option.dataset.action === 'theme') {
-      document.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.click();
+      // The hero toggle is hidden on narrow windows, so use one that can be seen.
+      const toggles = document.querySelectorAll<HTMLButtonElement>(
+        '[data-theme-toggle]',
+      );
+      [...toggles].find((toggle) => toggle.offsetParent !== null)?.click();
     } else if (option.dataset.href) {
       if (option.dataset.external !== undefined)
         open(option.dataset.href, '_blank', 'noopener');

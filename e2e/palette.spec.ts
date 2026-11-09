@@ -40,6 +40,11 @@ test.describe('command palette', () => {
     await page.keyboard.press('Control+k');
     await page.keyboard.type('zzzz');
     await expect(page.getByText('Nothing found')).toBeVisible();
+    // No stale option is announced to assistive technology.
+    await expect(page.getByRole('combobox')).not.toHaveAttribute(
+      'aria-activedescendant',
+      /.+/,
+    );
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toBeHidden();
 

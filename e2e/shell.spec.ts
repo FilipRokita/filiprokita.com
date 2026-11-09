@@ -45,6 +45,9 @@ test.describe('theme', () => {
 
     await toggle.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    // The browser bar color follows the chosen theme too.
+    for (const meta of await page.locator('meta[name="theme-color"]').all())
+      await expect(meta).toHaveAttribute('content', '#f4f3ef');
     await expect(toggle).toHaveText(/Dark/);
 
     await page.reload();

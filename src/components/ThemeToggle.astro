@@ -52,6 +52,7 @@
 
   const setTheme = (theme: Theme) => {
     root.dataset.theme = theme;
+    window.applyThemeColor?.(theme);
     try {
       localStorage.setItem('theme', theme);
     } catch {
