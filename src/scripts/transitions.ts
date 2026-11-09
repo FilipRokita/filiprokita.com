@@ -29,12 +29,18 @@ addEventListener('pageswap', (event) => {
 // Arriving: name the image on the new page, and skip the intro animations.
 addEventListener('pagereveal', (event) => {
   if (!event.viewTransition) return;
-  document.documentElement.dataset.transition = '';
+  const root = document.documentElement;
+  root.dataset.transition = '';
+  // A link with a hash (#projects) would scroll there smoothly after the page is shown,
+  // right on top of the morph. Scroll instantly while the page arrives.
+  root.style.scrollBehavior = 'auto';
+  const restoreScroll = () =>
+    setTimeout(() => (root.style.scrollBehavior = ''), 300);
   const fromUrl = navigation.activation?.from?.url;
   const to = new URL(location.href);
   const id =
     projectIdOf(to) ?? (fromUrl ? projectIdOf(new URL(fromUrl)) : undefined);
-  if (!id) return;
+  if (!id) return restoreScroll();
   // Back on the home page, land on the row the visitor came from, so the image has a place to settle.
   if (!projectIdOf(to)) {
     image(id)
@@ -44,6 +50,7 @@ addEventListener('pagereveal', (event) => {
   markImage(id);
   // The name is removed afterwards, so later transitions start clean.
   event.viewTransition.finished.finally(() => {
+    restoreScroll();
     const target = image(id);
     if (target) target.style.viewTransitionName = '';
   });
