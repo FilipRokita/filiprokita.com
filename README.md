@@ -15,8 +15,6 @@
   <img src="https://img.shields.io/badge/Lighthouse-100_goal-F44B21?logo=lighthouse&logoColor=white" alt="Lighthouse goal">
 </div>
 
-<br>
-
 ![The home page in the dark theme](docs/brand/preview.png)
 
 The site is built to stay true without constant edits. It describes areas of work
