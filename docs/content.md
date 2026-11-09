@@ -74,8 +74,8 @@ example with Playwright), then save it as `cover.webp` in the same folder.
 
 The skill [`update-projects`](../.agents/skills/update-projects/SKILL.md) compares the
 entries with their public GitHub repositories and drafts an entry for a new one. It
-lives in `.agents/skills/`, which Codex, VS Code and other agents read. `.claude/skills`
-is a symlink to it for Claude Code, so there is one copy.
+lives in `.agents/skills/`, the shared path that Claude Code, Codex, VS Code and other
+agents read.
 
 - Run it by asking your agent to "update the projects", or "add the project
   <owner/name>".
