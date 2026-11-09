@@ -1,0 +1,104 @@
+<!doctype html><meta charset="utf-8" /><style>
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2')
+      format('woff2');
+    font-weight: 100 900;
+  }
+  html,
+  body {
+    margin: 0;
+    width: 1600px;
+    height: 820px;
+    background: #0b0b0c;
+    color: #ededee;
+    font-family: 'Geist Mono', monospace;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(
+      900px 500px at 50% 40%,
+      #17131f 0%,
+      #0b0b0c 70%
+    );
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .box {
+    width: 300px;
+    height: 190px;
+    box-sizing: border-box;
+    border: 2px solid #2a2a30;
+    background: #111113;
+    border-radius: 10px;
+    padding: 34px 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+  }
+  .box.hot {
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 1px #a78bfa33;
+  }
+  .t {
+    font-size: 44px;
+    letter-spacing: 0.01em;
+  }
+  .s {
+    font-size: 26px;
+    color: #8e8e94;
+  }
+  .arrow {
+    width: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arrow svg {
+    width: 56px;
+    height: 24px;
+  }
+</style>
+<div class="row">
+  <div class="box">
+    <div class="t">PR</div>
+    <div class="s">opened</div>
+  </div>
+  <div class="arrow">
+    <svg viewBox="0 0 56 24">
+      <path d="M0 12H46" stroke="#8e8e94" stroke-width="2" />
+      <path d="M44 5l10 7-10 7z" fill="#8e8e94" />
+    </svg>
+  </div>
+  <div class="box hot">
+    <div class="t">Agent</div>
+    <div class="s">writes tests</div>
+  </div>
+  <div class="arrow">
+    <svg viewBox="0 0 56 24">
+      <path d="M0 12H46" stroke="#8e8e94" stroke-width="2" />
+      <path d="M44 5l10 7-10 7z" fill="#8e8e94" />
+    </svg>
+  </div>
+  <div class="box">
+    <div class="t">Sandbox</div>
+    <div class="s">runs them</div>
+  </div>
+  <div class="arrow">
+    <svg viewBox="0 0 56 24">
+      <path d="M0 12H46" stroke="#8e8e94" stroke-width="2" />
+      <path d="M44 5l10 7-10 7z" fill="#8e8e94" />
+    </svg>
+  </div>
+  <div class="box">
+    <div class="t">Verdict</div>
+    <div class="s">verified</div>
+  </div>
+</div>
