@@ -6,11 +6,21 @@ interface Props extends HTMLAttributes<'a'> {
   arrow?: '↗';
 }
 
-const { arrow, class: className, ...rest } = Astro.props;
+const { arrow, class: className, href, rel, ...rest } = Astro.props;
+
+// A link to another site opens in a new tab. Email and links within the site do not.
+const external = typeof href === 'string' && /^https?:\/\//.test(href);
 ---
 
-<a class:list={['link', className]} {...rest}>
+<a
+  class:list={['link', className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
+  {...rest}
+>
   <slot />
+  {external && <span class="sr-only"> (opens in a new tab)</span>}
   {arrow && (
     <span class="arr" aria-hidden="true">
       {arrow}

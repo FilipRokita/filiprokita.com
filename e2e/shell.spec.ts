@@ -130,3 +130,27 @@ test.describe('reading progress', () => {
     await expect.poll(scale).toBeGreaterThan(0.9);
   });
 });
+
+test.describe('links', () => {
+  test('links to other sites open in a new tab, the rest do not', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const links = await page.locator('a[href]').evaluateAll((anchors) =>
+      anchors.map((a) => ({
+        href: a.getAttribute('href') ?? '',
+        target: a.getAttribute('target'),
+        rel: a.getAttribute('rel') ?? '',
+      })),
+    );
+    const external = links.filter((l) => /^https?:\/\//.test(l.href));
+    expect(external.length).toBeGreaterThan(0);
+    for (const link of external) {
+      expect(link.target, link.href).toBe('_blank');
+      expect(link.rel, link.href).toContain('noopener');
+    }
+    for (const link of links.filter((l) => !/^https?:\/\//.test(l.href))) {
+      expect(link.target, link.href).toBeNull();
+    }
+  });
+});
