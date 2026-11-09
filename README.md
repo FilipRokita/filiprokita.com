@@ -33,7 +33,8 @@ never a change to page code.
 2. [🧱 Stack](#-stack)
 3. [🧭 Principles](#-principles)
 4. [🚀 Run it locally](#-run-it-locally)
-5. [📚 Documentation](#-documentation)
+5. [🌐 Live site infrastructure](#-live-site-infrastructure)
+6. [📚 Documentation](#-documentation)
 
 ## 🎯 Goals
 
@@ -79,6 +80,16 @@ npm run build # type check and production build into dist/
 npm run lint  # ESLint, with `npm run format:check` for Prettier
 npm test      # unit tests, with `npm run test:e2e` for the browser tests
 ```
+
+## 🌐 Live site infrastructure
+
+The live site at [www.filiprokita.com](https://www.filiprokita.com) runs on these services:
+
+| Component | Provider | Details |
+| :--- | :--- | :--- |
+| **Hosting** | [Cloudflare](https://www.cloudflare.com) | Workers static assets, built and deployed from `main`, configured in `wrangler.jsonc` |
+| **Domain name** | [Cloudflare](https://www.cloudflare.com) | DNS for [filiprokita.com](https://www.filiprokita.com), pointing at the Workers deployment |
+| **Source code** | [GitHub](https://github.com) | Repository, version control and CI |
 
 ## 📚 Documentation
 
