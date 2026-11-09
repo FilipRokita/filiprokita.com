@@ -48,6 +48,9 @@ const { lit = false } = Astro.props;
 
   .guide.lit,
   .guide.lit::after {
-    border-left-color: color-mix(in oklab, var(--accent) 32%, transparent);
+    border-left-color: light-dark(
+      color-mix(in oklab, var(--accent) 32%, transparent),
+      color-mix(in oklab, var(--accent) 22%, transparent)
+    );
   }
 </style>

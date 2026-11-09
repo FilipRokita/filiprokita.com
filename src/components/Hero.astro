@@ -152,7 +152,10 @@ import ThemeToggle from './ThemeToggle.astro';
   .glow {
     background: radial-gradient(
       420px circle at var(--mx, -999px) var(--my, -999px),
-      color-mix(in oklab, var(--accent) 8%, transparent),
+      light-dark(
+        color-mix(in oklab, var(--accent) 8%, transparent),
+        color-mix(in oklab, var(--accent) 5.5%, transparent)
+      ),
       transparent 70%
     );
   }
