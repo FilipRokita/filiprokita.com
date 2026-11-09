@@ -121,7 +121,7 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Layout | `src/layouts/BaseLayout.astro` | Head, fonts, theme script, skip link, header, main, footer |
 | Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. On phones only Contact is shown |
 | Footer | `src/components/Footer.astro` | Build date and commit, links, theme toggle |
-| Link | `src/components/Link.astro` | A grey underline at rest and a violet line that fills in from the left on hover. An optional ↗ marks outbound links |
+| Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one. A violet line fills in from the left on hover |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
 | Guides | `src/components/Guides.astro` | The faint column lines behind the hero and the project title |

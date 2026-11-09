@@ -13,7 +13,7 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
 ---
 
 <a
-  class:list={['link', className]}
+  class:list={['link', { rest: !arrow }, className]}
   href={href}
   target={external ? '_blank' : undefined}
   rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
@@ -47,9 +47,12 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
     transform: scaleX(0);
   }
 
-  /* The resting underline, in the text color. */
+  /* A link with an arrow is marked by it. One without gets a resting underline. */
   .link::after {
     background: currentcolor;
+  }
+
+  .link.rest::after {
     opacity: 0.15;
     transform: scaleX(1);
   }
