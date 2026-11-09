@@ -12,7 +12,6 @@
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
   <img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Node.js_26-5FA04E?logo=nodedotjs&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Cloudflare-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare">
   <img src="https://img.shields.io/badge/Lighthouse-100_goal-F44B21?logo=lighthouse&logoColor=white" alt="Lighthouse goal">
 </div>
 
@@ -55,7 +54,6 @@ accessible and checked on every change.
 | Images | `<Image />` from `astro:assets` |
 | Animation | Plain CSS first, a library only if CSS is not enough |
 | Interactivity | A few small scripts: theme switch, clock, active menu link, page transitions |
-| Hosting | Cloudflare (static assets) |
 | Quality | ESLint, Prettier, Vitest, Playwright with axe, Lighthouse CI, a hashed Content Security Policy |
 | Runtime | Node 26 (LTS), npm |
 
@@ -97,7 +95,7 @@ flowchart LR
     G --> P[✅ Motion]
     P --> Q[✅ Quality gates]
     Q --> B[✅ Branding and skill]
-    B --> H[Deploy to Cloudflare]
+    B --> H[Deploy]
 ```
 
 ## 📚 Documentation
