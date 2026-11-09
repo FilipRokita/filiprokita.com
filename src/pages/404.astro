@@ -5,7 +5,11 @@ import Section from '../components/Section.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Page not found" description="This page does not exist.">
+<BaseLayout
+  title="Page not found"
+  description="This page does not exist."
+  noindex
+>
   <div class="relative pt-[clamp(1.5rem,1rem+2vw,3rem)] pb-[clamp(2rem,1rem+4vw,5rem)]">
     <Guides />
     <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">

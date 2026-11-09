@@ -13,9 +13,11 @@ interface Props {
   description?: string;
   /** Structured data for search engines, rendered as a JSON-LD script. */
   jsonLd?: Record<string, unknown>;
+  /** Keep the page out of search results. For pages that are not real content, such as the 404. */
+  noindex?: boolean;
 }
 
-const { title, description = site.description, jsonLd } = Astro.props;
+const { title, description = site.description, jsonLd, noindex } = Astro.props;
 const fullTitle = pageTitle(site.name, title);
 const imageUrl = new URL('/og.png', Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -44,7 +46,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <link rel="canonical" href={canonical} />
+    )}
     <meta property="og:site_name" content={site.name} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />

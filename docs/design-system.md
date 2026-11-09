@@ -123,7 +123,7 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 ## Other base rules
 
 [`src/styles/base.css`](../src/styles/base.css) holds the violet text selection, one
-focus ring style (`:focus-visible`), a faint static grain, and the custom scrollbar
+focus ring style (`:focus-visible`), a faint static grain (not on phones, where Safari would tint its bars with it), and the custom scrollbar
 (pseudo-elements for Blink and WebKit, the standard properties for Firefox).
 
 ## The shell
