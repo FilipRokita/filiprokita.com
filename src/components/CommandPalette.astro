@@ -181,13 +181,15 @@ const items: Item[] = [
   };
 
   const run = (option: HTMLLIElement) => {
+    // Read the position while the entry is still on screen.
+    const box = option.getBoundingClientRect();
     dialog?.close();
     if (option.dataset.action === 'theme') {
-      // The hero toggle is hidden on narrow windows, so use one that can be seen.
-      const toggles = document.querySelectorAll<HTMLButtonElement>(
-        '[data-theme-toggle]',
+      dispatchEvent(
+        new CustomEvent('switch-theme', {
+          detail: { x: box.left + box.width / 2, y: box.top + box.height / 2 },
+        }),
       );
-      [...toggles].find((toggle) => toggle.offsetParent !== null)?.click();
     } else if (option.dataset.href) {
       if (option.dataset.external !== undefined)
         open(option.dataset.href, '_blank', 'noopener');

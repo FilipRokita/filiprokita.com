@@ -4,7 +4,7 @@ import Container from './Container.astro';
 import Logo from './Logo.astro';
 ---
 
-<header class="site-header print:hidden sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
+<header class="site-header print:hidden sticky top-0 z-20 border-b border-rule bg-bg/85 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] backdrop-blur-md">
   <Container class="flex min-h-15 items-center justify-between gap-6">
     <a
       href="/"

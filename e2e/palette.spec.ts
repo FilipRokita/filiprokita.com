@@ -63,6 +63,26 @@ test.describe('command palette', () => {
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   });
 
+  test('grows the theme change from the palette entry, not from a toggle', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.keyboard.press('Control+k');
+    await page.keyboard.type('theme');
+    const box = await page
+      .getByRole('option', { name: 'Switch theme' })
+      .boundingBox();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', /.+/);
+    const origin = await page.evaluate(() => ({
+      x: parseFloat(document.documentElement.style.getPropertyValue('--tx')),
+      y: parseFloat(document.documentElement.style.getPropertyValue('--ty')),
+    }));
+    expect(box).not.toBeNull();
+    expect(origin.x).toBeCloseTo((box?.x ?? 0) + (box?.width ?? 0) / 2, 0);
+    expect(origin.y).toBeCloseTo((box?.y ?? 0) + (box?.height ?? 0) / 2, 0);
+  });
+
   test('has no accessibility violations while open', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
