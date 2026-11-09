@@ -10,6 +10,8 @@ interface Props {
   accent?: string;
   /** Keep the title on one line on wide screens. Off for long titles. */
   oneLine?: boolean;
+  /** Fade in on scroll. Off for the projects section, whose rows fade in one by one. */
+  reveal?: boolean;
   /** The title is the page's h1 on pages that have no other one. */
   asH1?: boolean;
 }
@@ -21,12 +23,17 @@ const {
   title,
   accent,
   oneLine = true,
+  reveal = true,
   asH1 = false,
 } = Astro.props;
 const Heading = asH1 ? 'h1' : 'h2';
 ---
 
-<section id={id} class="border-t border-rule py-block">
+<section
+  id={id}
+  data-reveal={reveal ? '' : undefined}
+  class="border-t border-rule py-block"
+>
   <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid grid-cols-12 gap-x-gutter gap-y-8">
     <p class="mono col-span-12 flex items-baseline gap-4 md:sticky md:top-20 md:col-span-3 md:self-start">
       <b class="font-medium text-accent">{index}</b>

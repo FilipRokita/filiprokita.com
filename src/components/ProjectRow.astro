@@ -17,7 +17,7 @@ const href = `/projects/${project.id}/`;
 const figureNumber = String(position).padStart(2, '0');
 ---
 
-<article class="project-row">
+<article class="project-row" data-reveal>
   <span class="mono idx text-accent">4.{position}</span>
   <h3 class="name text-step-1 font-[520] tracking-[-0.03em]">
     <a href={href}>{title}</a>
@@ -32,7 +32,7 @@ const figureNumber = String(position).padStart(2, '0');
       href={href}
       cropped
       eager={first}
-      transitionName={`project-${project.id}`}
+      projectId={project.id}
       sizes="(min-width: 64rem) 58vw, 100vw"
     />
   </div>

@@ -20,7 +20,10 @@ import ThemeToggle from './ThemeToggle.astro';
     </div>
   </div>
   <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
-    <div class="mono flex flex-wrap items-center justify-between gap-x-4 gap-y-1 pb-[clamp(2rem,1rem+6vw,7rem)] text-muted">
+    <div
+      data-intro="fade"
+      class="mono flex flex-wrap items-center justify-between gap-x-4 gap-y-1 pb-[clamp(2rem,1rem+6vw,7rem)] text-muted"
+    >
       <span>
         Kraków, PL
         <span data-clock-wrap hidden>
@@ -35,10 +38,13 @@ import ThemeToggle from './ThemeToggle.astro';
     </div>
     <h1 class="title font-[560] tracking-[-0.065em] whitespace-nowrap">
       <span class="line">
-        <span>{site.name}</span>
+        <span data-intro="rise">{site.name}</span>
       </span>
     </h1>
-    <div class="mt-[clamp(2.5rem,1rem+5vw,6rem)] grid grid-cols-12 items-start gap-x-gutter gap-y-8">
+    <div
+      data-intro="fade"
+      class="mt-[clamp(2.5rem,1rem+5vw,6rem)] grid grid-cols-12 items-start gap-x-gutter gap-y-8"
+    >
       <p class="mono col-span-12 text-muted md:col-span-3">( Overview )</p>
       <p class="col-span-12 text-step-2 font-[450] tracking-[-0.035em] md:col-span-6 md:col-start-4">
         <span class="block">Software engineer</span>
