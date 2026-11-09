@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import astro from 'eslint-plugin-astro';
 import jsxA11yX from 'eslint-plugin-jsx-a11y-x';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
@@ -13,5 +14,11 @@ export default defineConfig([
     files: ['**/*.astro'],
     plugins: { 'jsx-a11y-x': jsxA11yX },
     rules: jsxA11yX.configs.recommended.rules,
+  },
+  {
+    // Tool configs that LHCI loads with require().
+    files: ['**/*.cjs'],
+    languageOptions: { sourceType: 'commonjs', globals: globals.node },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
 ]);
