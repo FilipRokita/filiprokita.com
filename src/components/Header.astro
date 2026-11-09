@@ -34,34 +34,8 @@ import Logo from './Logo.astro';
     </nav>
   </Container>
 </header>
-<div class="viewport-probe" aria-hidden="true" data-viewport-probe></div>
 
 <style>
-  /* Phones: a thin line under the header fills as the page is read. Its width comes
-     from --read, set by the script below. */
-  @media (max-width: 39.99rem) and (prefers-reduced-motion: no-preference) {
-    .site-header::after {
-      content: '';
-      position: absolute;
-      inset-inline: 0;
-      bottom: -1px;
-      height: 2px;
-      background: var(--accent);
-      transform-origin: left;
-      transform: scaleX(var(--read, 0));
-    }
-  }
-
-  /* Measures the tallest the viewport gets, with the browser bars tucked away. */
-  .viewport-probe {
-    position: fixed;
-    top: 0;
-    width: 0;
-    height: 100lvh;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
   .nav-link {
     color: var(--muted);
     transition: color 0.2s;
@@ -137,20 +111,5 @@ import Logo from './Logo.astro';
   for (const link of links) {
     const section = document.getElementById(link.dataset.section ?? '');
     if (section) observer.observe(section);
-  }
-
-  // Reading progress. The distance is measured against the tallest viewport, so the
-  // line does not jump when a phone's browser bars appear or hide.
-  const header = document.querySelector<HTMLElement>('.site-header');
-  const probe = document.querySelector<HTMLElement>('[data-viewport-probe]');
-  if (header && probe) {
-    const update = () => {
-      const range = document.documentElement.scrollHeight - probe.offsetHeight;
-      const read = range > 0 ? Math.min(1, Math.max(0, scrollY / range)) : 0;
-      header.style.setProperty('--read', read.toFixed(4));
-    };
-    addEventListener('scroll', update, { passive: true });
-    new ResizeObserver(update).observe(document.body);
-    update();
   }
 </script>
