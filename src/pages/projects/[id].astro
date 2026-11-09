@@ -87,24 +87,6 @@ const factCount = facts.length + (links.live ? 2 : 1);
         </dd>
       </div>
     </dl>
-    <!-- Like the sections below: the label on the left, the image in the content column. -->
-    <div class="mt-[clamp(2rem,1rem+3vw,4rem)] grid grid-cols-12 gap-x-gutter gap-y-4">
-      <p class="mono col-span-12 flex items-baseline gap-4 md:col-span-3">
-        <b class="font-medium text-accent">Fig. {figureNumber}</b>
-        <span class="text-muted">{coverCaption}</span>
-      </p>
-      <div class="col-span-12 md:col-span-9">
-        <Figure
-          src={cover}
-          alt={coverAlt}
-          number={figureNumber}
-          caption={coverCaption}
-          showCaption={false}
-          eager
-          sizes="(min-width: 64rem) 66vw, 100vw"
-        />
-      </div>
-    </div>
   </div>
 
   <div class="mt-section">
@@ -119,10 +101,27 @@ const factCount = facts.length + (links.live ? 2 : 1);
         <Content />
       </div>
     </Section>
+    <Section
+      id="screenshots"
+      index="02"
+      label="Screenshots"
+      title={coverCaption}
+    >
+      <div class="mt-[clamp(2rem,1rem+3vw,4rem)]">
+        <Figure
+          src={cover}
+          alt={coverAlt}
+          number={figureNumber}
+          caption={coverCaption}
+          showCaption={false}
+          sizes="(min-width: 64rem) 66vw, 100vw"
+        />
+      </div>
+    </Section>
     {decisions && (
       <Section
         id="decisions"
-        index="02"
+        index="03"
         label="Decisions"
         title="How it is built,"
         accent="and why."
@@ -130,7 +129,7 @@ const factCount = facts.length + (links.live ? 2 : 1);
         <ol class="mt-[clamp(2rem,1rem+3vw,4rem)] list-none border-t border-rule p-0">
           {decisions.map((decision, i) => (
             <li class="decision">
-              <span class="mono text-accent">2.{i + 1}</span>
+              <span class="mono text-accent">3.{i + 1}</span>
               <h3 class="text-step-1 font-[520] tracking-[-0.03em]">
                 {decision.title}
               </h3>
@@ -146,10 +145,10 @@ const factCount = facts.length + (links.live ? 2 : 1);
     <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
       <a
         href={`/projects/${next.id}/`}
-        class="next block border-t border-rule py-[clamp(2.5rem,1rem+5vw,6rem)]"
+        class="next block border-t border-rule py-[clamp(2rem,1rem+4vw,4.5rem)]"
       >
         <span class="mono text-muted">Next project</span>
-        <strong class="mt-4 block text-[clamp(2.5rem,1rem+8vw,9rem)] leading-[.95] font-[520] tracking-[-0.06em]">
+        <strong class="mt-4 block text-[clamp(1.75rem,.75rem+4vw,4.5rem)] leading-[.95] font-[560] tracking-[-0.05em]">
           {next.data.title} <Arrow direction="right" class="text-accent" />
         </strong>
       </a>
