@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../config/site';
 import { pageTitle } from '../lib/seo';
+import themeInit from '../scripts/theme-init.js?raw';
 import '../styles/global.css';
 
 interface Props {
@@ -68,16 +69,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     />
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
-    <!-- Applies a saved theme before the first paint, so there is no flash of the wrong one. -->
-    <script is:inline>
-      try {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'light' || theme === 'dark')
-          document.documentElement.dataset.theme = theme;
-      } catch {
-        // Storage can be blocked. The system theme applies.
-      }
-    </script>
+    <script is:inline set:html={themeInit}></script>
   </head>
   <body>
     <a

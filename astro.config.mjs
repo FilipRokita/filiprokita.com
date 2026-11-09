@@ -1,5 +1,7 @@
 // @ts-check
+import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
@@ -17,8 +19,28 @@ const commit = (() => {
   }
 })();
 
+// The inline theme script runs before paint, so it cannot be a bundled file. The CSP allows it by hash.
+const themeInitHash = `sha256-${createHash('sha256')
+  .update(readFileSync('./src/scripts/theme-init.js', 'utf8'))
+  .digest('base64')}`;
+
 export default defineConfig({
   site: 'https://www.filiprokita.com',
+  security: {
+    csp: {
+      scriptDirective: {
+        resources: ["'self'", "'inline-speculation-rules'"],
+        hashes: [themeInitHash],
+      },
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "object-src 'none'",
+        "base-uri 'none'",
+        "form-action 'none'",
+      ],
+    },
+  },
   integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],
   fonts: [
     {
