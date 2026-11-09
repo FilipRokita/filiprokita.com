@@ -1,0 +1,28 @@
+import { expect, test } from '@playwright/test';
+
+test('the whole project row opens the project, not only its title', async ({
+  page,
+}) => {
+  // Reduced motion: no smooth scrolling, so the position is final when it is measured.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const row = page.locator('article.project-row').nth(1);
+  await row.scrollIntoViewIfNeeded();
+  // The description is not a link by itself, but a click on it opens the project.
+  // The overlay of the link sits on top of the text, so click at its position.
+  const box = await row.locator('p').first().boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.click(
+    (box?.x ?? 0) + (box?.width ?? 0) / 2,
+    (box?.y ?? 0) + (box?.height ?? 0) / 2,
+  );
+  await expect(page).toHaveURL(/\/projects\/evencost\/$/);
+});
+
+test('each row exposes a single link to assistive technology', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const row = page.locator('article.project-row').first();
+  await expect(row.getByRole('link')).toHaveCount(1);
+});

@@ -21,8 +21,10 @@ const figureNumber = String(position).padStart(2, '0');
   <span class="mono idx text-accent">4.{position}</span>
   <h3 class="name text-step-1 font-[520] tracking-[-0.03em]">
     <a href={href}>
-      {title}
-      <Arrow direction="right" class="arrow" />
+      <span class="shift">
+        {title}
+        <Arrow direction="right" class="arrow" />
+      </span>
     </a>
   </h3>
   <p class="summary text-muted">{summary}</p>
@@ -49,6 +51,16 @@ const figureNumber = String(position).padStart(2, '0');
     padding-block: clamp(2rem, 1rem + 3vw, 4rem);
     border-top: 1px solid var(--rule);
     background: var(--bg);
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* The title link stretches over the whole row, so the whole row is one link. */
+  .name a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   .project-row:last-child {
@@ -61,6 +73,12 @@ const figureNumber = String(position).padStart(2, '0');
 
   .name {
     line-height: 1.1;
+  }
+
+  /* The text moves, not the heading: a transformed heading would shrink the area of the
+     link that is stretched over the row. */
+  .shift {
+    display: inline-block;
     transition: transform 0.45s var(--ease-out-expo);
   }
 
@@ -71,7 +89,7 @@ const figureNumber = String(position).padStart(2, '0');
   }
 
   @media (hover: hover) {
-    .project-row:hover .name {
+    .project-row:hover .shift {
       transform: translateX(0.6rem);
     }
   }
