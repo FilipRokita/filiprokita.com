@@ -28,6 +28,7 @@ flowchart LR
 | Interactivity | React islands, only when needed | Keeps the default page JavaScript-free |
 | Hosting | Cloudflare | Fast CDN, free for static sites, usable commercially |
 | Package manager | npm | Ships with Node. Corepack is no longer bundled since Node 25 |
+| Quality gates | ESLint, Prettier, `astro check`, Playwright with axe, Lighthouse CI, gitleaks | Every change is checked by CI before it reaches `main`. See [Testing](testing.md) |
 
 ## Performance approach
 

@@ -15,6 +15,11 @@ What every entry in the repository root is for.
 | `tsconfig.json` | TypeScript configuration, extends Astro's strict preset |
 | `package.json`, `package-lock.json` | Dependencies and npm scripts |
 | `.nvmrc` | Node version for local and hosted builds |
+| `eslint.config.js` | ESLint rules: TypeScript, Astro and accessibility |
+| `.prettierrc.mjs`, `.prettierignore` | Prettier settings and what it skips |
+| [`e2e/`](../e2e/), `playwright.config.ts` | Browser tests. See [Testing](testing.md) |
+| `lighthouserc.cjs` | Lighthouse CI settings and score thresholds |
+| [`.github/`](../.github/) | CI workflow and Dependabot configuration |
 
 ## Planned
 
@@ -23,7 +28,6 @@ These appear as the roadmap in the README is completed.
 | Path | What it will be |
 | :--- | :--- |
 | `public/` | Static files served as they are |
-| `.github/workflows/` | CI |
 
 ## Local-only folders
 

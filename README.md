@@ -55,6 +55,7 @@ Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 | Animation | Plain CSS first, a library only if CSS is not enough |
 | Interactivity | React only where it is truly needed |
 | Hosting | Cloudflare (static assets) |
+| Quality | ESLint, Prettier, Playwright with axe, Lighthouse CI |
 | Runtime | Node 26 (LTS), npm |
 
 ## 🧭 Principles
@@ -77,6 +78,7 @@ Everything runs inside a dev container. Open the repo in VS Code and choose
 npm ci        # once: installs the locked dependencies
 npm run dev   # dev server on http://localhost:4321
 npm run build # type check and production build into dist/
+npm run lint  # ESLint, with `npm run format:check` for Prettier
 ```
 
 ## 🗺️ Roadmap
@@ -84,9 +86,9 @@ npm run build # type check and production build into dist/
 ```mermaid
 flowchart LR
     A[✅ Scaffold Astro,<br/>Tailwind, TypeScript] --> B[✅ README and docs]
-    B --> C[ESLint and Prettier]
-    C --> D[GitHub Actions]
-    D --> E[Lighthouse CI]
+    B --> C[✅ ESLint and Prettier]
+    C --> D[✅ GitHub Actions]
+    D --> E[✅ Lighthouse CI]
     E --> F[Deploy to Cloudflare]
     F --> G[Design, content, sections]
 ```
@@ -97,6 +99,7 @@ flowchart LR
 | :--- | :--- |
 | [🏛️ Architecture](docs/architecture.md) | Technical decisions and the build and deploy flow |
 | [🧰 Dev environment](docs/dev-environment.md) | The dev container and tooling |
+| [🧪 Testing](docs/testing.md) | Test types, how to run them and what CI checks |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |
 | [🔐 GitHub settings](docs/github-settings.md) | Repository protections: enabled and planned |
 
