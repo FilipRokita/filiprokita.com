@@ -13,12 +13,19 @@ for (const route of routes) {
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     });
 
-    test('has no accessibility violations', async ({ page }) => {
-      await page.goto(route);
-      const { violations } = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-        .analyze();
-      expect(violations).toEqual([]);
-    });
+    for (const colorScheme of ['light', 'dark'] as const) {
+      test(`has no accessibility violations in the ${colorScheme} theme`, async ({
+        browser,
+      }) => {
+        const context = await browser.newContext({ colorScheme });
+        const page = await context.newPage();
+        await page.goto(route);
+        const { violations } = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+          .analyze();
+        expect(violations).toEqual([]);
+        await context.close();
+      });
+    }
   });
 }
