@@ -59,6 +59,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
+    <!-- Pages the visitor is likely to open are prepared in the background. -->
+    <script
+      type="speculationrules"
+      set:html={JSON.stringify({
+        prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
+      })}
+    />
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
     <!-- Applies a saved theme before the first paint, so there is no flash of the wrong one. -->
@@ -84,5 +91,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/transitions';
+    </script>
   </body>
 </html>

@@ -9,6 +9,48 @@
     animation-duration: 0.3s;
   }
 
+  /* Intro: the hero name rises out of its clipped line, the rest fades in. */
+  [data-intro='rise'] {
+    animation: rise 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  [data-intro='fade'] {
+    animation: fade-in 0.9s ease 0.35s both;
+  }
+
+  /* Sections and project rows fade in as they scroll into view. */
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: fade-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+
+  /* Arriving through a page transition: no intro, the morph is the entrance. */
+  html[data-transition] [data-intro] {
+    animation: none;
+  }
+
+  @keyframes rise {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+  }
+
+  /* The project image morphs between pages. */
+  ::view-transition-group(project-image) {
+    animation-duration: 0.5s;
+    animation-timing-function: var(--ease-out-expo);
+  }
+
   /* A theme change grows the new theme as a circle from the toggle. */
   html.theme-vt::view-transition-old(root) {
     animation: none;

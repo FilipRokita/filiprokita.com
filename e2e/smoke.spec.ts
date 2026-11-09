@@ -24,7 +24,11 @@ for (const route of routes) {
       test(`has no accessibility violations in the ${colorScheme} theme`, async ({
         browser,
       }) => {
-        const context = await browser.newContext({ colorScheme });
+        // Reduced motion shows the final state at once, which is what axe should measure.
+        const context = await browser.newContext({
+          colorScheme,
+          reducedMotion: 'reduce',
+        });
         const page = await context.newPage();
         await page.goto(route);
         const { violations } = await new AxeBuilder({ page })

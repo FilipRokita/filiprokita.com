@@ -91,6 +91,15 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 
 - Pages cross-fade with a native CSS view transition (`@view-transition`). A browser
   without support just navigates.
+- Intro: the hero name rises out of its line and the rest fades in (`data-intro`).
+  Sections and project rows fade in as they scroll into view (`data-reveal`, CSS
+  scroll-driven animation, where supported).
+- The project image morphs between the home page and a project page, in both
+  directions. [`src/scripts/transitions.ts`](../src/scripts/transitions.ts) sets
+  `view-transition-name` on the one image that takes part, in `pageswap` and
+  `pagereveal`, and scrolls the home page back to the row. Pages reached through a
+  transition skip the intro (`html[data-transition]`).
+- Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.
 - With `prefers-reduced-motion: reduce`, all transitions and animations are off and
   scrolling is instant.
