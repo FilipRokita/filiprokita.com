@@ -8,9 +8,7 @@ test.describe('404 page', () => {
     const response = await page.goto('/no-such-page/');
     expect(response?.status()).toBe(404);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(
-      page.getByRole('link', { name: /Back to the home page/ }),
-    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'home page' })).toBeVisible();
   });
 
   test('has no accessibility violations', async ({ page }) => {
