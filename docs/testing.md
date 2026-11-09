@@ -6,6 +6,7 @@ What is checked, how to run it and what CI enforces.
 
 | Check | Command | What it catches |
 | :--- | :--- | :--- |
+| Unit tests | `npm test` | The contrast helper, and every text and surface pair in the tokens failing WCAG AA |
 | Types | `npm run check` | Type errors in `.astro` and `.ts` files. Part of `npm run build` |
 | Lint | `npm run lint` | Code and accessibility problems in templates (ESLint) |
 | Format | `npm run format:check` | Files that are not formatted (Prettier) |
@@ -13,13 +14,25 @@ What is checked, how to run it and what CI enforces.
 | Lighthouse | `npm run lighthouse` | A score below 0.9 in performance, accessibility, best practices or SEO |
 | Secret scan | CI only | Secrets in the code or the git history (gitleaks) |
 
-Unit tests (Vitest) arrive with the first logic that needs them, which is the
-design tokens and the content helpers.
+Unit tests (Vitest) cover the pure code in `src/lib/` and the design tokens. More
+arrive with the content helpers.
+
+## Unit tests
+
+They live in [`tests/`](../tests/) and run with Vitest through Astro's
+`getViteConfig()`. `tokens.test.ts` reads the colors from `src/styles/tokens.css` and
+checks the contrast of each text pair in both themes.
 
 ## Browser tests
 
 The tests live in [`e2e/`](../e2e/) and run against the production build, served by
-`astro preview`. Each runs on a desktop and a phone profile (`playwright.config.ts`).
+`astro preview` on its own port (4173), never a dev server. Each runs on a desktop and
+a phone profile (`playwright.config.ts`).
+
+`smoke.spec.ts` loads every route and runs axe in both themes. `shell.spec.ts` covers
+the shell: the theme follows the system, a saved choice applies before paint, the
+toggle works and is remembered, the page works without JavaScript, the skip link and
+focus are visible, and the nav matches the screen size.
 
 `npm run test:e2e` builds first and then runs the tests. To run them against an
 existing build, use `npx playwright test`.
@@ -40,7 +53,7 @@ every pull request and on every push to `main`, as four parallel jobs:
 
 | Job | Runs |
 | :--- | :--- |
-| Lint, format and build | `npm run lint`, `npm run format:check`, `npm run build` |
+| Lint, format and build | `npm run lint`, `npm run format:check`, `npm test`, `npm run build` |
 | Browser tests | `npx playwright test` on the production build |
 | Lighthouse | `npm run lighthouse` |
 | Secret scan | gitleaks over the full history |

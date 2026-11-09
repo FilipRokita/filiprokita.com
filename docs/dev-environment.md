@@ -50,6 +50,7 @@ The commands live in `package.json`.
 | `npm run build` | Type checks with `astro check`, then builds into `dist/` |
 | `npm run preview` | Serves the production build |
 | `npm run check` | Type checks the project only |
+| `npm test` | Unit tests (Vitest) |
 | `npm run lint` | ESLint over the whole project |
 | `npm run format` | Rewrites files with Prettier |
 | `npm run format:check` | Fails if a file is not formatted. CI runs this |
