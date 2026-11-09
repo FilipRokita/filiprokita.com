@@ -89,14 +89,19 @@ const factCount = facts.length + (links.live ? 2 : 1);
         </dd>
       </div>
     </dl>
-    <!-- The figure lines up with the text column of the sections below. -->
-    <div class="mt-[clamp(2rem,1rem+3vw,4rem)] md:grid md:grid-cols-12 md:gap-x-gutter">
-      <div class="md:col-span-9 md:col-start-4">
+    <!-- Like the sections below: the label on the left, the image in the content column. -->
+    <div class="mt-[clamp(2rem,1rem+3vw,4rem)] grid grid-cols-12 gap-x-gutter gap-y-4">
+      <p class="mono col-span-12 flex items-baseline gap-4 md:col-span-3">
+        <b class="font-medium text-accent">Fig. {figureNumber}</b>
+        <span class="text-muted">{coverCaption}</span>
+      </p>
+      <div class="col-span-12 md:col-span-9">
         <Figure
           src={cover}
           alt={coverAlt}
           number={figureNumber}
           caption={coverCaption}
+          showCaption={false}
           eager
           sizes="(min-width: 64rem) 66vw, 100vw"
         />
