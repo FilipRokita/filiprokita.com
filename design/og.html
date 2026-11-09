@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Share image</title>
+    <!-- Source of public/og.png (1200x630). Render it with: npm run og -->
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        box-sizing: border-box;
+        padding: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #0b0b0c;
+        color: #ededee;
+        font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      h1 {
+        margin: 0;
+        font-size: 168px;
+        line-height: 0.86;
+        font-weight: 560;
+        letter-spacing: -0.065em;
+      }
+      p {
+        margin: 0;
+        font-size: 44px;
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+        color: #8e8e94;
+      }
+      p b {
+        color: #ededee;
+        font-weight: 450;
+      }
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #a78bfa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top"><span class="dot"></span>filiprokita.com</div>
+    <h1>Filip Rokita</h1>
+    <p>
+      <b>Software engineer</b> building apps, data and AI, from idea to
+      production.
+    </p>
+  </body>
+</html>

@@ -1,10 +1,137 @@
 ---
-import Container from '../components/Container.astro';
+import { getCollection } from 'astro:content';
+import Hero from '../components/Hero.astro';
+import ItemGrid from '../components/ItemGrid.astro';
+import Link from '../components/Link.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import Section from '../components/Section.astro';
+import { principles, whatIDo } from '../config/home';
+import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { visibleProjects } from '../lib/projects';
+import { personJsonLd } from '../lib/seo';
+
+const projects = visibleProjects(await getCollection('projects'));
+const jsonLd = personJsonLd({
+  name: site.name,
+  url: site.url,
+  email: site.email,
+  jobTitle: site.jobTitle,
+  sameAs: [site.github, site.linkedin],
+});
 ---
 
-<BaseLayout>
-  <Container class="py-block">
-    <h1 class="text-step-3 font-semibold tracking-tight">Filip Rokita</h1>
-  </Container>
+<BaseLayout jsonLd={jsonLd}>
+  <Hero />
+
+  <Section
+    id="about"
+    index="01"
+    label="About"
+    title="Coding since 2019,"
+    accent="and still enjoying it."
+  >
+    <p class="mt-8 max-w-[52ch] text-step-1 leading-[1.4] tracking-[-0.015em] text-muted">
+      Software is my job and my hobby. I like every layer: the data, the logic,
+      the interface and the smallest details. Yes, weekends too.
+    </p>
+  </Section>
+
+  <Section
+    id="what"
+    index="02"
+    label="What I do"
+    title="The whole stack,"
+    accent="from data to interface."
+  >
+    <ItemGrid section={2} items={whatIDo} columns={3} />
+    <p class="mt-8">
+      <Link href={site.linkedin} rel="me" arrow="↗" class="mono">
+        Current experience and skills on LinkedIn
+      </Link>
+    </p>
+  </Section>
+
+  <Section
+    id="how"
+    index="03"
+    label="How I work"
+    title="Principles I"
+    accent="keep coming back to."
+  >
+    <ItemGrid section={3} items={principles} columns={4} />
+  </Section>
+
+  <Section
+    id="projects"
+    index="04"
+    label="Projects"
+    title="Selected"
+    accent="side projects."
+  >
+    <p class="mt-8 max-w-[52ch] text-step-1 leading-[1.4] tracking-[-0.015em] text-muted">
+      Hobby-sized projects I build for learning and fun. The most up-to-date
+      list lives on GitHub.
+    </p>
+    <Fragment slot="after">
+      <div class="mx-auto mt-12 w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+        {projects.map((project, i) => (
+          <ProjectRow project={project} position={i + 1} first={i === 0} />
+        ))}
+      </div>
+      <div class="mx-auto mt-10 w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+        <Link href={site.github} rel="me" arrow="↗" class="mono">
+          More projects, always up to date, on GitHub
+        </Link>
+      </div>
+    </Fragment>
+  </Section>
+
+  <Section
+    id="contact"
+    index="05"
+    label="Contact"
+    title="Project or role in mind?"
+    accent="Let’s talk."
+  >
+    <a
+      href={`mailto:${site.email}`}
+      class="contact-mail mt-8 block w-fit max-w-full pb-[.15em] text-[clamp(1.75rem,.6rem+5.2vw,6.25rem)] leading-none font-medium tracking-[-0.06em] [overflow-wrap:anywhere]"
+    >
+      {site.email}
+    </a>
+    <p class="mono mt-8 flex flex-wrap gap-x-8">
+      <Link href={site.linkedin} rel="me" arrow="↗" class="text-[.85rem]">
+        LinkedIn
+      </Link>
+      <Link href={site.github} rel="me" arrow="↗" class="text-[.85rem]">
+        GitHub
+      </Link>
+    </p>
+  </Section>
 </BaseLayout>
+
+<style>
+  /* The violet line under the address fills in on hover. Touch screens and phones show it from the start. */
+  .contact-mail {
+    background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0%
+      max(3px, 0.07em) no-repeat;
+    transition: background-size 0.5s var(--ease-out-expo);
+  }
+
+  .contact-mail:focus-visible {
+    background-size: 100% max(3px, 0.07em);
+  }
+
+  @media (hover: hover) {
+    .contact-mail:hover {
+      background-size: 100% max(3px, 0.07em);
+    }
+  }
+
+  @media (hover: none), (max-width: 40rem) {
+    .contact-mail {
+      background-size: 100% max(3px, 0.07em);
+    }
+  }
+</style>

@@ -1,0 +1,127 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Figure from './Figure.astro';
+import Link from './Link.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  /** Position in the list, from 1. Gives the 4.1 index and the Fig. number. */
+  position: number;
+  /** The first row's image loads at once and is what the project page morphs from. */
+  first?: boolean;
+}
+
+const { project, position, first = false } = Astro.props;
+const { title, summary, cover, coverAlt, coverCaption, links } = project.data;
+const href = `/projects/${project.id}/`;
+const figureNumber = String(position).padStart(2, '0');
+---
+
+<article class="project-row">
+  <span class="mono idx text-accent">4.{position}</span>
+  <h3 class="name text-step-1 font-[520] tracking-[-0.03em]">
+    <a href={href}>{title}</a>
+  </h3>
+  <p class="summary text-muted">{summary}</p>
+  <div class="fig">
+    <Figure
+      src={cover}
+      alt={coverAlt}
+      number={figureNumber}
+      caption={coverCaption}
+      href={href}
+      cropped
+      eager={first}
+      transitionName={`project-${project.id}`}
+      sizes="(min-width: 64rem) 58vw, 100vw"
+    />
+  </div>
+  <div class="mono tags">
+    {links.live && (
+      <Link href={links.live} arrow="↗" class="text-[.85rem]">
+        Live preview
+      </Link>
+    )}
+    <Link href={links.github} arrow="↗" class="text-[.85rem]">
+      GitHub
+    </Link>
+  </div>
+</article>
+
+<style>
+  /* Phones and tablets: title, description, figure, links, in one column. */
+  .project-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1.5rem;
+    padding-block: clamp(2rem, 1rem + 3vw, 4rem);
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+
+  .project-row:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .idx {
+    margin-bottom: -0.75rem;
+  }
+
+  .name {
+    line-height: 1.1;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+  }
+
+  @media (hover: hover) {
+    .project-row:hover .name {
+      transform: translateX(0.6rem);
+    }
+  }
+
+  /* Desktop: index, text and links on the left, the figure on the right. */
+  @media (min-width: 64rem) {
+    .project-row {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--spacing-gutter);
+      grid-template-rows: auto auto 1fr;
+      align-items: start;
+    }
+
+    .idx {
+      grid-column: 1;
+      grid-row: 1;
+      margin: 0;
+    }
+
+    .name,
+    .summary,
+    .tags {
+      grid-column: 2 / span 4;
+    }
+
+    .name {
+      grid-row: 1;
+    }
+
+    .summary {
+      grid-row: 2;
+    }
+
+    .tags {
+      grid-row: 3;
+      align-self: end;
+      padding-top: 1rem;
+    }
+
+    .fig {
+      grid-column: 6 / span 7;
+      grid-row: 1 / span 3;
+    }
+  }
+</style>

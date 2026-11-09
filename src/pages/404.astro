@@ -1,0 +1,19 @@
+---
+import Container from '../components/Container.astro';
+import Link from '../components/Link.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="This page does not exist.">
+  <Container class="py-block">
+    <p class="mono text-accent">404</p>
+    <h1 class="mt-4 text-step-3 font-[520] tracking-[-0.045em]">
+      This page does not exist.
+    </h1>
+    <p class="mt-8">
+      <Link href="/" arrow="↗" class="mono">
+        Back to the home page
+      </Link>
+    </p>
+  </Container>
+</BaseLayout>

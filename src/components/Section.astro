@@ -1,0 +1,50 @@
+---
+interface Props {
+  id: string;
+  /** The section number shown in the label, such as "01". */
+  index: string;
+  label: string;
+  /** The first, strong part of the title. */
+  title: string;
+  /** The second, muted part of the title. */
+  accent?: string;
+  /** Keep the title on one line on wide screens. Off for long titles. */
+  oneLine?: boolean;
+  /** The title is the page's h1 on pages that have no other one. */
+  asH1?: boolean;
+}
+
+const {
+  id,
+  index,
+  label,
+  title,
+  accent,
+  oneLine = true,
+  asH1 = false,
+} = Astro.props;
+const Heading = asH1 ? 'h1' : 'h2';
+---
+
+<section id={id} class="border-t border-rule py-block">
+  <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid grid-cols-12 gap-x-gutter gap-y-8">
+    <p class="mono col-span-12 flex items-baseline gap-4 md:sticky md:top-20 md:col-span-3 md:self-start">
+      <b class="font-medium text-accent">{index}</b>
+      <span class="text-muted">{label}</span>
+    </p>
+    <div class="col-span-12 md:col-span-9">
+      <Heading
+        class:list={[
+          'text-step-3 font-[480] tracking-[-0.045em]',
+          oneLine
+            ? 'md:whitespace-nowrap md:text-[clamp(1.75rem,.6rem+3.1vw,3.7rem)]'
+            : 'max-w-[22ch]',
+        ]}
+      >
+        {title} {accent && <em class="text-muted not-italic">{accent}</em>}
+      </Heading>
+      <slot />
+    </div>
+  </div>
+  <slot name="after" />
+</section>

@@ -1,6 +1,9 @@
 /** Facts about the site that more than one place needs. */
 export const site = {
   name: 'Filip Rokita',
+  jobTitle: 'Software engineer',
+  /** The canonical address, which the sitemap and the share tags use. */
+  url: 'https://www.filiprokita.com',
   description:
     'Filip Rokita, software engineer. Building apps, data and AI, from idea to production.',
   email: 'contact@filiprokita.com',

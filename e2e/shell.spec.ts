@@ -58,8 +58,11 @@ test.describe('without JavaScript', () => {
   test('the page works and the toggle stays hidden', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Contact' })).toBeVisible();
-    await expect(page.locator('[data-theme-toggle]')).toBeHidden();
+    await expect(
+      page.getByRole('link', { name: 'Contact', exact: true }),
+    ).toBeVisible();
+    for (const toggle of await page.locator('[data-theme-toggle]').all())
+      await expect(toggle).toBeHidden();
   });
 });
 
@@ -94,7 +97,9 @@ test.describe('navigation', () => {
   }, testInfo) => {
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Main' });
-    await expect(nav.getByRole('link', { name: 'Contact' })).toBeVisible();
+    await expect(
+      nav.getByRole('link', { name: 'Contact', exact: true }),
+    ).toBeVisible();
     const visible = testInfo.project.name === 'phone' ? 'hidden' : 'visible';
     for (const name of ['About', 'What I do', 'How I work', 'Projects']) {
       const link = nav.getByRole('link', { name });
