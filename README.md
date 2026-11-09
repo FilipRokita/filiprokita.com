@@ -17,8 +17,6 @@
 
 <br>
 
-Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
-
 ![The home page in the dark theme](docs/brand/preview.png)
 
 The site is built to stay true without constant edits. It describes areas of work
