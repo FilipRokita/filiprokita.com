@@ -17,11 +17,14 @@
 
 ![The home page in the dark theme](docs/brand/preview.png)
 
-The site is built to stay true without constant edits. It describes areas of work
-instead of tool lists, and leaves dates, employers and career details to LinkedIn.
-The one routine update is adding a project: a Markdown file and a screenshot, with
-no page code to touch. Under that sits a static Astro site that is typed, tested,
-accessible and checked on every change.
+The personal portfolio of Filip Rokita, a software engineer building apps, data and
+AI, from idea to production. A short home page, a case study for every project and an
+easy way to get in touch.
+
+It follows an evergreen rule: areas of work instead of tool lists, and dates,
+employers and career details left to LinkedIn. Adding a project is one Markdown file
+and a screenshot. Under that is a static Astro site that is typed, tested, accessible
+and checked on every change.
 
 ## 📖 Table of contents
 
