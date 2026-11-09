@@ -1,0 +1,45 @@
+/* Pages cross-fade natively. Browsers without support simply navigate. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.3s;
+  }
+
+  /* A theme change grows the new theme as a circle from the toggle. */
+  html.theme-vt::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  html.theme-vt::view-transition-new(root) {
+    animation: theme-grow 0.7s var(--ease-out-expo) both;
+    mix-blend-mode: normal;
+  }
+
+  @keyframes theme-grow {
+    from {
+      clip-path: circle(0 at var(--tx, 50%) var(--ty, 0));
+    }
+    to {
+      clip-path: circle(150vmax at var(--tx, 50%) var(--ty, 0));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    transition: none !important;
+    animation: none !important;
+  }
+}
