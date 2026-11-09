@@ -7,7 +7,7 @@ interface Props {
   project: CollectionEntry<'projects'>;
   /** Position in the list, from 1. Gives the 4.1 index and the Fig. number. */
   position: number;
-  /** The first row's image loads at once and is what the project page morphs from. */
+  /** The first row's image loads at once, because it is the first one on screen. */
   first?: boolean;
 }
 

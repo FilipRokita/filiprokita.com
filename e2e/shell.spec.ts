@@ -73,7 +73,7 @@ test.describe('without JavaScript', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(
-      page.getByRole('link', { name: 'Contact', exact: true }),
+      page.getByRole('link', { name: 'Email', exact: true }).first(),
     ).toBeVisible();
     for (const toggle of await page.locator('[data-theme-toggle]').all())
       await expect(toggle).toBeHidden();
@@ -106,19 +106,23 @@ test.describe('keyboard', () => {
 });
 
 test.describe('navigation', () => {
-  test('phones show only Contact, larger screens show every section', async ({
+  test('phones have no menu, larger screens show every section', async ({
     page,
   }, testInfo) => {
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Main' });
-    await expect(
-      nav.getByRole('link', { name: 'Contact', exact: true }),
-    ).toBeVisible();
-    const visible = testInfo.project.name === 'phone' ? 'hidden' : 'visible';
-    for (const name of ['About', 'What I do', 'How I work', 'Projects']) {
-      const link = nav.getByRole('link', { name });
-      if (visible === 'hidden') await expect(link).toBeHidden();
-      else await expect(link).toBeVisible();
+    if (testInfo.project.name === 'phone') {
+      await expect(nav).toBeHidden();
+      return;
+    }
+    for (const name of [
+      'About',
+      'What I do',
+      'How I work',
+      'Projects',
+      'Contact',
+    ]) {
+      await expect(nav.getByRole('link', { name, exact: true })).toBeVisible();
     }
   });
 });

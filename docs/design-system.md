@@ -131,7 +131,7 @@ focus ring style (`:focus-visible`), a faint static grain (not on phones, where 
 | Part | Where | Notes |
 | :--- | :--- | :--- |
 | Layout | `src/layouts/BaseLayout.astro` | Head, fonts, theme script, skip link, header, main, footer |
-| Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. On phones only Contact is shown |
+| Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. Phones have no menu, only the logo |
 | Footer | `src/components/Footer.astro` | Build date and commit, links, theme toggle |
 | Arrow | `src/components/Arrow.astro` | The one arrow icon (right, left, up-right): a thin SVG stroke with a sharp tip, so every arrow matches the site's lines |
 | Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
