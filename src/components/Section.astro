@@ -48,7 +48,8 @@ const Heading = asH1 ? 'h1' : 'h2';
             : 'max-w-[22ch]',
         ]}
       >
-        {title} {accent && <em class="text-muted not-italic">{accent}</em>}
+        {accent ? `${title} ` : title}
+        {accent && <em class="text-muted not-italic">{accent}</em>}
       </Heading>
       <slot />
     </div>
