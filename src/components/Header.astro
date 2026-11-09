@@ -73,19 +73,33 @@ import Logo from './Logo.astro';
     }
   }
 
-  /* The current section is marked with a dot. Not on phones, where only Contact is shown. */
+  /* The current section is marked with a dot. Not on phones, where only Contact is shown.
+     The dot sits beside the link without taking room, so it never moves the menu. */
   @media (min-width: 40rem) {
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -0.75rem;
+      width: 0.4rem;
+      height: 0.4rem;
+      margin-top: -0.2rem;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
     .nav-link[aria-current='true'] {
       color: var(--fg);
     }
 
     .nav-link[aria-current='true']::before {
-      content: '';
-      width: 0.4rem;
-      height: 0.4rem;
-      margin-right: 0.5rem;
-      border-radius: 50%;
-      background: var(--accent);
+      opacity: 1;
     }
   }
 </style>
