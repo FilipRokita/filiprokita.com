@@ -10,6 +10,11 @@ What every entry in the repository root is for.
 | [`AGENTS.md`](../AGENTS.md) | Rules for AI coding agents working in this repository |
 | [`docs/`](.) | Project documentation |
 | [`.devcontainer/`](../.devcontainer/) | Dev container configuration and setup script. See [Dev environment](dev-environment.md) |
+| [`src/`](../src/) | The site. `pages/` holds the routes, `styles/` the global CSS |
+| `astro.config.mjs` | Astro configuration: the site URL and the Tailwind plugin |
+| `tsconfig.json` | TypeScript configuration, extends Astro's strict preset |
+| `package.json`, `package-lock.json` | Dependencies and npm scripts |
+| `.nvmrc` | Node version for local and hosted builds |
 
 ## Planned
 
@@ -17,11 +22,7 @@ These appear as the roadmap in the README is completed.
 
 | Path | What it will be |
 | :--- | :--- |
-| `src/` | The site: pages, components, layouts, styles |
 | `public/` | Static files served as they are |
-| `astro.config.*`, `tsconfig.json` | Tool configuration |
-| `package.json`, `package-lock.json` | Dependencies and npm scripts |
-| `.nvmrc` | Node version for local and hosted builds |
 | `.github/workflows/` | CI |
 
 ## Local-only folders
