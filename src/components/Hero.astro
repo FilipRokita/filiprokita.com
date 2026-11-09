@@ -1,23 +1,18 @@
 ---
 import { site } from '../config/site';
+import Guides from './Guides.astro';
 import Link from './Link.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<section class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-block">
-  <!-- Faint column lines behind the hero: 12 on desktop, 6 on tablets, 4 on phones. -->
-  <div class="guides absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="mx-auto h-full w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid grid-cols-4 gap-x-gutter sm:grid-cols-6 md:grid-cols-12">
-      {Array.from({ length: 12 }, (_, i) => (
-        <i
-          class:list={[
-            'guide',
-            { 'max-md:hidden': i >= 6 },
-            { 'max-sm:hidden': i >= 4 },
-          ]}
-        />
-      ))}
-    </div>
+<section class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-section">
+  <Guides />
+  <!-- On a mouse, the column lines light up near the pointer. -->
+  <div
+    class="lit absolute inset-0 pointer-events-none print:hidden"
+    aria-hidden="true"
+  >
+    <Guides lit />
   </div>
   <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
     <div
@@ -37,8 +32,13 @@ import ThemeToggle from './ThemeToggle.astro';
       </span>
     </div>
     <h1 class="title font-[560] tracking-[-0.065em] whitespace-nowrap">
-      <span class="line">
-        <span data-intro="rise">{site.name}</span>
+      <span class="sr-only">{site.name}</span>
+      <span class="line" aria-hidden="true">
+        {[...site.name].map((letter) => (
+          <span class="letter" data-intro="rise">
+            {letter === ' ' ? '\u00a0' : letter}
+          </span>
+        ))}
       </span>
     </h1>
     <div
@@ -52,24 +52,25 @@ import ThemeToggle from './ThemeToggle.astro';
         <em class="block text-muted not-italic">from idea to production.</em>
       </p>
       <p class="mono col-span-12 flex flex-wrap items-baseline gap-x-7 gap-y-1 md:col-span-9 md:col-start-4 lg:col-span-3 lg:col-start-10">
-        <Link
-          href={`mailto:${site.email}`}
-          quiet
-          arrow="↗"
-          class="text-[.85rem]"
-        >
+        <Link href={`mailto:${site.email}`} underlined class="text-[.85rem]">
           Email
         </Link>
         <Link
           href={site.linkedin}
           rel="me"
-          quiet
           arrow="↗"
+          underlined
           class="text-[.85rem]"
         >
           LinkedIn
         </Link>
-        <Link href={site.github} rel="me" quiet arrow="↗" class="text-[.85rem]">
+        <Link
+          href={site.github}
+          rel="me"
+          arrow="↗"
+          underlined
+          class="text-[.85rem]"
+        >
           GitHub
         </Link>
       </p>
@@ -96,26 +97,60 @@ import ThemeToggle from './ThemeToggle.astro';
     padding-bottom: 0.06em;
   }
 
-  .line > span {
-    display: block;
+  .letter {
+    display: inline-block;
   }
 
-  .guide {
-    position: relative;
-    border-left: 1px solid color-mix(in oklab, var(--rule) 45%, transparent);
+  /* The letters rise one after the other. */
+  @media (prefers-reduced-motion: no-preference) {
+    .letter:nth-child(2) {
+      animation-delay: 0.03s;
+    }
+    .letter:nth-child(3) {
+      animation-delay: 0.06s;
+    }
+    .letter:nth-child(4) {
+      animation-delay: 0.09s;
+    }
+    .letter:nth-child(5) {
+      animation-delay: 0.12s;
+    }
+    .letter:nth-child(6) {
+      animation-delay: 0.15s;
+    }
+    .letter:nth-child(7) {
+      animation-delay: 0.18s;
+    }
+    .letter:nth-child(8) {
+      animation-delay: 0.21s;
+    }
+    .letter:nth-child(9) {
+      animation-delay: 0.24s;
+    }
+    .letter:nth-child(10) {
+      animation-delay: 0.27s;
+    }
+    .letter:nth-child(11) {
+      animation-delay: 0.3s;
+    }
+    .letter:nth-child(12) {
+      animation-delay: 0.33s;
+    }
   }
 
-  /* A fainter line halfway across each column. */
-  .guide::after {
-    content: '';
-    position: absolute;
-    inset-block: 0;
-    left: calc(50% + var(--spacing-gutter) / 2);
-    border-left: 1px solid color-mix(in oklab, var(--rule) 55%, transparent);
+  /* The lit column lines. Off until a mouse moves over the hero. */
+  .lit {
+    opacity: 0;
+    transition: opacity 0.4s;
+    mask-image: radial-gradient(
+      260px circle at var(--mx, -999px) var(--my, -999px),
+      #000,
+      transparent
+    );
   }
 
-  .guide:last-child::after {
-    display: none;
+  .hero[data-lit] .lit {
+    opacity: 1;
   }
 </style>
 
@@ -129,11 +164,38 @@ import ThemeToggle from './ThemeToggle.astro';
       minute: '2-digit',
       timeZone: 'Europe/Warsaw',
     });
+    // Tick on the minute, so the clock never lags behind.
     const tick = () => {
-      clock.textContent = format.format(new Date());
+      const now = new Date();
+      clock.textContent = format.format(now);
+      setTimeout(tick, 60_000 - (now.getTime() % 60_000));
     };
     tick();
     wrap.hidden = false;
-    setInterval(tick, 30_000);
+  }
+</script>
+
+<script>
+  // The lit lines need a real mouse and no preference for reduced motion.
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const fine = matchMedia(
+    '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+  );
+  if (hero && fine.matches) {
+    let frame = 0;
+    hero.addEventListener('pointermove', (event) => {
+      // Touch and pen movement never lights the lines, even where the device reports a fine pointer.
+      if (event.pointerType !== 'mouse') return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const box = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', `${event.clientX - box.left}px`);
+        hero.style.setProperty('--my', `${event.clientY - box.top}px`);
+        hero.dataset.lit = '';
+      });
+    });
+    hero.addEventListener('pointerleave', () => {
+      delete hero.dataset.lit;
+    });
   }
 </script>

@@ -7,7 +7,7 @@ export const whatIDo = [
   },
   {
     title: 'Full stack',
-    text: 'Backend, frontend and everything in between, designed together as one product.',
+    text: 'Solid backends and the interfaces on top, designed together as one product.',
   },
   {
     title: 'Data and AI',

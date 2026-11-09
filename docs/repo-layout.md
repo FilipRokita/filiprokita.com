@@ -6,13 +6,15 @@ What every entry in the repository root is for.
 
 | Path | What it is |
 | :--- | :--- |
-| [`README.md`](../README.md) | Project overview, stack, principles and roadmap |
+| [`README.md`](../README.md) | Project overview, stack and principles |
+| [`SECURITY.md`](../SECURITY.md) | How to report a vulnerability |
+| `.gitattributes` | Line ending rules |
 | [`AGENTS.md`](../AGENTS.md) | Rules for AI coding agents working in this repository |
 | [`docs/`](.) | Project documentation |
 | [`.devcontainer/`](../.devcontainer/) | Dev container configuration and setup script. See [Dev environment](dev-environment.md) |
 | [`src/`](../src/) | The site: `pages/` routes, `layouts/`, `components/`, `styles/` (tokens, base, motion), `lib/` pure helpers, `config/` site facts, `content/projects/` one file per project, `schemas/`, `assets/` images. See [Content](content.md) |
 | `src/content.config.ts` | The projects collection and its loader |
-| `astro.config.mjs` | Astro configuration: the site URL and the Tailwind plugin |
+| `astro.config.mjs` | Astro configuration: site URL, Tailwind, sitemap, fonts, the Content Security Policy and the build info |
 | `tsconfig.json` | TypeScript configuration, extends Astro's strict preset |
 | `package.json`, `package-lock.json` | Dependencies and npm scripts |
 | `.nvmrc` | Node version for local and hosted builds |
@@ -26,13 +28,6 @@ What every entry in the repository root is for.
 | [`e2e/`](../e2e/), `playwright.config.ts` | Browser tests. See [Testing](testing.md) |
 | `lighthouserc.cjs` | Lighthouse CI settings and score thresholds |
 | [`.github/`](../.github/) | CI workflow and Dependabot configuration |
-
-## Planned
-
-These appear as the roadmap in the README is completed.
-
-| Path | What it will be |
-| :--- | :--- |
 
 ## Local-only folders
 

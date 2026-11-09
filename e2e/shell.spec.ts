@@ -34,6 +34,17 @@ test.describe('theme', () => {
     await context.close();
   });
 
+  test('the toggle label follows a change of the system theme', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
+    const toggle = page.locator('footer [data-theme-toggle]');
+    await expect(toggle).toContainText('Light');
+    await page.emulateMedia({ colorScheme: 'light' });
+    await expect(toggle).toContainText('Dark');
+  });
+
   test('the footer toggle switches the theme and remembers it', async ({
     page,
   }) => {
@@ -45,6 +56,9 @@ test.describe('theme', () => {
 
     await toggle.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    // The browser bar color follows the chosen theme too.
+    for (const meta of await page.locator('meta[name="theme-color"]').all())
+      await expect(meta).toHaveAttribute('content', '#f4f3ef');
     await expect(toggle).toHaveText(/Dark/);
 
     await page.reload();
@@ -105,6 +119,74 @@ test.describe('navigation', () => {
       const link = nav.getByRole('link', { name });
       if (visible === 'hidden') await expect(link).toBeHidden();
       else await expect(link).toBeVisible();
+    }
+  });
+});
+
+test.describe('active section', () => {
+  test('is marked in a section and cleared again at the top', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'desktop',
+      'The dot is for larger screens',
+    );
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Main' });
+    const current = nav.locator('[aria-current="true"]');
+    await expect(current).toHaveCount(0);
+
+    await page.locator('#what').scrollIntoViewIfNeeded();
+    await expect(current).toHaveText('What I do');
+
+    await page.getByRole('link', { name: 'Filip Rokita' }).first().click();
+    await expect(current).toHaveCount(0);
+  });
+});
+
+test.describe('reading progress', () => {
+  test('phones show a line under the header that fills as the page scrolls', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'phone', 'The line is for phones only');
+    await page.goto('/');
+    const scale = () =>
+      page.evaluate(() => {
+        const { transform } = getComputedStyle(
+          document.querySelector('header') as Element,
+          '::after',
+        );
+        return transform === 'none'
+          ? 1
+          : Number(transform.split(',')[0].slice(7));
+      });
+    expect(await scale()).toBeLessThan(0.1);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await expect.poll(scale).toBeGreaterThan(0.9);
+  });
+});
+
+test.describe('links', () => {
+  test('links to other sites open in a new tab, the rest do not', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const links = await page.locator('a[href]').evaluateAll((anchors) =>
+      anchors.map((a) => ({
+        href: a.getAttribute('href') ?? '',
+        target: a.getAttribute('target'),
+        rel: a.getAttribute('rel') ?? '',
+      })),
+    );
+    const external = links.filter((l) => /^https?:\/\//.test(l.href));
+    expect(external.length).toBeGreaterThan(0);
+    for (const link of external) {
+      expect(link.target, link.href).toBe('_blank');
+      expect(link.rel, link.href).toContain('noopener');
+    }
+    for (const link of links.filter((l) => !/^https?:\/\//.test(l.href))) {
+      expect(link.target, link.href).toBeNull();
     }
   });
 });

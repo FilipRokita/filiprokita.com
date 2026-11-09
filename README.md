@@ -5,24 +5,27 @@
     <source media="(prefers-color-scheme: dark)" srcset="docs/brand/banner-dark.svg">
     <img src="docs/brand/banner-light.svg" alt="filiprokita.com" width="640">
   </picture>
-</div>
-
-<div align="center">
+  <br><br>
   <img src="https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white" alt="Astro">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
   <img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Node.js_26-5FA04E?logo=nodedotjs&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Cloudflare-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare">
+  <img src="https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white" alt="Vitest">
+  <img src="https://img.shields.io/badge/Playwright-2EAD33?logo=playwright&logoColor=white" alt="Playwright">
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white" alt="ESLint">
+  <img src="https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=black" alt="Prettier">
   <img src="https://img.shields.io/badge/Lighthouse-100_goal-F44B21?logo=lighthouse&logoColor=white" alt="Lighthouse goal">
+  <br><br>
+  <img src="docs/brand/preview.png" alt="The home page in the dark theme" width="900">
 </div>
 
-<br>
+A site meant to be as good as the code behind it: fast, accessible and tested, with
+nothing it does not need. Astro, strict TypeScript, unit and browser tests, a hashed
+CSP and Lighthouse budgets in CI.
 
-Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
-
-![The home page in the dark theme](docs/brand/preview.png)
-
-📬 Contact: `contact@filiprokita.com`
+Nothing here goes stale. Areas of work replace technology lists, and projects are
+Markdown files with a validated schema, so adding one is a file and a screenshot,
+never a change to page code.
 
 ## 📖 Table of contents
 
@@ -30,8 +33,7 @@ Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 2. [🧱 Stack](#-stack)
 3. [🧭 Principles](#-principles)
 4. [🚀 Run it locally](#-run-it-locally)
-5. [🗺️ Roadmap](#️-roadmap)
-6. [📚 Documentation](#-documentation)
+5. [📚 Documentation](#-documentation)
 
 ## 🎯 Goals
 
@@ -50,8 +52,7 @@ Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 | Styling | [Tailwind CSS](https://tailwindcss.com) v4 via `@tailwindcss/vite` |
 | Images | `<Image />` from `astro:assets` |
 | Animation | Plain CSS first, a library only if CSS is not enough |
-| Interactivity | A few small scripts: theme switch, clock, active menu link, page transitions |
-| Hosting | Cloudflare (static assets) |
+| Interactivity | A few small scripts: theme switch, clock, active menu link, command palette, lit column lines |
 | Quality | ESLint, Prettier, Vitest, Playwright with axe, Lighthouse CI, a hashed Content Security Policy |
 | Runtime | Node 26 (LTS), npm |
 
@@ -79,22 +80,6 @@ npm run lint  # ESLint, with `npm run format:check` for Prettier
 npm test      # unit tests, with `npm run test:e2e` for the browser tests
 ```
 
-## 🗺️ Roadmap
-
-```mermaid
-flowchart LR
-    A[✅ Scaffold Astro,<br/>Tailwind, TypeScript] --> B[✅ README and docs]
-    B --> C[✅ ESLint and Prettier]
-    C --> D[✅ GitHub Actions]
-    D --> E[✅ Lighthouse CI]
-    E --> F[✅ Design system and shell]
-    F --> M[✅ Content model]
-    M --> G[✅ Pages]
-    G --> P[✅ Motion]
-    P --> Q[✅ Quality gates]
-    Q --> H[Deploy to Cloudflare]
-```
-
 ## 📚 Documentation
 
 | Doc | What it covers |
@@ -105,6 +90,5 @@ flowchart LR
 | [📝 Content](docs/content.md) | How to add, hide or remove a project |
 | [🧪 Testing](docs/testing.md) | Test types, how to run them and what CI checks |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |
-| [🔐 GitHub settings](docs/github-settings.md) | Repository protections: enabled and planned |
 
 Rules for contributors and coding agents live in [`AGENTS.md`](AGENTS.md).

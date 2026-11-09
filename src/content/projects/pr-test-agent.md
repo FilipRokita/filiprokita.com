@@ -1,5 +1,5 @@
 ---
-title: PR test agent
+title: PR Test Agent
 summary: An AI agent that writes and verifies unit tests for pull requests.
 order: 4
 cover: ../../assets/projects/pr-test-agent/cover.webp
@@ -21,6 +21,6 @@ decisions:
 
 A pull request changes code. This bot decides whether unit tests are needed, writes or updates them with an agent that uses reusable skills, runs them in a sandbox and shows the result on the pull request.
 
-The agent's output is trusted no further than it can be checked. Tests arrive as a separate stacked pull request into the original branch, and only after they pass repeated shuffled runs and cover the changed lines.
+The agent’s output is trusted no further than it can be checked. Tests arrive as a separate stacked pull request into the original branch, and only after they pass repeated shuffled runs and cover the changed lines.
 
 It runs in GitHub Actions rather than as an app, so there is no live preview, only the repository.

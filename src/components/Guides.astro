@@ -1,0 +1,53 @@
+---
+// Faint column lines behind a block: 12 on desktop, 6 on tablets, 4 on phones.
+// The parent must be positioned (relative). The lines fill it.
+interface Props {
+  /** Draw the lines in the accent color. Used for the lines that light up near the pointer. */
+  lit?: boolean;
+}
+
+const { lit = false } = Astro.props;
+---
+
+<div
+  class="absolute inset-0 pointer-events-none print:hidden"
+  aria-hidden="true"
+>
+  <div class="mx-auto grid h-full w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid-cols-4 gap-x-gutter sm:grid-cols-6 md:grid-cols-12">
+    {Array.from({ length: 12 }, (_, i) => (
+      <i
+        class:list={[
+          'guide',
+          { lit },
+          { 'max-md:hidden': i >= 6 },
+          { 'max-sm:hidden': i >= 4 },
+        ]}
+      />
+    ))}
+  </div>
+</div>
+
+<style>
+  .guide {
+    position: relative;
+    border-left: 1px solid color-mix(in oklab, var(--rule) 45%, transparent);
+  }
+
+  /* A fainter line halfway across each column. */
+  .guide::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: calc(50% + var(--spacing-gutter) / 2);
+    border-left: 1px solid color-mix(in oklab, var(--rule) 55%, transparent);
+  }
+
+  .guide:last-child::after {
+    display: none;
+  }
+
+  .guide.lit,
+  .guide.lit::after {
+    border-left-color: color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+</style>

@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+import { sections, site } from '../config/site';
+import { visibleProjects } from '../lib/projects';
+
+interface Item {
+  group: string;
+  label: string;
+  href?: string;
+  external?: boolean;
+  action?: 'theme';
+}
+
+const projects = visibleProjects(await getCollection('projects'));
+
+const items: Item[] = [
+  ...sections.map(({ id, label }) => ({
+    group: 'Go to',
+    label,
+    href: `/#${id}`,
+  })),
+  ...projects.map((project) => ({
+    group: 'Projects',
+    label: project.data.title,
+    href: `/projects/${project.id}/`,
+  })),
+  { group: 'Actions', label: 'Switch theme', action: 'theme' },
+  { group: 'Actions', label: 'Email', href: `mailto:${site.email}` },
+  { group: 'Actions', label: 'LinkedIn', href: site.linkedin, external: true },
+  { group: 'Actions', label: 'GitHub', href: site.github, external: true },
+];
+---
+
+<!-- Opens with Ctrl K or Cmd K only. There is deliberately no button for it. -->
+<dialog class="palette" aria-label="Command palette" data-palette>
+  <input
+    class="palette-input mono"
+    type="text"
+    role="combobox"
+    aria-expanded="true"
+    aria-controls="palette-list"
+    aria-label="Search pages, projects and actions"
+    placeholder="Go to, search or switch theme"
+    autocomplete="off"
+    spellcheck="false"
+    data-palette-input
+  />
+  <ul class="palette-list" id="palette-list" role="listbox" data-palette-list>
+    {items.map((item, i) => (
+      <li
+        role="option"
+        id={`palette-item-${i}`}
+        aria-selected="false"
+        data-label={item.label.toLowerCase()}
+        data-href={item.href}
+        data-external={item.external ? '' : undefined}
+        data-action={item.action}
+      >
+        <span>{item.label}</span>
+        <span class="palette-group mono">{item.group}</span>
+      </li>
+    ))}
+  </ul>
+  <p class="palette-empty mono" data-palette-empty hidden>
+    Nothing found
+  </p>
+</dialog>
+
+<style>
+  .palette {
+    width: min(34rem, calc(100vw - 2.5rem));
+    margin: 14vh auto 0;
+    padding: 0;
+    border: 1px solid var(--rule);
+    background: var(--panel);
+    color: var(--fg);
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+  }
+
+  .palette::backdrop {
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  .palette-input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem 1.1rem;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    color: var(--fg);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.9rem;
+  }
+
+  .palette-input:focus-visible {
+    outline: none;
+  }
+
+  .palette-list {
+    margin: 0;
+    padding: 0.4rem;
+    max-height: 50vh;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .palette-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0.7rem;
+    cursor: pointer;
+  }
+
+  .palette-list li[hidden] {
+    display: none;
+  }
+
+  .palette-list li[aria-selected='true'] {
+    background: color-mix(in oklab, var(--accent) 16%, transparent);
+  }
+
+  .palette-group {
+    color: var(--muted);
+  }
+
+  .palette-list li[aria-selected='true'] .palette-group {
+    color: var(--fg);
+  }
+
+  .palette-empty {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-palette]');
+  const input = document.querySelector<HTMLInputElement>(
+    '[data-palette-input]',
+  );
+  const empty = document.querySelector<HTMLElement>('[data-palette-empty]');
+  const options = [
+    ...document.querySelectorAll<HTMLLIElement>('[data-palette-list] li'),
+  ];
+
+  let active = 0;
+
+  const visible = () => options.filter((option) => !option.hidden);
+
+  const select = (index: number) => {
+    const shown = visible();
+    for (const option of options) option.setAttribute('aria-selected', 'false');
+    if (shown.length === 0) {
+      input?.removeAttribute('aria-activedescendant');
+      return;
+    }
+    active = (index + shown.length) % shown.length;
+    const current = shown[active];
+    current.setAttribute('aria-selected', 'true');
+    input?.setAttribute('aria-activedescendant', current.id);
+    current.scrollIntoView({ block: 'nearest' });
+  };
+
+  const filter = () => {
+    const words = (input?.value ?? '')
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+    for (const option of options) {
+      const label = option.dataset.label ?? '';
+      option.hidden = !words.every((word) => label.includes(word));
+    }
+    if (empty) empty.hidden = visible().length > 0;
+    select(0);
+  };
+
+  const run = (option: HTMLLIElement) => {
+    dialog?.close();
+    if (option.dataset.action === 'theme') {
+      // The hero toggle is hidden on narrow windows, so use one that can be seen.
+      const toggles = document.querySelectorAll<HTMLButtonElement>(
+        '[data-theme-toggle]',
+      );
+      [...toggles].find((toggle) => toggle.offsetParent !== null)?.click();
+    } else if (option.dataset.href) {
+      if (option.dataset.external !== undefined)
+        open(option.dataset.href, '_blank', 'noopener');
+      else location.href = option.dataset.href;
+    }
+  };
+
+  const toggle = () => {
+    if (!dialog || !input) return;
+    if (dialog.open) return dialog.close();
+    input.value = '';
+    dialog.showModal();
+    filter();
+    input.focus();
+  };
+
+  addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      toggle();
+    }
+  });
+
+  input?.addEventListener('input', filter);
+
+  dialog?.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      select(active + 1);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      select(active - 1);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      const current = visible()[active];
+      if (current) run(current);
+    }
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    // A click on the backdrop closes it. A click on an option runs it.
+    if (event.target === dialog) return dialog.close();
+    const option = (event.target as HTMLElement).closest('li');
+    if (option instanceof HTMLLIElement) run(option);
+  });
+</script>

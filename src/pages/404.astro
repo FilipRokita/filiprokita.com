@@ -1,19 +1,37 @@
 ---
-import Container from '../components/Container.astro';
+import Guides from '../components/Guides.astro';
 import Link from '../components/Link.astro';
+import Section from '../components/Section.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Page not found" description="This page does not exist.">
-  <Container class="py-block">
-    <p class="mono text-accent">404</p>
-    <h1 class="mt-4 text-step-3 font-[520] tracking-[-0.045em]">
-      This page does not exist.
-    </h1>
-    <p class="mt-8">
-      <Link href="/" arrow="↗" class="mono">
-        Back to the home page
+  <div class="relative pt-[clamp(1.5rem,1rem+2vw,3rem)] pb-[clamp(2rem,1rem+4vw,5rem)]">
+    <Guides />
+    <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+      <Link
+        href="/"
+        arrow="←"
+        class="mono inline-flex min-h-11 items-center text-muted"
+      >
+        Home
       </Link>
+      <h1 class="mt-[clamp(1.5rem,1rem+3vw,4rem)] -ml-[.04em] text-[clamp(3.5rem,1.5rem+13vw,15rem)] leading-[.86] font-[560] tracking-[-0.065em]">
+        404
+      </h1>
+    </div>
+  </div>
+  <Section
+    id="not-found"
+    index="404"
+    label="Not found"
+    title="Nothing here."
+    accent="The page moved, or never existed."
+    oneLine={false}
+  >
+    <p class="mt-8 max-w-[52ch] text-step-1 leading-[1.4] tracking-[-0.015em] text-muted">
+      Back to the <Link href="/">home page</Link>, or straight to the{' '}
+      <Link href="/#contact">contact</Link>.
     </p>
-  </Container>
+  </Section>
 </BaseLayout>

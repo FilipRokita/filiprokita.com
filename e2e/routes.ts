@@ -5,5 +5,4 @@ export const routes = [
   '/projects/evencost/',
   '/projects/forecheck/',
   '/projects/pr-test-agent/',
-  '/how-this-site-is-built/',
 ];

@@ -4,7 +4,7 @@ import Container from './Container.astro';
 import Logo from './Logo.astro';
 ---
 
-<header class="sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
+<header class="site-header print:hidden sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
   <Container class="flex min-h-15 items-center justify-between gap-6">
     <a
       href="/"
@@ -36,6 +36,32 @@ import Logo from './Logo.astro';
 </header>
 
 <style>
+  /* Phones: a thin line under the header fills as the page is read. CSS only. */
+  @supports (animation-timeline: scroll()) {
+    @media (max-width: 39.99rem) and (prefers-reduced-motion: no-preference) {
+      .site-header::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        height: 2px;
+        background: var(--accent);
+        transform-origin: left;
+        transform: scaleX(0);
+        animation-name: read-progress;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll(root);
+      }
+
+      @keyframes read-progress {
+        to {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+
   .nav-link {
     color: var(--muted);
     transition: color 0.2s;
@@ -74,18 +100,23 @@ import Logo from './Logo.astro';
     history.replaceState(null, '', location.pathname);
   });
 
-  // Mark the nav link of the section in view.
+  // Mark the nav link of the section in view. Above the first section, nothing is marked.
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-section]');
+  const inView = new Set<string>();
+  const mark = () => {
+    for (const link of links) {
+      if (link.dataset.section && inView.has(link.dataset.section))
+        link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    }
+  };
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        for (const link of links) {
-          if (link.dataset.section === entry.target.id)
-            link.setAttribute('aria-current', 'true');
-          else link.removeAttribute('aria-current');
-        }
+        if (entry.isIntersecting) inView.add(entry.target.id);
+        else inView.delete(entry.target.id);
       }
+      mark();
     },
     { rootMargin: '-40% 0px -55% 0px' },
   );

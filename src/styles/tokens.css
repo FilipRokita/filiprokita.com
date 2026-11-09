@@ -17,6 +17,14 @@
   --on-accent: light-dark(#ffffff, #0b0b0c);
 }
 
+/* A visitor who asks for more contrast gets darker secondary text and stronger lines. */
+@media (prefers-contrast: more) {
+  :root {
+    --muted: light-dark(#44444a, #bcbcc2);
+    --rule: light-dark(#8a8880, #55555b);
+  }
+}
+
 :root[data-theme='dark'] {
   color-scheme: dark;
 }
@@ -59,7 +67,7 @@
   /* Fluid spacing and the page width. */
   --spacing-gutter: clamp(1rem, 0.6rem + 1.6vw, 2rem);
   --spacing-edge: clamp(1.25rem, 0.5rem + 3vw, 3rem);
-  --spacing-block: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --spacing-section: clamp(4.5rem, 3rem + 7vw, 10rem);
   --container-page: 88rem;
 
   --ease-out-expo: cubic-bezier(0.2, 0.7, 0.2, 1);

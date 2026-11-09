@@ -4,7 +4,7 @@
 
 <button
   type="button"
-  class="theme-toggle mono inline-flex cursor-pointer items-center gap-[.5ch] text-muted"
+  class="theme-toggle print:hidden mono inline-flex min-w-[4.5em] cursor-pointer items-center justify-end gap-[.5ch] text-muted sm:min-w-[8.5em]"
   data-theme-toggle
   hidden
 >
@@ -52,6 +52,7 @@
 
   const setTheme = (theme: Theme) => {
     root.dataset.theme = theme;
+    window.applyThemeColor?.(theme);
     try {
       localStorage.setItem('theme', theme);
     } catch {
@@ -77,5 +78,10 @@
   for (const toggle of toggles) {
     toggle.addEventListener('click', () => switchTheme(toggle));
   }
+  // With no saved choice the system theme applies, so the label follows it.
+  matchMedia('(prefers-color-scheme: light)').addEventListener(
+    'change',
+    render,
+  );
   render();
 </script>

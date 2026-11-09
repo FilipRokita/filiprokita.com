@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>README preview</title>
+    <!-- Template of docs/brand/preview.png. The two screenshots are filled in by render-preview.mjs. -->
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        width: 1600px;
+        height: 1000px;
+        position: relative;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            900px 600px at 18% 8%,
+            rgba(167, 139, 250, 0.28),
+            transparent 70%
+          ),
+          radial-gradient(
+            800px 600px at 92% 100%,
+            rgba(79, 70, 229, 0.3),
+            transparent 70%
+          ),
+          #0b0b0c;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+      .window {
+        position: absolute;
+        left: 70px;
+        top: 170px;
+        width: 1100px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #111113;
+        box-shadow:
+          0 60px 120px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.09);
+      }
+      .bar {
+        height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 18px;
+        background: #1b1b1e;
+        border-bottom: 1px solid #2a2a2e;
+      }
+      .bar i {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #3a3a3f;
+      }
+      .bar i:nth-child(1) {
+        background: #ff5f57;
+      }
+      .bar i:nth-child(2) {
+        background: #febc2e;
+      }
+      .bar i:nth-child(3) {
+        background: #28c840;
+      }
+      .url {
+        margin: 0 auto;
+        transform: translateX(-30px);
+        padding: 5px 80px;
+        border-radius: 8px;
+        background: #0b0b0c;
+        color: #8e8e94;
+        font-size: 14px;
+      }
+      .window img {
+        display: block;
+        width: 100%;
+      }
+      .phone {
+        position: absolute;
+        right: 60px;
+        bottom: 120px;
+        width: 300px;
+        border-radius: 46px;
+        padding: 11px;
+        background: #1b1b1e;
+        box-shadow:
+          0 50px 100px rgba(0, 0, 0, 0.65),
+          0 0 0 1px rgba(255, 255, 255, 0.14),
+          inset 0 0 0 2px #2c2c31;
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        border-radius: 36px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <div class="bar">
+        <i></i><i></i><i></i><span class="url">filiprokita.com</span>
+      </div>
+      <img src="{{DESKTOP}}" alt="" />
+    </div>
+    <div class="phone"><img src="{{PHONE}}" alt="" /></div>
+  </body>
+</html>

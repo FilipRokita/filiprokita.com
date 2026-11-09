@@ -1,23 +1,38 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import Arrow from './Arrow.astro';
 
 interface Props extends HTMLAttributes<'a'> {
-  /** A quiet underline in the text color at rest. Without it the line appears only on hover. */
-  quiet?: boolean;
-  /** An arrow after the text. */
-  arrow?: '↗' | '↓';
+  /** An arrow: ↗ after the text on outbound links, ← before it on a link back. */
+  arrow?: '↗' | '←';
+  /** A resting underline even with an arrow. For the main calls to action. */
+  underlined?: boolean;
 }
 
-const { quiet = false, arrow, class: className, ...rest } = Astro.props;
+const {
+  arrow,
+  underlined = false,
+  class: className,
+  href,
+  rel,
+  ...rest
+} = Astro.props;
+
+// A link to another site opens in a new tab. Email and links within the site do not.
+const external = typeof href === 'string' && /^https?:\/\//.test(href);
 ---
 
-<a class:list={['link', { quiet }, className]} {...rest}>
+<a
+  class:list={['link', { rest: !arrow || underlined }, className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
+  {...rest}
+>
+  {arrow === '←' && <Arrow direction="left" class="back" />}
   <slot />
-  {arrow && (
-    <span class="arr" aria-hidden="true">
-      {arrow}
-    </span>
-  )}
+  {external && <span class="sr-only"> (opens in a new tab)</span>}
+  {arrow === '↗' && <Arrow direction="up-right" class="arr" />}
 </a>
 
 <style>
@@ -27,7 +42,7 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
     padding-block: 0.35rem;
   }
 
-  /* The quiet underline, and the violet line that fills in from the left on hover. */
+  /* The underline, and the violet line that fills in from the left on hover. */
   .link::before,
   .link::after {
     content: '';
@@ -39,12 +54,13 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
     transform: scaleX(0);
   }
 
+  /* A link with an arrow is marked by it. One without gets a resting underline. */
   .link::after {
     background: currentcolor;
   }
 
-  .link.quiet::after {
-    opacity: 0.3;
+  .link.rest::after {
+    opacity: 0.15;
     transform: scaleX(1);
   }
 
@@ -58,9 +74,13 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
     transform: scaleX(1);
   }
 
-  .arr {
-    display: inline-block;
-    margin-left: 0.6rem;
+  .link :global(.back) {
+    margin-right: 0.4rem;
+    color: var(--accent);
+  }
+
+  .link :global(.arr) {
+    margin-left: 0.35rem;
     color: var(--accent);
     transition: transform 0.3s;
   }
@@ -71,7 +91,7 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
       transform: scaleX(1);
     }
 
-    .link:hover .arr {
+    .link:hover :global(.arr) {
       transform: translate(0.2rem, -0.2rem);
     }
   }

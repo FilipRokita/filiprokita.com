@@ -5,8 +5,14 @@ The tokens, the themes and the motion rules, and where each one lives.
 ## Tokens
 
 All raw colors, the type scale, the spacing scale and the breakpoints are defined in
-[`src/styles/tokens.css`](../src/styles/tokens.css). Nothing else in the code uses a
-raw color.
+[`src/styles/tokens.css`](../src/styles/tokens.css). The logo (`Logo.astro`), the
+`theme-color` meta tags in `BaseLayout.astro` (they repeat the `--bg` values) and the
+grain in `base.css` are the only other places with raw colors.
+
+**The rule:** a component never writes a raw color. It uses a token, through a Tailwind
+utility (`bg-bg`, `text-muted`, ...) or `var(--token)` in CSS. That is what keeps the
+light and dark themes, the contrast tests, the high contrast mode and the print styles
+working for every new component without extra work.
 
 | Token | Dark | Light | Used for |
 | :--- | :--- | :--- | :--- |
@@ -27,13 +33,24 @@ Edit the two `--accent` values (and `--on-accent` if needed) in `tokens.css`. Th
 `npm test`: it checks the WCAG AA contrast of every text pair in both themes, so a
 color that is too weak fails.
 
-Three static files carry the color and are not generated from the tokens. Redo them
+A few static files carry the color and are not generated from the tokens. Redo them
 when the accent changes:
 
 | File | What it is |
 | :--- | :--- |
 | `public/favicon.svg` | The logo as a favicon |
 | `docs/brand/banner-dark.svg`, `banner-light.svg` | The README banner |
+| `public/og.png`, `public/apple-touch-icon.png` | The share image and the touch icon. Run `npm run assets` |
+| `docs/brand/preview.png` | The README screenshot |
+
+### High contrast and print
+
+- `@media (prefers-contrast: more)` in `tokens.css` overrides `--muted` and `--rule`
+  with stronger values. `tests/tokens.test.ts` checks that the muted text reaches 7:1
+  in both themes with it on.
+- [`src/styles/print.css`](../src/styles/print.css) styles print and PDF: the light
+  colors whatever the theme, no motion or grain. The header, the column lines
+  and the theme toggle carry Tailwind's `print:hidden`.
 
 ## Themes
 
@@ -76,7 +93,7 @@ The `mono` utility is the small label style: Geist Mono, uppercase, wide trackin
 
 | Utility | Meaning |
 | :--- | :--- |
-| `gap-gutter`, `px-edge`, `py-block` | Fluid column gap, page edge and section spacing |
+| `gap-gutter`, `px-edge`, `py-section` | Fluid column gap, page edge and section spacing |
 | `max-w-page` | The page width, 88 rem |
 
 Three breakpoints only: `sm` is 40 rem (phone and up), `md` is 64 rem (tablet and
@@ -94,11 +111,11 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 - Intro: the hero name rises out of its line and the rest fades in (`data-intro`).
   Sections and project rows fade in as they scroll into view (`data-reveal`, CSS
   scroll-driven animation, where supported).
-- The project image morphs between the home page and a project page, in both
-  directions. [`src/scripts/transitions.ts`](../src/scripts/transitions.ts) sets
-  `view-transition-name` on the one image that takes part, in `pageswap` and
-  `pagereveal`, and scrolls the home page back to the row. Pages reached through a
-  transition skip the intro (`html[data-transition]`).
+- The hero name rises letter by letter. On a mouse (not on touch, not with reduced
+  motion) the column lines near the pointer light up in the accent color over the hero.
+- Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
+  open email, LinkedIn or GitHub). It has no button on purpose.
+- On phones a thin accent line under the header fills as the page scrolls (CSS only).
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.
 - With `prefers-reduced-motion: reduce`, all transitions and animations are off and
@@ -117,13 +134,16 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Layout | `src/layouts/BaseLayout.astro` | Head, fonts, theme script, skip link, header, main, footer |
 | Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. On phones only Contact is shown |
 | Footer | `src/components/Footer.astro` | Build date and commit, links, theme toggle |
-| Link | `src/components/Link.astro` | A quiet underline, and a violet line that fills in from the left on hover |
+| Arrow | `src/components/Arrow.astro` | The one arrow icon (right, left, up-right): a thin SVG stroke with a sharp tip, so every arrow matches the site's lines |
+| Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
-| Hero | `src/components/Hero.astro` | Column guides, local time, the name, the statement and links |
+| Guides | `src/components/Guides.astro` | The faint column lines behind the hero |
+| CommandPalette | `src/components/CommandPalette.astro` | The Ctrl K dialog. Items come from the sections and the project collection |
+| Hero | `src/components/Hero.astro` | Local time, the name, the statement and links |
 | Section | `src/components/Section.astro` | Numbered label, one-line title and a slot. The `after` slot is full width |
 | ItemGrid | `src/components/ItemGrid.astro` | Numbered items in 3 or 4 columns, 2 on tablets, 1 on phones |
-| Figure | `src/components/Figure.astro` | A framed, captioned image with the project morph hook |
+| Figure | `src/components/Figure.astro` | A framed, captioned image |
 | ProjectRow | `src/components/ProjectRow.astro` | One project on the home page |
 
 Site facts (name, links, section list) are in `src/config/site.ts`. The build date and
