@@ -51,5 +51,3 @@ and hurts code clarity is not worth it.
 
 - `astro build` and image optimization on Node 26.
 - Full Tailwind v4 support in the VS Code Tailwind extension.
-- Whether Cloudflare Pages or Workers static assets is the better target for new
-  projects. See [Deployment](deployment.md).

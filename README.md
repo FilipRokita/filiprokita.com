@@ -95,6 +95,6 @@ flowchart LR
 | [🏛️ Architecture](docs/architecture.md) | Technical decisions and the build and deploy flow |
 | [🧰 Dev environment](docs/dev-environment.md) | The dev container and tooling |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |
-| [☁️ Deployment](docs/deployment.md) | Hosting and domains |
+| [🔐 GitHub settings](docs/github-settings.md) | Repository protections: enabled and planned |
 
 Rules for contributors and coding agents live in [`AGENTS.md`](AGENTS.md).
