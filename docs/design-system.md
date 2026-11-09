@@ -138,7 +138,7 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
-| Guides | `src/components/Guides.astro` | The faint column lines behind the hero and the project title |
+| Guides | `src/components/Guides.astro` | The faint column lines behind the hero |
 | CommandPalette | `src/components/CommandPalette.astro` | The Ctrl K dialog. Items come from the sections and the project collection |
 | Hero | `src/components/Hero.astro` | Local time, the name, the statement and links |
 | Section | `src/components/Section.astro` | Numbered label, one-line title and a slot. The `after` slot is full width |

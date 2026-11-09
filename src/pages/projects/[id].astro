@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import Guides from '../../components/Guides.astro';
 import Arrow from '../../components/Arrow.astro';
 import Figure from '../../components/Figure.astro';
 import Link from '../../components/Link.astro';
@@ -47,7 +46,6 @@ const factCount = facts.length + (links.live ? 2 : 1);
 
 <BaseLayout title={title} description={`${title}: ${summary}`}>
   <div class="relative pt-[clamp(1.5rem,1rem+2vw,3rem)] pb-[clamp(2rem,1rem+4vw,5rem)]">
-    <Guides />
     <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
       <Link
         href="/#projects"
