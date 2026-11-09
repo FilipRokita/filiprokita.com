@@ -22,3 +22,4 @@ npm-debug.log*
 # Local-only folders, described in AGENTS.md
 /plans/
 /dev-only/
+design/.preview-built.html

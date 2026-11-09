@@ -22,7 +22,11 @@ Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 
 ![The home page in the dark theme](docs/brand/preview.png)
 
-📬 Contact: `contact@filiprokita.com`
+The site is built to stay true without constant edits. It describes areas of work
+instead of tool lists, and leaves dates, employers and career details to LinkedIn.
+The one routine update is adding a project: a Markdown file and a screenshot, with
+no page code to touch. Under that sits a static Astro site that is typed, tested,
+accessible and checked on every change.
 
 ## 📖 Table of contents
 
