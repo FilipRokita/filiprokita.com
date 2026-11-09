@@ -21,7 +21,10 @@
 		"vscode": {
 			"extensions": [
                 "anthropic.claude-code",
-				"astro-build.astro-vscode"
+				"astro-build.astro-vscode",
+				"bradlc.vscode-tailwindcss",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode"
 			]
 		}
 	}
