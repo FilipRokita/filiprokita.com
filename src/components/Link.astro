@@ -2,16 +2,14 @@
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'a'> {
-  /** A quiet underline in the text color at rest. Without it the line appears only on hover. */
-  quiet?: boolean;
   /** An arrow after the text. */
   arrow?: '↗';
 }
 
-const { quiet = false, arrow, class: className, ...rest } = Astro.props;
+const { arrow, class: className, ...rest } = Astro.props;
 ---
 
-<a class:list={['link', { quiet }, className]} {...rest}>
+<a class:list={['link', className]} {...rest}>
   <slot />
   {arrow && (
     <span class="arr" aria-hidden="true">
@@ -27,7 +25,7 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
     padding-block: 0.35rem;
   }
 
-  /* The quiet underline, and the violet line that fills in from the left on hover. */
+  /* The underline, and the violet line that fills in from the left on hover. */
   .link::before,
   .link::after {
     content: '';
@@ -39,11 +37,9 @@ const { quiet = false, arrow, class: className, ...rest } = Astro.props;
     transform: scaleX(0);
   }
 
+  /* The resting underline, in the text color. */
   .link::after {
     background: currentcolor;
-  }
-
-  .link.quiet::after {
     opacity: 0.3;
     transform: scaleX(1);
   }
