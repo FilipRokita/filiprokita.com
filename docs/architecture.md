@@ -46,8 +46,7 @@ and hurts code clarity is not worth it.
 
 ## Open points
 
-> [!IMPORTANT]
-> To verify at the first build:
-
-- `astro build` and image optimization on Node 26.
-- Full Tailwind v4 support in the VS Code Tailwind extension.
+- `astro check` and `astro build` run on Node 26. Image optimization is verified
+  when the first image is added.
+- The VS Code Tailwind extension supports Tailwind v4 according to its docs. It is
+  confirmed in the editor when the first utility classes are used.

@@ -19,8 +19,9 @@
 <br>
 
 > [!NOTE]
-> **Status: early setup.** The dev environment and project rules are in place.
-> The site itself (design, content, sections) is not built yet.
+> **Status: early setup.** The dev environment, project rules and the Astro
+> foundation are in place. The site itself (design, content, sections) is not
+> built yet.
 
 Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 
@@ -72,15 +73,17 @@ Everything runs inside a dev container. Open the repo in VS Code and choose
 **Dev Containers: Reopen in Container**. See
 [Dev environment](docs/dev-environment.md) for details.
 
-> [!TIP]
-> The Astro project is not scaffolded yet, so there are no run commands for now.
-> They will live in `package.json` and in the dev environment doc.
+```bash
+npm ci        # once: installs the locked dependencies
+npm run dev   # dev server on http://localhost:4321
+npm run build # type check and production build into dist/
+```
 
 ## 🗺️ Roadmap
 
 ```mermaid
 flowchart LR
-    A[Scaffold Astro,<br/>Tailwind, TypeScript] --> B[README and docs]
+    A[✅ Scaffold Astro,<br/>Tailwind, TypeScript] --> B[✅ README and docs]
     B --> C[ESLint and Prettier]
     C --> D[GitHub Actions]
     D --> E[Lighthouse CI]
