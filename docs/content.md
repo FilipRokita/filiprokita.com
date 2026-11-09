@@ -69,3 +69,18 @@ is a flow diagram rendered as an image and treated exactly like a screenshot.
 The source is [`diagram.html`](../src/assets/projects/pr-test-agent/diagram.html). To
 change the diagram, edit it and render a 1600 by 820 screenshot of the page (for
 example with Playwright), then save it as `cover.webp` in the same folder.
+
+## Keep projects up to date
+
+The skill [`update-projects`](../.agents/skills/update-projects/SKILL.md) compares the
+entries with their public GitHub repositories and drafts an entry for a new one. It
+lives in `.agents/skills/`, the path the SKILL.md format uses for agents that read it
+(VS Code does). An agent that reads another folder can be pointed at it, for example
+with a local symlink such as `.claude/skills`, which stays out of git.
+
+- Run it by asking your agent to "update the projects", or "add the project
+  <owner/name>".
+- The helper `node scripts/repo-facts.mjs --entries` prints the facts it works from.
+  It reads public repositories only and writes nothing.
+- The skill may change only `src/content/projects/*.md` and a new project's cover. It
+  shows every change before writing it, and new drafts start with `hidden: true`.
