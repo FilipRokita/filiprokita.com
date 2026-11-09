@@ -34,6 +34,17 @@ test.describe('theme', () => {
     await context.close();
   });
 
+  test('the toggle label follows a change of the system theme', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
+    const toggle = page.locator('footer [data-theme-toggle]');
+    await expect(toggle).toContainText('Light');
+    await page.emulateMedia({ colorScheme: 'light' });
+    await expect(toggle).toContainText('Dark');
+  });
+
   test('the footer toggle switches the theme and remembers it', async ({
     page,
   }) => {

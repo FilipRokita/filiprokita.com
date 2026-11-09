@@ -78,5 +78,10 @@
   for (const toggle of toggles) {
     toggle.addEventListener('click', () => switchTheme(toggle));
   }
+  // With no saved choice the system theme applies, so the label follows it.
+  matchMedia('(prefers-color-scheme: light)').addEventListener(
+    'change',
+    render,
+  );
   render();
 </script>
