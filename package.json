@@ -13,7 +13,9 @@
     "check": "astro check",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:e2e": "npm run build && playwright test",
+    "lighthouse": "npm run build && lhci autorun"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
@@ -23,16 +25,21 @@
     "typescript": "~6.0.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.16.0",
+    "@playwright/test": "^1.65.0",
     "eslint": "^10.14.0",
     "eslint-plugin-astro": "^3.2.1",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
+    "globals": "^17.14.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript-eslint": "^8.72.1"
   },
   "overrides": {
+    "basic-ftp": "^6.2.6",
     "minimatch": "^11.0.5"
   }
 }
