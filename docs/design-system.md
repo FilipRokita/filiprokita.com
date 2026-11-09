@@ -115,7 +115,6 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
   motion) the column lines near the pointer light up in the accent color over the hero.
 - Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
   open email, LinkedIn or GitHub). It has no button on purpose.
-- On phones a thin accent line under the header fills as the page scrolls. A small script sets its width against the tallest viewport, so it does not jump when the browser bars hide or show.
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle or the palette entry that asked for it.
 - With `prefers-reduced-motion: reduce`, all transitions and animations are off and
