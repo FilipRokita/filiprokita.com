@@ -5,7 +5,7 @@ interface Props extends HTMLAttributes<'a'> {
   /** A quiet underline in the text color at rest. Without it the line appears only on hover. */
   quiet?: boolean;
   /** An arrow after the text. */
-  arrow?: '↗' | '↓';
+  arrow?: '↗';
 }
 
 const { quiet = false, arrow, class: className, ...rest } = Astro.props;

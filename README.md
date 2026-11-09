@@ -92,7 +92,8 @@ flowchart LR
     M --> G[✅ Pages]
     G --> P[✅ Motion]
     P --> Q[✅ Quality gates]
-    Q --> H[Deploy to Cloudflare]
+    Q --> B[✅ Branding and skill]
+    B --> H[Deploy to Cloudflare]
 ```
 
 ## 📚 Documentation

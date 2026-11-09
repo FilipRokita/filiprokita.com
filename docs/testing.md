@@ -39,6 +39,11 @@ existing build, use `npx playwright test`.
 To cover a new route, add it to the `routes` list in `e2e/routes.ts`. Every route then gets the smoke, axe and
 Content Security Policy checks.
 
+The other browser specs are `shell.spec.ts` (theme, keyboard, navigation, no JavaScript),
+`transitions.spec.ts` (page transitions and reduced motion), `security.spec.ts` (the
+policy) and `not-found.spec.ts` (the 404 page). Unit tests in `tests/` cover the
+contrast math, tokens, the projects helpers and schema, and the SEO helpers.
+
 ## Lighthouse
 
 `lighthouserc.cjs` runs Lighthouse three times against the built `dist/` folder and

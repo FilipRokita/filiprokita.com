@@ -12,21 +12,11 @@ interface Props {
   description?: string;
   /** Structured data for search engines, rendered as a JSON-LD script. */
   jsonLd?: Record<string, unknown>;
-  /** The share image, as a path on the site. */
-  image?: string;
-  /** The Open Graph type. */
-  type?: 'website' | 'article';
 }
 
-const {
-  title,
-  description = site.description,
-  jsonLd,
-  image = '/og.png',
-  type = 'website',
-} = Astro.props;
+const { title, description = site.description, jsonLd } = Astro.props;
 const fullTitle = pageTitle(site.name, title);
-const imageUrl = new URL(image, Astro.site);
+const imageUrl = new URL('/og.png', Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -50,7 +40,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:type" content={type} />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

@@ -5,8 +5,9 @@ The tokens, the themes and the motion rules, and where each one lives.
 ## Tokens
 
 All raw colors, the type scale, the spacing scale and the breakpoints are defined in
-[`src/styles/tokens.css`](../src/styles/tokens.css). Nothing else in the code uses a
-raw color.
+[`src/styles/tokens.css`](../src/styles/tokens.css). The logo (`Logo.astro`), the
+`theme-color` meta tags in `BaseLayout.astro` (they repeat the `--bg` values) and the
+grain in `base.css` are the only other places with raw colors.
 
 | Token | Dark | Light | Used for |
 | :--- | :--- | :--- | :--- |
@@ -27,13 +28,15 @@ Edit the two `--accent` values (and `--on-accent` if needed) in `tokens.css`. Th
 `npm test`: it checks the WCAG AA contrast of every text pair in both themes, so a
 color that is too weak fails.
 
-Three static files carry the color and are not generated from the tokens. Redo them
+A few static files carry the color and are not generated from the tokens. Redo them
 when the accent changes:
 
 | File | What it is |
 | :--- | :--- |
 | `public/favicon.svg` | The logo as a favicon |
 | `docs/brand/banner-dark.svg`, `banner-light.svg` | The README banner |
+| `public/og.png`, `public/apple-touch-icon.png` | The share image and the touch icon. Run `npm run assets` |
+| `docs/brand/preview.png` | The README screenshot |
 
 ## Themes
 
@@ -99,6 +102,7 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
   `view-transition-name` on the one image that takes part, in `pageswap` and
   `pagereveal`, and scrolls the home page back to the row. Pages reached through a
   transition skip the intro (`html[data-transition]`).
+- On phones a thin accent line under the header fills as the page scrolls (CSS only).
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.
 - With `prefers-reduced-motion: reduce`, all transitions and animations are off and

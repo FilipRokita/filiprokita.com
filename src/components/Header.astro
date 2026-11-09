@@ -4,7 +4,7 @@ import Container from './Container.astro';
 import Logo from './Logo.astro';
 ---
 
-<header class="sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
+<header class="site-header sticky top-0 z-20 border-b border-rule bg-bg/85 backdrop-blur-md">
   <Container class="flex min-h-15 items-center justify-between gap-6">
     <a
       href="/"
@@ -36,6 +36,32 @@ import Logo from './Logo.astro';
 </header>
 
 <style>
+  /* Phones: a thin line under the header fills as the page is read. CSS only. */
+  @supports (animation-timeline: scroll()) {
+    @media (max-width: 39.99rem) and (prefers-reduced-motion: no-preference) {
+      .site-header::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        height: 2px;
+        background: var(--accent);
+        transform-origin: left;
+        transform: scaleX(0);
+        animation-name: read-progress;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll(root);
+      }
+
+      @keyframes read-progress {
+        to {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+
   .nav-link {
     color: var(--muted);
     transition: color 0.2s;

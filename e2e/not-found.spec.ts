@@ -1,0 +1,22 @@
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
+
+test.describe('404 page', () => {
+  test('is served for an unknown address, with a way back', async ({
+    page,
+  }) => {
+    const response = await page.goto('/no-such-page/');
+    expect(response?.status()).toBe(404);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Back to the home page/ }),
+    ).toBeVisible();
+  });
+
+  test('has no accessibility violations', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/no-such-page/');
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    expect(violations).toEqual([]);
+  });
+});

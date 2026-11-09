@@ -108,3 +108,25 @@ test.describe('navigation', () => {
     }
   });
 });
+
+test.describe('reading progress', () => {
+  test('phones show a line under the header that fills as the page scrolls', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'phone', 'The line is for phones only');
+    await page.goto('/');
+    const scale = () =>
+      page.evaluate(() => {
+        const { transform } = getComputedStyle(
+          document.querySelector('header') as Element,
+          '::after',
+        );
+        return transform === 'none'
+          ? 1
+          : Number(transform.split(',')[0].slice(7));
+      });
+    expect(await scale()).toBeLessThan(0.1);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await expect.poll(scale).toBeGreaterThan(0.9);
+  });
+});

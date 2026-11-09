@@ -9,13 +9,20 @@ import { nextProject, visibleProjects } from '../../lib/projects';
 
 export const getStaticPaths = (async () => {
   const all = await getCollection('projects');
-  return visibleProjects(all).map((project) => ({
+  const shown = visibleProjects(all);
+  return shown.map((project) => ({
     params: { id: project.id },
-    props: { project, next: nextProject(all, project.id) },
+    props: {
+      project,
+      next: nextProject(all, project.id),
+      figureNumber: String(
+        shown.findIndex((p) => p.id === project.id) + 1,
+      ).padStart(2, '0'),
+    },
   }));
 }) satisfies GetStaticPaths;
 
-const { project, next } = Astro.props;
+const { project, next, figureNumber } = Astro.props;
 const {
   title,
   summary,
@@ -27,10 +34,6 @@ const {
   decisions,
 } = project.data;
 const { Content } = await render(project);
-const all = visibleProjects(await getCollection('projects'));
-const figureNumber = String(
-  all.findIndex((p) => p.id === project.id) + 1,
-).padStart(2, '0');
 
 const facts = [
   { label: 'Type', value: 'Side project' },
