@@ -20,7 +20,12 @@ const figureNumber = String(position).padStart(2, '0');
 <article class="project-row" data-reveal>
   <span class="mono idx text-accent">4.{position}</span>
   <h3 class="name text-step-1 font-[520] tracking-[-0.03em]">
-    <a href={href}>{title}</a>
+    <a href={href}>
+      {title}
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+    </a>
   </h3>
   <p class="summary text-muted">{summary}</p>
   <div class="fig">
@@ -70,6 +75,12 @@ const figureNumber = String(position).padStart(2, '0');
   .name {
     line-height: 1.1;
     transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  /* A small arrow marks the title as a link, also where there is no hover. */
+  .arrow {
+    margin-left: 0.4em;
+    color: var(--accent);
   }
 
   .tags {
