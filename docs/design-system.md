@@ -101,7 +101,8 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
   motion) a soft accent glow follows the pointer over the hero and lights the column
   lines near it.
 - Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
-  open email, LinkedIn or GitHub). It has no button on purpose.
+  open email, LinkedIn or GitHub). It has no button on purpose. The footer only hints
+  at the shortcut, as quiet text that does nothing when clicked, and only on a mouse.
 - On phones a thin accent line under the header fills as the page scrolls (CSS only).
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.

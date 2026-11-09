@@ -14,6 +14,17 @@ test.describe('command palette', () => {
     ).toHaveCount(0);
   });
 
+  test('is hinted at quietly in the footer, as text and not as a button', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const hint = page.locator('footer [data-shortcut-hint]');
+    await expect(hint).toBeVisible();
+    await expect(hint).toHaveText(/Ctrl K|⌘ K/);
+    await hint.click();
+    await expect(page.getByRole('dialog')).toBeHidden();
+  });
+
   test('opens with Ctrl K, filters, and Enter goes to a project', async ({
     page,
   }) => {
