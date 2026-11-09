@@ -4,7 +4,8 @@
 
 Please do not open a public issue for a security problem. Write to
 `contact@filiprokita.com` with what you found and how to reproduce it. I will
-reply as soon as I can.
+reply as soon as I can. You can also use GitHub's private vulnerability reporting,
+under the Security tab of this repository.
 
 ## Scope
 
