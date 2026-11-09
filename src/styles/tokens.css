@@ -1,0 +1,66 @@
+/*
+ * Design tokens. The single place with raw colors and the type and spacing scale.
+ *
+ * Colors use light-dark(light, dark). Which side applies depends on color-scheme:
+ * the system setting by default, or the data-theme attribute set by the theme
+ * toggle. Dark is the default look.
+ */
+:root {
+  color-scheme: dark light;
+
+  --bg: light-dark(#f4f3ef, #0b0b0c);
+  --fg: light-dark(#0e0e10, #ededee);
+  --muted: light-dark(#66666c, #8e8e94);
+  --rule: light-dark(#d9d7cf, #26262a);
+  --panel: light-dark(#ecebe5, #111113);
+  --accent: light-dark(#4f46e5, #a78bfa);
+  --on-accent: light-dark(#ffffff, #0b0b0c);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+/* Tailwind utilities that read the tokens above (bg-bg, text-fg, border-rule, ...). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-panel: var(--panel);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  /* Three breakpoints: phone, tablet, desktop. Utilities are mobile first (sm: is 40rem and up). */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 64rem;
+  --breakpoint-lg: 75rem;
+
+  /* Fluid type scale. */
+  --text-step-0: clamp(1.03rem, 0.97rem + 0.22vw, 1.2rem);
+  --text-step-0--line-height: 1.6;
+  --text-step-1: clamp(1.28rem, 1.08rem + 0.9vw, 1.75rem);
+  --text-step-1--line-height: 1.1;
+  --text-step-2: clamp(1.85rem, 1.25rem + 2.3vw, 3.1rem);
+  --text-step-2--line-height: 1.12;
+  --text-step-3: clamp(2.1rem, 1.1rem + 3.6vw, 4.3rem);
+  --text-step-3--line-height: 1.04;
+
+  /* Fluid spacing and the page width. */
+  --spacing-gutter: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  --spacing-edge: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+  --spacing-block: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --container-page: 88rem;
+
+  --ease-out-expo: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
