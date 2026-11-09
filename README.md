@@ -91,6 +91,5 @@ npm test      # unit tests, with `npm run test:e2e` for the browser tests
 | [📝 Content](docs/content.md) | How to add, hide or remove a project |
 | [🧪 Testing](docs/testing.md) | Test types, how to run them and what CI checks |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |
-| [🔐 GitHub settings](docs/github-settings.md) | Repository protections: enabled and planned |
 
 Rules for contributors and coding agents live in [`AGENTS.md`](AGENTS.md).
