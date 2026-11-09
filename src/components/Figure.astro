@@ -8,8 +8,6 @@ interface Props {
   /** The figure number, such as "01". */
   number: string;
   caption: string;
-  /** The project this image belongs to. The page transition morphs it between pages. */
-  projectId?: string;
   /** Load at once. Use it for the first image on a page. */
   eager?: boolean;
   /** Set where the image sits in a link (the home page rows), so the whole frame is clickable. */
@@ -19,8 +17,7 @@ interface Props {
   sizes: string;
 }
 
-const { src, alt, number, caption, projectId, eager, href, cropped, sizes } =
-  Astro.props;
+const { src, alt, number, caption, eager, href, cropped, sizes } = Astro.props;
 const Frame = href ? 'a' : 'div';
 ---
 
@@ -39,7 +36,6 @@ const Frame = href ? 'a' : 'div';
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       class:list={['w-full', { cropped }]}
-      data-project-image={projectId}
     />
   </Frame>
   <figcaption class="mono mt-3 flex justify-between gap-4 text-muted">

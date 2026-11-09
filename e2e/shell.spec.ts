@@ -109,6 +109,28 @@ test.describe('navigation', () => {
   });
 });
 
+test.describe('active section', () => {
+  test('is marked in a section and cleared again at the top', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'desktop',
+      'The dot is for larger screens',
+    );
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Main' });
+    const current = nav.locator('[aria-current="true"]');
+    await expect(current).toHaveCount(0);
+
+    await page.locator('#what').scrollIntoViewIfNeeded();
+    await expect(current).toHaveText('What I do');
+
+    await page.getByRole('link', { name: 'Filip Rokita' }).first().click();
+    await expect(current).toHaveCount(0);
+  });
+});
+
 test.describe('reading progress', () => {
   test('phones show a line under the header that fills as the page scrolls', async ({
     page,

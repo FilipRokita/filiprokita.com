@@ -100,18 +100,23 @@ import Logo from './Logo.astro';
     history.replaceState(null, '', location.pathname);
   });
 
-  // Mark the nav link of the section in view.
+  // Mark the nav link of the section in view. Above the first section, nothing is marked.
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-section]');
+  const inView = new Set<string>();
+  const mark = () => {
+    for (const link of links) {
+      if (link.dataset.section && inView.has(link.dataset.section))
+        link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    }
+  };
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        for (const link of links) {
-          if (link.dataset.section === entry.target.id)
-            link.setAttribute('aria-current', 'true');
-          else link.removeAttribute('aria-current');
-        }
+        if (entry.isIntersecting) inView.add(entry.target.id);
+        else inView.delete(entry.target.id);
       }
+      mark();
     },
     { rootMargin: '-40% 0px -55% 0px' },
   );

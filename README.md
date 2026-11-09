@@ -52,7 +52,7 @@ never a change to page code.
 | Styling | [Tailwind CSS](https://tailwindcss.com) v4 via `@tailwindcss/vite` |
 | Images | `<Image />` from `astro:assets` |
 | Animation | Plain CSS first, a library only if CSS is not enough |
-| Interactivity | A few small scripts: theme switch, clock, active menu link, page transitions |
+| Interactivity | A few small scripts: theme switch, clock, active menu link |
 | Quality | ESLint, Prettier, Vitest, Playwright with axe, Lighthouse CI, a hashed Content Security Policy |
 | Runtime | Node 26 (LTS), npm |
 

@@ -97,11 +97,6 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 - Intro: the hero name rises out of its line and the rest fades in (`data-intro`).
   Sections and project rows fade in as they scroll into view (`data-reveal`, CSS
   scroll-driven animation, where supported).
-- The project image morphs between the home page and a project page, in both
-  directions. [`src/scripts/transitions.ts`](../src/scripts/transitions.ts) sets
-  `view-transition-name` on the one image that takes part, in `pageswap` and
-  `pagereveal`, and scrolls the home page back to the row. Pages reached through a
-  transition skip the intro (`html[data-transition]`).
 - On phones a thin accent line under the header fills as the page scrolls (CSS only).
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
 - A theme change grows the new theme as a circle from the toggle.
@@ -129,7 +124,7 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Hero | `src/components/Hero.astro` | Local time, the name, the statement and links |
 | Section | `src/components/Section.astro` | Numbered label, one-line title and a slot. The `after` slot is full width |
 | ItemGrid | `src/components/ItemGrid.astro` | Numbered items in 3 or 4 columns, 2 on tablets, 1 on phones |
-| Figure | `src/components/Figure.astro` | A framed, captioned image with the project morph hook |
+| Figure | `src/components/Figure.astro` | A framed, captioned image |
 | ProjectRow | `src/components/ProjectRow.astro` | One project on the home page |
 
 Site facts (name, links, section list) are in `src/config/site.ts`. The build date and
