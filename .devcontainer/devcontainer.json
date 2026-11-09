@@ -3,7 +3,7 @@
 {
 	"name": "filiprokita.com Dev",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:5-26-trixie",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
@@ -20,7 +20,9 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-                "anthropic.claude-code"
+                "anthropic.claude-code",
+				"astro-build.astro-vscode",
+				"bradlc.vscode-tailwindcss"
 			]
 		}
 	}
