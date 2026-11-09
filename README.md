@@ -18,12 +18,9 @@
 
 <br>
 
-> [!NOTE]
-> **Status: early setup.** The dev environment, project rules and the Astro
-> foundation are in place. The site itself (design, content, sections) is not
-> built yet.
-
 Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
+
+![The home page in the dark theme](docs/brand/preview.png)
 
 📬 Contact: `contact@filiprokita.com`
 
@@ -53,9 +50,9 @@ Personal portfolio of **Filip Rokita**. **Fast, static and simple to maintain.**
 | Styling | [Tailwind CSS](https://tailwindcss.com) v4 via `@tailwindcss/vite` |
 | Images | `<Image />` from `astro:assets` |
 | Animation | Plain CSS first, a library only if CSS is not enough |
-| Interactivity | React only where it is truly needed |
+| Interactivity | A few small scripts: theme switch, clock, active menu link, page transitions |
 | Hosting | Cloudflare (static assets) |
-| Quality | ESLint, Prettier, Playwright with axe, Lighthouse CI |
+| Quality | ESLint, Prettier, Vitest, Playwright with axe, Lighthouse CI, a hashed Content Security Policy |
 | Runtime | Node 26 (LTS), npm |
 
 ## 🧭 Principles
@@ -79,6 +76,7 @@ npm ci        # once: installs the locked dependencies
 npm run dev   # dev server on http://localhost:4321
 npm run build # type check and production build into dist/
 npm run lint  # ESLint, with `npm run format:check` for Prettier
+npm test      # unit tests, with `npm run test:e2e` for the browser tests
 ```
 
 ## 🗺️ Roadmap
@@ -91,8 +89,10 @@ flowchart LR
     D --> E[✅ Lighthouse CI]
     E --> F[✅ Design system and shell]
     F --> M[✅ Content model]
-    M --> G[Pages]
-    G --> H[Deploy to Cloudflare]
+    M --> G[✅ Pages]
+    G --> P[✅ Motion]
+    P --> Q[✅ Quality gates]
+    Q --> H[Deploy to Cloudflare]
 ```
 
 ## 📚 Documentation
