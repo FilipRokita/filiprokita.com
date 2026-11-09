@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Arrow from './Arrow.astro';
 import Figure from './Figure.astro';
 import Link from './Link.astro';
 
@@ -22,9 +23,7 @@ const figureNumber = String(position).padStart(2, '0');
   <h3 class="name text-step-1 font-[520] tracking-[-0.03em]">
     <a href={href}>
       {title}
-      <span class="arrow" aria-hidden="true">
-        →
-      </span>
+      <Arrow direction="right" class="arrow" />
     </a>
   </h3>
   <p class="summary text-muted">{summary}</p>
@@ -78,7 +77,7 @@ const figureNumber = String(position).padStart(2, '0');
   }
 
   /* A small arrow marks the title as a link, also where there is no hover. */
-  .arrow {
+  .name :global(.arrow) {
     margin-left: 0.4em;
     color: var(--accent);
   }

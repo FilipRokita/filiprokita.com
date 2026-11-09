@@ -1,9 +1,10 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import Arrow from './Arrow.astro';
 
 interface Props extends HTMLAttributes<'a'> {
-  /** An arrow after the text. */
-  arrow?: '↗';
+  /** An arrow: ↗ after the text on outbound links, ← before it on a link back. */
+  arrow?: '↗' | '←';
   /** A resting underline even with an arrow. For the main calls to action. */
   underlined?: boolean;
 }
@@ -28,13 +29,10 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
   rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
   {...rest}
 >
+  {arrow === '←' && <Arrow direction="left" class="back" />}
   <slot />
   {external && <span class="sr-only"> (opens in a new tab)</span>}
-  {arrow && (
-    <span class="arr" aria-hidden="true">
-      {arrow}
-    </span>
-  )}
+  {arrow === '↗' && <Arrow direction="up-right" class="arr" />}
 </a>
 
 <style>
@@ -76,8 +74,12 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
     transform: scaleX(1);
   }
 
-  .arr {
-    display: inline-block;
+  .link :global(.back) {
+    margin-right: 0.6rem;
+    color: var(--accent);
+  }
+
+  .link :global(.arr) {
     margin-left: 0.6rem;
     color: var(--accent);
     transition: transform 0.3s;
@@ -89,7 +91,7 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
       transform: scaleX(1);
     }
 
-    .link:hover .arr {
+    .link:hover :global(.arr) {
       transform: translate(0.2rem, -0.2rem);
     }
   }

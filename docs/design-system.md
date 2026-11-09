@@ -79,7 +79,7 @@ The `mono` utility is the small label style: Geist Mono, uppercase, wide trackin
 
 | Utility | Meaning |
 | :--- | :--- |
-| `gap-gutter`, `px-edge`, `py-block` | Fluid column gap, page edge and section spacing |
+| `gap-gutter`, `px-edge`, `py-section` | Fluid column gap, page edge and section spacing |
 | `max-w-page` | The page width, 88 rem |
 
 Three breakpoints only: `sm` is 40 rem (phone and up), `md` is 64 rem (tablet and
@@ -121,6 +121,7 @@ focus ring style (`:focus-visible`), a faint static grain, and the custom scroll
 | Layout | `src/layouts/BaseLayout.astro` | Head, fonts, theme script, skip link, header, main, footer |
 | Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. On phones only Contact is shown |
 | Footer | `src/components/Footer.astro` | Build date and commit, links, theme toggle |
+| Arrow | `src/components/Arrow.astro` | The one arrow icon (right, left, up-right): a thin square-ended SVG stroke, so every arrow matches the site's lines |
 | Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |

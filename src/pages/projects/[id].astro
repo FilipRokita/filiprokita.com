@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import Guides from '../../components/Guides.astro';
+import Arrow from '../../components/Arrow.astro';
 import Figure from '../../components/Figure.astro';
 import Link from '../../components/Link.astro';
 import Section from '../../components/Section.astro';
@@ -50,11 +51,9 @@ const factCount = facts.length + (links.live ? 2 : 1);
     <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
       <Link
         href="/#projects"
+        arrow="←"
         class="mono inline-flex min-h-11 items-center text-muted"
       >
-        <span class="mr-[.6rem] text-accent" aria-hidden="true">
-          ←
-        </span>
         All projects
       </Link>
       <h1 class="mt-[clamp(1.5rem,1rem+3vw,4rem)] -ml-[.04em] text-[clamp(3.5rem,1.5rem+13vw,15rem)] leading-[.86] font-[560] tracking-[-0.065em]">
@@ -102,7 +101,7 @@ const factCount = facts.length + (links.live ? 2 : 1);
     </div>
   </div>
 
-  <div class="mt-block">
+  <div class="mt-section">
     <Section
       id="what-it-is"
       index="01"
@@ -145,10 +144,7 @@ const factCount = facts.length + (links.live ? 2 : 1);
       >
         <span class="mono text-muted">Next project</span>
         <strong class="mt-4 block text-[clamp(2.5rem,1rem+8vw,9rem)] leading-[.95] font-[520] tracking-[-0.06em]">
-          {next.data.title}{' '}
-          <span class="text-accent" aria-hidden="true">
-            →
-          </span>
+          {next.data.title} <Arrow direction="right" class="text-accent" />
         </strong>
       </a>
     </div>
