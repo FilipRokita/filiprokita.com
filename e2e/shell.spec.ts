@@ -145,6 +145,30 @@ test.describe('active section', () => {
   });
 });
 
+test.describe('active section dot', () => {
+  test('does not move the menu links when it changes', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'desktop',
+      'The dot is for larger screens',
+    );
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Main' });
+    const positions = () =>
+      nav
+        .getByRole('link')
+        .evaluateAll((links) =>
+          links.map((link) => Math.round(link.getBoundingClientRect().left)),
+        );
+    const before = await positions();
+    await page.locator('#what').scrollIntoViewIfNeeded();
+    await expect(nav.locator('[aria-current="true"]')).toHaveText('What I do');
+    expect(await positions()).toEqual(before);
+  });
+});
+
 test.describe('reading progress', () => {
   test('phones show a line under the header that fills as the page scrolls', async ({
     page,
