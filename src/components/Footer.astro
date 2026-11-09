@@ -39,35 +39,7 @@ const commitUrl =
       <Link href={site.github} rel="me" class="!py-[.15rem]">
         GitHub
       </Link>
-      <!-- A quiet hint for people with a keyboard. Not a button. Shown by the script below. -->
-      <kbd
-        class="shortcut mono font-[inherit] text-muted"
-        data-shortcut-hint
-        hidden
-        aria-hidden="true"
-      >
-        Ctrl K
-      </kbd>
       <ThemeToggle />
     </div>
   </Container>
 </footer>
-
-<style>
-  .shortcut {
-    padding: 0.05rem 0.4rem;
-    border: 1px solid var(--rule);
-    border-radius: 0.25rem;
-    opacity: 0.8;
-  }
-</style>
-
-<script>
-  // Only where there is a keyboard and a mouse. The key is named for the platform.
-  const hint = document.querySelector<HTMLElement>('[data-shortcut-hint]');
-  if (hint && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const apple = /Mac|iPhone|iPad/.test(navigator.userAgent);
-    hint.textContent = apple ? '⌘ K' : 'Ctrl K';
-    hint.hidden = false;
-  }
-</script>
