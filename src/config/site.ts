@@ -11,7 +11,7 @@ export const site = {
   linkedin: 'https://linkedin.com/in/filiprokita',
   repo: 'https://github.com/FilipRokita/filiprokita.com',
   /** Links to the build commit work only once the repository is public. */
-  repoIsPublic: false,
+  repoIsPublic: true,
 } as const;
 
 /** The sections of the home page, in order. Used by the header navigation. */
