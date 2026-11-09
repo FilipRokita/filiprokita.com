@@ -26,3 +26,17 @@ test('each row exposes a single link to assistive technology', async ({
   const row = page.locator('article.project-row').first();
   await expect(row.getByRole('link')).toHaveCount(1);
 });
+
+test('the project title fits on one line on a phone', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'phone', 'Phone only');
+  for (const id of ['pr-test-agent', 'tapisode', 'evencost', 'forecheck']) {
+    await page.goto(`/projects/${id}/`);
+    const lines = await page.locator('h1').evaluate((h1) => {
+      const line = parseFloat(getComputedStyle(h1).lineHeight);
+      return h1.getBoundingClientRect().height / line;
+    });
+    expect(lines, id).toBeLessThan(1.5);
+  }
+});

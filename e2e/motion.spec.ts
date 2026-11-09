@@ -21,3 +21,16 @@ test.describe('motion', () => {
     );
   });
 });
+
+test('touch movement over the hero does not light the column lines', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'phone', 'Phone only');
+  await page.goto('/');
+  await page.locator('.hero').dispatchEvent('pointermove', {
+    pointerType: 'touch',
+    clientX: 100,
+    clientY: 100,
+  });
+  await expect(page.locator('.hero')).not.toHaveAttribute('data-lit', '');
+});

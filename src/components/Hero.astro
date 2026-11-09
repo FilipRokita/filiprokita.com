@@ -184,6 +184,8 @@ import ThemeToggle from './ThemeToggle.astro';
   if (hero && fine.matches) {
     let frame = 0;
     hero.addEventListener('pointermove', (event) => {
+      // Touch and pen movement never lights the lines, even where the device reports a fine pointer.
+      if (event.pointerType !== 'mouse') return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const box = hero.getBoundingClientRect();
