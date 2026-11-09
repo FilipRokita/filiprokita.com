@@ -1,5 +1,5 @@
 ---
-title: PR test agent
+title: PR Test Agent
 summary: An AI agent that writes and verifies unit tests for pull requests.
 order: 4
 cover: ../../assets/projects/pr-test-agent/cover.webp

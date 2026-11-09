@@ -39,6 +39,8 @@ const facts = [
   { label: 'Type', value: 'Side project' },
   { label: 'Stack', value: stack.join(', ') },
 ];
+// Type, Stack, Source, and Live when the project has a live preview.
+const factCount = facts.length + (links.live ? 2 : 1);
 ---
 
 <BaseLayout title={title} description={`${title}: ${summary}`}>
@@ -55,7 +57,10 @@ const facts = [
     <h1 class="mt-[clamp(1.5rem,1rem+3vw,4rem)] -ml-[.04em] text-[clamp(3.5rem,1.5rem+13vw,15rem)] leading-[.86] font-[560] tracking-[-0.065em]">
       {title}
     </h1>
-    <dl class="facts mt-[clamp(2rem,1rem+4vw,5rem)] border-t border-rule">
+    <dl
+      class="facts mt-[clamp(2rem,1rem+4vw,5rem)] border-t border-rule"
+      data-count={factCount}
+    >
       {facts.map(({ label, value }) => (
         <div>
           <dt class="mono text-muted">{label}</dt>
@@ -184,15 +189,29 @@ const facts = [
       padding-left: var(--spacing-gutter);
       border-left: 1px solid var(--rule);
     }
+
+    /* An odd last fact takes the whole row, so there is no empty cell. */
+    .facts > div:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Desktop: one column per fact, so a project with fewer facts still fills the row. */
+  .facts[data-count='3'] {
+    --count: 3;
   }
 
   @media (min-width: 64rem) {
     .facts {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--count, 4), minmax(0, 1fr));
     }
 
     .facts > div {
       border-top: 0;
+    }
+
+    .facts > div:last-child:nth-child(odd) {
+      grid-column: auto;
     }
 
     .facts > div + div {
