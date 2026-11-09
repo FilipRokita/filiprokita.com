@@ -17,7 +17,7 @@ What every entry in the repository root is for.
 | `package.json`, `package-lock.json` | Dependencies and npm scripts |
 | `.nvmrc` | Node version for local and hosted builds |
 | [`public/`](../public/) | Static files served as they are, including the share image `og.png` |
-| [`design/`](../design/) | Source of the share image (`og.html`). `npm run og` renders it to `public/og.png` |
+| [`design/`](../design/) | Source of the generated images. `npm run assets` renders the share image `public/og.png` from `og.html` and `public/apple-touch-icon.png` from the favicon |
 | [`tests/`](../tests/), `vitest.config.ts` | Unit tests. See [Testing](testing.md) |
 | `eslint.config.js` | ESLint rules: TypeScript, Astro and accessibility |
 | `.prettierrc.mjs`, `.prettierignore` | Prettier settings and what it skips |

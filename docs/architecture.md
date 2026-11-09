@@ -40,7 +40,7 @@ The copy of the list sections lives in `src/config/home.ts`.
 | Images | `astro:assets` | Modern formats, correct sizes and lazy loading without extra work |
 | Animation | CSS first | No JavaScript cost. A library only if CSS cannot do it |
 | Page transitions | Native CSS first | `<ClientRouter />` adds client JavaScript, so it is added only if CSS is not enough |
-| Interactivity | React islands, only when needed | Keeps the default page JavaScript-free |
+| Interactivity | A few small vanilla scripts, no framework | The page works without them. React only if a feature truly needs it |
 | Hosting | Cloudflare | Fast CDN, free for static sites, usable commercially |
 | Package manager | npm | Ships with Node. Corepack is no longer bundled since Node 25 |
 | Quality gates | ESLint, Prettier, `astro check`, Playwright with axe, Lighthouse CI, gitleaks | Every change is checked by CI before it reaches `main`. See [Testing](testing.md) |

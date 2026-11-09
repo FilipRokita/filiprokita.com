@@ -3,8 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <title>Share image</title>
-    <!-- Source of public/og.png (1200x630). Render it with: npm run og -->
+    <!-- Source of public/og.png (1200x630). Render it with: npm run assets -->
     <style>
+      @font-face {
+        font-family: 'Geist';
+        src: url('fonts/geist-latin.woff2') format('woff2');
+        font-weight: 100 900;
+      }
       html,
       body {
         margin: 0;
@@ -31,7 +36,7 @@
       }
       h1 {
         margin: 0;
-        font-size: 168px;
+        font-size: 236px;
         line-height: 0.86;
         font-weight: 560;
         letter-spacing: -0.065em;
@@ -56,7 +61,27 @@
     </style>
   </head>
   <body>
-    <div class="top"><span class="dot"></span>filiprokita.com</div>
+    <div class="top">
+      <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true">
+        <circle cx="24" cy="24" r="24" fill="#1b1b1b" />
+        <circle
+          cx="24"
+          cy="24"
+          r="19.2"
+          fill="none"
+          stroke="#fff"
+          stroke-width="2.6"
+        />
+        <g transform="translate(6 6) scale(.75)" fill="#fff">
+          <rect x="9" y="9" width="30" height="8" rx="4" />
+          <rect x="9" y="20" width="19" height="8" rx="4" />
+          <circle cx="35" cy="24" r="4" opacity=".42" />
+          <circle cx="13" cy="35" r="4" />
+          <circle cx="24" cy="35" r="4" opacity=".42" />
+          <circle cx="35" cy="35" r="4" opacity=".42" />
+        </g></svg
+      >filiprokita.com
+    </div>
     <h1>Filip Rokita</h1>
     <p>
       <b>Software engineer</b> building apps, data and AI, from idea to
