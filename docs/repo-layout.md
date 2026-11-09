@@ -10,7 +10,8 @@ What every entry in the repository root is for.
 | [`AGENTS.md`](../AGENTS.md) | Rules for AI coding agents working in this repository |
 | [`docs/`](.) | Project documentation |
 | [`.devcontainer/`](../.devcontainer/) | Dev container configuration and setup script. See [Dev environment](dev-environment.md) |
-| [`src/`](../src/) | The site: `pages/` routes, `layouts/`, `components/`, `styles/` (tokens, base, motion), `lib/` pure helpers, `config/` site facts |
+| [`src/`](../src/) | The site: `pages/` routes, `layouts/`, `components/`, `styles/` (tokens, base, motion), `lib/` pure helpers, `config/` site facts, `content/projects/` one file per project, `schemas/`, `assets/` images. See [Content](content.md) |
+| `src/content.config.ts` | The projects collection and its loader |
 | `astro.config.mjs` | Astro configuration: the site URL and the Tailwind plugin |
 | `tsconfig.json` | TypeScript configuration, extends Astro's strict preset |
 | `package.json`, `package-lock.json` | Dependencies and npm scripts |

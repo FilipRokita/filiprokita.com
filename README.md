@@ -90,7 +90,8 @@ flowchart LR
     C --> D[✅ GitHub Actions]
     D --> E[✅ Lighthouse CI]
     E --> F[✅ Design system and shell]
-    F --> G[Content and pages]
+    F --> M[✅ Content model]
+    M --> G[Pages]
     G --> H[Deploy to Cloudflare]
 ```
 
@@ -101,6 +102,7 @@ flowchart LR
 | [🏛️ Architecture](docs/architecture.md) | Technical decisions and the build and deploy flow |
 | [🧰 Dev environment](docs/dev-environment.md) | The dev container and tooling |
 | [🎨 Design system](docs/design-system.md) | Tokens, themes, typography and motion |
+| [📝 Content](docs/content.md) | How to add, hide or remove a project |
 | [🧪 Testing](docs/testing.md) | Test types, how to run them and what CI checks |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |
 | [🔐 GitHub settings](docs/github-settings.md) | Repository protections: enabled and planned |
