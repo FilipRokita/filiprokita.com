@@ -16,7 +16,8 @@ What every entry in the repository root is for.
 | `tsconfig.json` | TypeScript configuration, extends Astro's strict preset |
 | `package.json`, `package-lock.json` | Dependencies and npm scripts |
 | `.nvmrc` | Node version for local and hosted builds |
-| [`public/`](../public/) | Static files served as they are |
+| [`public/`](../public/) | Static files served as they are, including the share image `og.png` |
+| [`design/`](../design/) | Source of the share image (`og.html`). `npm run og` renders it to `public/og.png` |
 | [`tests/`](../tests/), `vitest.config.ts` | Unit tests. See [Testing](testing.md) |
 | `eslint.config.js` | ESLint rules: TypeScript, Astro and accessibility |
 | `.prettierrc.mjs`, `.prettierignore` | Prettier settings and what it skips |

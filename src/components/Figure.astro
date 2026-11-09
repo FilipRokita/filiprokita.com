@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** The figure number, such as "01". */
+  number: string;
+  caption: string;
+  /** The `view-transition-name` that lets this image morph into the same one on another page. */
+  transitionName?: string;
+  /** Load at once. Use it for the first image on a page. */
+  eager?: boolean;
+  /** Set where the image sits in a link (the home page rows), so the whole frame is clickable. */
+  href?: string;
+  /** Crop to a fixed ratio, as the project list does. The project page shows the whole image. */
+  cropped?: boolean;
+  sizes: string;
+}
+
+const {
+  src,
+  alt,
+  number,
+  caption,
+  transitionName,
+  eager,
+  href,
+  cropped,
+  sizes,
+} = Astro.props;
+const Frame = href ? 'a' : 'div';
+---
+
+<figure class="m-0">
+  <Frame
+    href={href}
+    class="frame block overflow-hidden border border-rule bg-panel"
+    tabindex={href ? -1 : undefined}
+    aria-hidden={href ? 'true' : undefined}
+  >
+    <Image
+      src={src}
+      alt={alt}
+      sizes={sizes}
+      widths={[640, 960, 1280, 1600]}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      class:list={['w-full', { cropped }]}
+      style={
+        transitionName ? `view-transition-name: ${transitionName}` : undefined
+      }
+    />
+  </Frame>
+  <figcaption class="mono mt-3 flex justify-between gap-4 text-muted">
+    <span>Fig. {number}</span>
+    <span>{caption}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .cropped {
+    aspect-ratio: 16 / 8.4;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .frame :global(img) {
+    transition: transform 0.8s var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    :global(.project-row:hover) .frame :global(img) {
+      transform: scale(1.025);
+    }
+  }
+</style>

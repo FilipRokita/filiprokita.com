@@ -15,6 +15,21 @@ flowchart LR
     CDN --> Visitor[Visitor]
 ```
 
+## Pages
+
+| Route | What it is |
+| :--- | :--- |
+| `/` | Home: hero, About, What I do, How I work, Projects, Contact |
+| `/projects/<id>/` | One case study per visible project, from the content collection |
+| `/how-this-site-is-built/` | The checks behind the site |
+| `/404` | Not found page |
+| `/robots.txt`, `/sitemap-index.xml` | Generated at build time |
+
+Every page shares `BaseLayout`, which sets the title, canonical link, Open Graph
+and Twitter tags, and optional JSON-LD (a Person on the home page). Section and
+list layouts are components (`Section`, `ItemGrid`, `Figure`, `ProjectRow`).
+The copy of the list sections lives in `src/config/home.ts`.
+
 ## Decisions
 
 | Decision | Choice | Why |

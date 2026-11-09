@@ -3,14 +3,29 @@ import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../config/site';
+import { pageTitle } from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Structured data for search engines, rendered as a JSON-LD script. */
+  jsonLd?: Record<string, unknown>;
+  /** The share image, as a path on the site. */
+  image?: string;
+  /** The Open Graph type. */
+  type?: 'website' | 'article';
 }
 
-const { title = site.name, description = site.description } = Astro.props;
+const {
+  title,
+  description = site.description,
+  jsonLd,
+  image = '/og.png',
+  type = 'website',
+} = Astro.props;
+const fullTitle = pageTitle(site.name, title);
+const imageUrl = new URL(image, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -30,10 +45,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       content="#0b0b0c"
       media="(prefers-color-scheme: dark)"
     />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
     <!-- Applies a saved theme before the first paint, so there is no flash of the wrong one. -->

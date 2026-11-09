@@ -1,0 +1,70 @@
+---
+import ItemGrid from '../components/ItemGrid.astro';
+import Link from '../components/Link.astro';
+import Section from '../components/Section.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const facts = [
+  {
+    title: 'Static and fast',
+    text: 'Every page is built ahead of time and served as plain files. The only scripts are the theme switch, the clock and the active menu link.',
+  },
+  {
+    title: 'Typed end to end',
+    text: 'TypeScript in strict mode, and project content validated by a schema at build time. A broken entry fails the build.',
+  },
+  {
+    title: 'Tested',
+    text: 'Unit tests for the logic and browser tests for every page, on desktop and on a phone, in both themes.',
+  },
+  {
+    title: 'Accessible',
+    text: 'An automated axe check runs on every page in the light and the dark theme. Pages work without JavaScript.',
+  },
+  {
+    title: 'Measured',
+    text: 'Lighthouse runs on every change, with minimum scores for performance, accessibility, best practices and SEO.',
+  },
+  {
+    title: 'Safe by default',
+    text: 'A secret scan runs on every change and dependencies are updated by Dependabot.',
+  },
+] as const;
+---
+
+<BaseLayout
+  title="How this site is built"
+  description="The checks behind this site: types, tests, accessibility, performance and security."
+>
+  <div class="pt-[clamp(1.5rem,1rem+2vw,3rem)]">
+    <div class="mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+      <Link href="/" class="mono inline-flex min-h-11 items-center text-muted">
+        <span class="mr-[.6rem] text-accent" aria-hidden="true">
+          ←
+        </span>
+        Home
+      </Link>
+    </div>
+  </div>
+  <Section
+    id="built"
+    index="01"
+    label="This site"
+    asH1
+    title="How this site"
+    accent="is built."
+  >
+    <p class="mt-8 max-w-[52ch] text-step-1 leading-[1.4] tracking-[-0.015em] text-muted">
+      A portfolio is also a piece of work. Here is what stands behind this one.
+    </p>
+    <ItemGrid section={1} items={facts} columns={3} />
+    {site.repoIsPublic && (
+      <p class="mt-8">
+        <Link href={site.repo} rel="me" arrow="↗" class="mono">
+          Source on GitHub
+        </Link>
+      </p>
+    )}
+  </Section>
+</BaseLayout>

@@ -1,0 +1,95 @@
+---
+interface Item {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  /** The section number, so the items read 2.1, 2.2 and so on. */
+  section: number;
+  items: readonly Item[];
+  /** Columns on a desktop. Tablets show two and phones one. */
+  columns: 3 | 4;
+}
+
+const { section, items, columns } = Astro.props;
+---
+
+<ul
+  class:list={[
+    'item-grid mt-[clamp(2.5rem,1rem+4vw,5rem)] list-none border-t border-rule p-0',
+    columns === 3 ? 'cols-3' : 'cols-4',
+  ]}
+>
+  {items.map((item, i) => (
+    <li class="item">
+      <span class="mono text-accent">
+        {section}.{i + 1}
+      </span>
+      <h3 class="mt-[.9rem] mb-[.6rem] text-step-1 font-[520] tracking-[-0.03em]">
+        {item.title}
+      </h3>
+      <p class="text-muted">{item.text}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* Phones: one column, a rule between items. */
+  .item {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .item:first-child {
+    border-top: 0;
+  }
+
+  /* Tablets: two columns, with a rule above the second row. */
+  @media (min-width: 40rem) {
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .item {
+      padding: 1.5rem var(--spacing-gutter) 1.5rem 0;
+    }
+
+    .item:nth-child(2) {
+      border-top: 0;
+    }
+
+    .item:nth-child(even) {
+      padding-left: var(--spacing-gutter);
+      border-left: 1px solid var(--rule);
+    }
+  }
+
+  /* Desktop: one row, with a rule between columns. */
+  @media (min-width: 64rem) {
+    .cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .item {
+      padding-block: 1.5rem 0;
+      border-top: 0;
+    }
+
+    .item:nth-child(even),
+    .item + .item {
+      padding-left: var(--spacing-gutter);
+      border-left: 1px solid var(--rule);
+    }
+
+    .item:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>

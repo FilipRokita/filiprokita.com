@@ -1,5 +1,6 @@
 // @ts-check
 import { execSync } from 'node:child_process';
+import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -18,6 +19,7 @@ const commit = (() => {
 
 export default defineConfig({
   site: 'https://www.filiprokita.com',
+  integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],
   fonts: [
     {
       provider: fontProviders.fontsource(),

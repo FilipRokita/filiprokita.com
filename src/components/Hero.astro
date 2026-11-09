@@ -1,0 +1,133 @@
+---
+import { site } from '../config/site';
+import Link from './Link.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<section class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-block">
+  <!-- Faint column lines behind the hero: 12 on desktop, 6 on tablets, 4 on phones. -->
+  <div class="guides absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="mx-auto h-full w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid grid-cols-4 gap-x-gutter sm:grid-cols-6 md:grid-cols-12">
+      {Array.from({ length: 12 }, (_, i) => (
+        <i
+          class:list={[
+            'guide',
+            { 'max-md:hidden': i >= 6 },
+            { 'max-sm:hidden': i >= 4 },
+          ]}
+        />
+      ))}
+    </div>
+  </div>
+  <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">
+    <div class="mono flex flex-wrap items-center justify-between gap-x-4 gap-y-1 pb-[clamp(2rem,1rem+6vw,7rem)] text-muted">
+      <span>
+        Kraków, PL
+        <span data-clock-wrap hidden>
+          {' '}
+          · <time data-clock></time> local
+        </span>{' '}
+        · remote
+      </span>
+      <span class="max-md:hidden">
+        <ThemeToggle />
+      </span>
+    </div>
+    <h1 class="title font-[560] tracking-[-0.065em] whitespace-nowrap">
+      <span class="line">
+        <span>{site.name}</span>
+      </span>
+    </h1>
+    <div class="mt-[clamp(2.5rem,1rem+5vw,6rem)] grid grid-cols-12 items-start gap-x-gutter gap-y-8">
+      <p class="mono col-span-12 text-muted md:col-span-3">( Overview )</p>
+      <p class="col-span-12 text-step-2 font-[450] tracking-[-0.035em] md:col-span-6 md:col-start-4">
+        <span class="block">Software engineer</span>
+        <em class="block text-muted not-italic">building apps, data and AI,</em>
+        <em class="block text-muted not-italic">from idea to production.</em>
+      </p>
+      <p class="mono col-span-12 flex flex-wrap items-baseline gap-x-7 gap-y-1 md:col-span-9 md:col-start-4 lg:col-span-3 lg:col-start-10">
+        <Link
+          href={`mailto:${site.email}`}
+          quiet
+          arrow="↗"
+          class="text-[.85rem]"
+        >
+          Email
+        </Link>
+        <Link
+          href={site.linkedin}
+          rel="me"
+          quiet
+          arrow="↗"
+          class="text-[.85rem]"
+        >
+          LinkedIn
+        </Link>
+        <Link href={site.github} rel="me" quiet arrow="↗" class="text-[.85rem]">
+          GitHub
+        </Link>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The name fills the width of the page. */
+  .title {
+    position: relative;
+    margin-left: -0.04em;
+    font-size: min(
+      calc((100vw - 2 * var(--spacing-edge)) / 4.75),
+      calc(var(--container-page) / 4.75)
+    );
+    line-height: 0.86;
+  }
+
+  /* The line clips its text, so a later reveal can slide the text up from below. */
+  .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+
+  .line > span {
+    display: block;
+  }
+
+  .guide {
+    position: relative;
+    border-left: 1px solid color-mix(in oklab, var(--rule) 45%, transparent);
+  }
+
+  /* A fainter line halfway across each column. */
+  .guide::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: calc(50% + var(--spacing-gutter) / 2);
+    border-left: 1px solid color-mix(in oklab, var(--rule) 55%, transparent);
+  }
+
+  .guide:last-child::after {
+    display: none;
+  }
+</style>
+
+<script>
+  // The local time in Kraków. Shown only once the script runs.
+  const clock = document.querySelector<HTMLTimeElement>('[data-clock]');
+  const wrap = document.querySelector<HTMLElement>('[data-clock-wrap]');
+  if (clock && wrap) {
+    const format = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Europe/Warsaw',
+    });
+    const tick = () => {
+      clock.textContent = format.format(new Date());
+    };
+    tick();
+    wrap.hidden = false;
+    setInterval(tick, 30_000);
+  }
+</script>

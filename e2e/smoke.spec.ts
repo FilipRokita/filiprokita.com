@@ -2,7 +2,14 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 // Every route of the site. Add new routes here.
-const routes = ['/'];
+const routes = [
+  '/',
+  '/projects/tapisode/',
+  '/projects/evencost/',
+  '/projects/forecheck/',
+  '/projects/pr-test-agent/',
+  '/how-this-site-is-built/',
+];
 
 for (const route of routes) {
   test.describe(route, () => {
