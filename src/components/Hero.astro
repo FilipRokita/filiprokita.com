@@ -9,10 +9,13 @@ import ThemeToggle from './ThemeToggle.astro';
   <Guides />
   <!-- On a mouse, a soft glow follows the pointer and lights the column lines near it. -->
   <div
-    class="glow absolute inset-0 pointer-events-none"
+    class="glow absolute inset-0 pointer-events-none print:hidden"
     aria-hidden="true"
   ></div>
-  <div class="lit absolute inset-0 pointer-events-none" aria-hidden="true">
+  <div
+    class="lit absolute inset-0 pointer-events-none print:hidden"
+    aria-hidden="true"
+  >
     <Guides lit />
   </div>
   <div class="relative mx-auto w-[min(var(--container-page),100%-2*var(--spacing-edge))]">

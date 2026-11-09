@@ -17,6 +17,14 @@
   --on-accent: light-dark(#ffffff, #0b0b0c);
 }
 
+/* A visitor who asks for more contrast gets darker secondary text and stronger lines. */
+@media (prefers-contrast: more) {
+  :root {
+    --muted: light-dark(#44444a, #bcbcc2);
+    --rule: light-dark(#8a8880, #55555b);
+  }
+}
+
 :root[data-theme='dark'] {
   color-scheme: dark;
 }

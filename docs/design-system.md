@@ -9,6 +9,11 @@ All raw colors, the type scale, the spacing scale and the breakpoints are define
 `theme-color` meta tags in `BaseLayout.astro` (they repeat the `--bg` values) and the
 grain in `base.css` are the only other places with raw colors.
 
+**The rule:** a component never writes a raw color. It uses a token, through a Tailwind
+utility (`bg-bg`, `text-muted`, ...) or `var(--token)` in CSS. That is what keeps the
+light and dark themes, the contrast tests, the high contrast mode and the print styles
+working for every new component without extra work.
+
 | Token | Dark | Light | Used for |
 | :--- | :--- | :--- | :--- |
 | `--bg` | `#0b0b0c` | `#f4f3ef` | Page background |
@@ -37,6 +42,15 @@ when the accent changes:
 | `docs/brand/banner-dark.svg`, `banner-light.svg` | The README banner |
 | `public/og.png`, `public/apple-touch-icon.png` | The share image and the touch icon. Run `npm run assets` |
 | `docs/brand/preview.png` | The README screenshot |
+
+### High contrast and print
+
+- `@media (prefers-contrast: more)` in `tokens.css` overrides `--muted` and `--rule`
+  with stronger values. `tests/tokens.test.ts` checks that the muted text reaches 7:1
+  in both themes with it on.
+- [`src/styles/print.css`](../src/styles/print.css) styles print and PDF: the light
+  colors whatever the theme, no motion or grain. The header, the column lines, the glow
+  and the theme toggle carry Tailwind's `print:hidden`.
 
 ## Themes
 

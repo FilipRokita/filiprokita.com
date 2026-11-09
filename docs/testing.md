@@ -40,7 +40,7 @@ To cover a new route, add it to the `routes` list in `e2e/routes.ts`. Every rout
 Content Security Policy checks.
 
 The other browser specs are `shell.spec.ts` (theme, keyboard, navigation, no JavaScript),
-`motion.spec.ts` (the intro animation and reduced motion), `palette.spec.ts` (the command palette), `security.spec.ts` (the
+`motion.spec.ts` (the intro animation and reduced motion), `palette.spec.ts` (the command palette), `print.spec.ts` (print styles), `security.spec.ts` (the
 policy) and `not-found.spec.ts` (the 404 page). Unit tests in `tests/` cover the
 contrast math, tokens, the projects helpers and schema, and the SEO helpers.
 

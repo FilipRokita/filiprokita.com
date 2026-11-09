@@ -1,0 +1,38 @@
+/*
+ * Print and PDF: plain light paper, no chrome, no motion. Colors come from the light
+ * side of the tokens, whatever theme the visitor was using.
+ */
+@media print {
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  [data-reveal],
+  [data-intro] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  article,
+  figure,
+  li {
+    break-inside: avoid;
+  }
+}
