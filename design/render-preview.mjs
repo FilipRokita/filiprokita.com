@@ -12,13 +12,25 @@ const base = `http://localhost:${port}/`;
 
 const server = spawn(
   process.execPath,
-  [path('../node_modules/astro/bin/astro.mjs'), 'preview', '--ignore-lock', '--port', String(port)],
+  [
+    path('../node_modules/astro/bin/astro.mjs'),
+    'preview',
+    '--ignore-lock',
+    '--port',
+    String(port),
+  ],
   { stdio: 'ignore' },
 );
 
 try {
   for (let i = 0; i < 40; i++) {
-    if (await fetch(base).then((r) => r.ok, () => false)) break;
+    if (
+      await fetch(base).then(
+        (r) => r.ok,
+        () => false,
+      )
+    )
+      break;
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
 
@@ -33,7 +45,9 @@ try {
     const page = await context.newPage();
     await page.goto(base);
     await page.waitForTimeout(600);
-    const buffer = await page.screenshot({ clip: { x: 0, y: 0, width: viewport.width, height } });
+    const buffer = await page.screenshot({
+      clip: { x: 0, y: 0, width: viewport.width, height },
+    });
     await context.close();
     return `data:image/png;base64,${buffer.toString('base64')}`;
   };
@@ -46,7 +60,9 @@ try {
     .replace('{{PHONE}}', phone);
   writeFileSync(path('./.preview-built.html'), html);
 
-  const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+  const page = await browser.newPage({
+    viewport: { width: 1600, height: 1000 },
+  });
   await page.goto(`file://${path('./.preview-built.html')}`);
   await page.screenshot({ path: path('../docs/brand/preview.png') });
   await browser.close();
