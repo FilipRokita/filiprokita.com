@@ -22,11 +22,13 @@ export const visitorTheme = (): Theme =>
   (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
 
 export function lockDark(signal: AbortSignal) {
+  // Kept for when storage is blocked: then the theme on the page is all there is.
+  const before = root.dataset.theme;
   root.dataset.theme = 'dark';
   signal.addEventListener(
     'abort',
     () => {
-      const theme = saved();
+      const theme = saved() ?? before;
       if (theme) root.dataset.theme = theme;
       else delete root.dataset.theme;
     },
