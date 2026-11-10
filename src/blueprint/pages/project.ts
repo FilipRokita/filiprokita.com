@@ -49,9 +49,9 @@ const REMARKS: Remark[] = [
     },
     lines: ['REV G: the screenshot got', 'its own section.'],
     cloud: 8,
-    at: (_box, ring) => ({ x: ring.x, y: bottom(ring) + 50 }),
-    to: (_box, ring) => ({ x: ring.x + ring.w / 2, y: bottom(ring) + 2 }),
-    options: { bend: -12, rotate: 2, small: true },
+    at: (_box, ring) => ({ x: ring.x, y: ring.y - 44 }),
+    to: (_box, ring) => ({ x: ring.x + ring.w / 2, y: ring.y - 2 }),
+    options: { bend: 12, rotate: 2, small: true },
   },
   {
     about: () => find('#decisions ol'),
