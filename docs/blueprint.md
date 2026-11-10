@@ -15,11 +15,11 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
 - A mouse also gets a crosshair with a readout of the element under it. Touch gets neither the
   crosshair nor navigation: a tap opens the code.
 - The browser bar (`theme-color`) turns blueprint blue too, and goes back to the theme's color
-  when the mode is off. Safari on iPhone ignores `theme-color`, so a fixed 8 px strip of the
-  sheet's color sits at the bottom edge, where Safari takes its bar color from. The sheet is as tall as the small
-  viewport (`100svh`) and is not drawn again when the address bar moves. The navy fills what shows
-  when the bar slides away, and the title block stays on the sheet.
-- The mode is always dark, whatever theme the visitor has. Nothing is saved while it forces dark, so turning it off (or a reload) gives back the saved theme, or the system one. A theme chosen with the toggle while the mode is on is saved and kept.
+  when the mode is off. Safari on iPhone ignores `theme-color` and takes the color of the page's
+  background. The sheet is as tall as the small viewport (`100svh`), is not drawn again when the
+  address bar moves, and the title block hangs from the top of the sheet, so nothing jumps when the
+  bar slides away.
+- The mode is always dark, whatever theme the visitor has, so on iPhone the top strip by the Dynamic Island stands out less next to the blue. Nothing is saved while it forces dark, so turning it off (or a reload) gives back the saved theme, or the system one. A theme chosen with the toggle while the mode is on is saved and kept.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built
