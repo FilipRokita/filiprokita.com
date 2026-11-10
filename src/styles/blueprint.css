@@ -269,6 +269,258 @@
     }
   }
 
+  /* ---- The code drawer: the real source of what you clicked. ---- */
+
+  .bp-drawer {
+    position: fixed;
+    inset: 0 0 0 auto;
+    display: none;
+    flex-direction: column;
+    width: min(780px, 94vw);
+    max-width: none;
+    height: 100vh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid var(--accent);
+    background: color-mix(in oklab, var(--bg) 88%, black);
+    color: var(--fg);
+    overflow: hidden;
+    box-shadow: -30px 0 80px rgb(2 14 40 / 0.6);
+  }
+
+  .bp-drawer[open] {
+    display: flex;
+    animation: bp-slide 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .bp-drawer::backdrop {
+    background: rgb(4 22 56 / 0.55);
+    backdrop-filter: blur(2px);
+  }
+
+  @keyframes bp-slide {
+    from {
+      opacity: 0;
+      transform: translateX(48px);
+    }
+  }
+
+  .bp-drawer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
+    font:
+      500 12px/1.3 var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .bp-drawer-title {
+    display: inline;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .bp-drawer-meta {
+    opacity: 0.65;
+  }
+
+  .bp-drawer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bp-button {
+    padding: 6px 10px;
+    border: 1px solid color-mix(in oklab, var(--accent) 70%, transparent);
+    background: transparent;
+    color: var(--fg);
+    font:
+      500 11px var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .bp-button:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .bp-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .bp-drawer-why {
+    margin: 0;
+    padding: 12px 18px;
+    border-bottom: 1px dashed
+      color-mix(in oklab, var(--accent) 35%, transparent);
+    color: var(--redline);
+    font:
+      700 21px/1.2 var(--font-hand),
+      cursive;
+  }
+
+  .bp-drawer-why b {
+    color: var(--fg);
+  }
+
+  .bp-drawer-code {
+    flex: 1;
+    padding: 10px 0 40px;
+    overflow: auto;
+  }
+
+  .bp-pre {
+    margin: 0;
+  }
+
+  .bp-code {
+    display: block;
+    font:
+      400 12.5px/1.6 var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    tab-size: 2;
+  }
+
+  .bp-row-code {
+    display: flex;
+    padding-right: 24px;
+    white-space: pre;
+  }
+
+  .bp-row-no {
+    flex: none;
+    width: 52px;
+    padding-right: 14px;
+    color: color-mix(in oklab, var(--accent) 45%, transparent);
+    text-align: right;
+    user-select: none;
+  }
+
+  .bp-row-code.is-hit {
+    background: color-mix(in oklab, var(--redline) 14%, transparent);
+    box-shadow: inset 3px 0 0 var(--redline);
+  }
+
+  .bp-row-code.is-hit .bp-row-no {
+    color: var(--redline);
+  }
+
+  .bp-token {
+    font-style: normal;
+  }
+
+  .bp-token--comment {
+    color: color-mix(in oklab, var(--fg) 55%, var(--bg));
+    font-style: italic;
+  }
+
+  .bp-token--string {
+    color: var(--redline);
+  }
+
+  .bp-token--tag {
+    color: var(--accent);
+  }
+
+  .bp-token--keyword {
+    color: #c9b8ff;
+  }
+
+  .bp-token--number {
+    color: #ffb58a;
+  }
+
+  /* ---- The inspector: a crosshair with a readout, for a mouse only. ---- */
+
+  .bp-inspector {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    display: none;
+    pointer-events: none;
+  }
+
+  .bp-inspector[data-on] {
+    display: block;
+  }
+
+  .bp-inspector-line,
+  .bp-inspector-dot,
+  .bp-inspector-outline,
+  .bp-inspector-readout {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .bp-inspector-line {
+    background: color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+
+  .bp-inspector-line--across {
+    width: 100%;
+    height: 1px;
+  }
+
+  .bp-inspector-line--down {
+    width: 1px;
+    height: 100%;
+  }
+
+  .bp-inspector-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--redline);
+    border-radius: 50%;
+  }
+
+  .bp-inspector-outline {
+    border: 1px solid var(--redline);
+    background: color-mix(in oklab, var(--redline) 8%, transparent);
+  }
+
+  .bp-inspector-readout {
+    padding: 7px 9px;
+    border: 1px solid var(--accent);
+    background: color-mix(in oklab, var(--bg) 95%, transparent);
+    color: var(--fg);
+    font:
+      500 10px/1.55 var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .bp-inspector-readout b {
+    color: var(--redline);
+  }
+
+  html[data-blueprint] body {
+    cursor: crosshair;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .bp-draw {
       animation: none;

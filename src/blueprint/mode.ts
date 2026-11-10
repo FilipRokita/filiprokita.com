@@ -6,6 +6,8 @@
  * `start` and removed again in `stop`, so that off really means off.
  */
 import blueprintCss from '../styles/blueprint.css?inline';
+import { mountDrawer } from './drawer';
+import { mountInspector } from './inspector';
 import { mountLayer } from './layer';
 import { mountSheet } from './sheet';
 
@@ -45,6 +47,8 @@ const start = () => {
   root.setAttribute(ATTRIBUTE, '');
   mountSheet(session.signal);
   mountLayer(session.signal);
+  mountInspector(session.signal);
+  mountDrawer(session.signal);
 };
 
 const stop = () => {
