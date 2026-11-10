@@ -34,32 +34,32 @@ test.describe('theme', () => {
     await context.close();
   });
 
-  test('the toggle label follows a change of the system theme', async ({
+  test('the toggle name follows a change of the system theme', async ({
     page,
   }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/');
-    const toggle = page.locator('footer [data-theme-toggle]');
-    await expect(toggle).toContainText('Light');
+    const toggle = page.locator('header [data-theme-toggle]');
+    await expect(toggle).toHaveAccessibleName('Switch to light theme');
     await page.emulateMedia({ colorScheme: 'light' });
-    await expect(toggle).toContainText('Dark');
+    await expect(toggle).toHaveAccessibleName('Switch to dark theme');
   });
 
-  test('the footer toggle switches the theme and remembers it', async ({
+  test('the header toggle switches the theme and remembers it', async ({
     page,
   }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/');
-    const toggle = page.locator('footer [data-theme-toggle]');
+    const toggle = page.locator('header [data-theme-toggle]');
     await expect(toggle).toBeVisible();
-    await expect(toggle).toHaveText(/Light/);
+    await expect(toggle).toHaveAccessibleName('Switch to light theme');
 
     await toggle.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
     // The browser bar color follows the chosen theme too.
     for (const meta of await page.locator('meta[name="theme-color"]').all())
       await expect(meta).toHaveAttribute('content', '#f4f3ef');
-    await expect(toggle).toHaveText(/Dark/);
+    await expect(toggle).toHaveAccessibleName('Switch to dark theme');
 
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');

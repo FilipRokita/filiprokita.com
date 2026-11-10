@@ -2,7 +2,6 @@
 import { site } from '../config/site';
 import Container from './Container.astro';
 import Link from './Link.astro';
-import ThemeToggle from './ThemeToggle.astro';
 
 const { date, commit } = __BUILD__;
 const commitUrl =
@@ -42,7 +41,6 @@ const commitUrl =
       <Link href={site.github} rel="me" class="!py-[.15rem]">
         GitHub
       </Link>
-      <ThemeToggle />
     </div>
   </Container>
 </footer>
