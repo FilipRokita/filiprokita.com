@@ -1,4 +1,5 @@
-// Builds docs/brand/preview.png for the README: the home page in a browser window and on a phone.
+// Builds docs/brand/preview-dark.png and preview-light.png for the README: the home page in a
+// browser window and on a phone, in each theme.
 // It needs a build first (npm run build), then it serves dist/ with astro preview.
 //   npm run preview-image
 import { chromium } from '@playwright/test';
@@ -35,11 +36,11 @@ try {
   }
 
   const browser = await chromium.launch();
-  const shot = async (viewport, scale, height) => {
+  const shot = async (viewport, scale, height, colorScheme) => {
     const context = await browser.newContext({
       viewport,
       deviceScaleFactor: scale,
-      colorScheme: 'dark',
+      colorScheme,
       reducedMotion: 'reduce',
     });
     const page = await context.newPage();
@@ -52,19 +53,24 @@ try {
     return `data:image/png;base64,${buffer.toString('base64')}`;
   };
 
-  const desktop = await shot({ width: 1440, height: 900 }, 1, 840);
-  const phone = await shot({ width: 390, height: 844 }, 2, 780);
+  for (const scheme of ['dark', 'light']) {
+    const desktop = await shot({ width: 1440, height: 900 }, 1, 840, scheme);
+    const phone = await shot({ width: 390, height: 844 }, 2, 780, scheme);
 
-  const html = readFileSync(path('./preview.html'), 'utf8')
-    .replace('{{DESKTOP}}', desktop)
-    .replace('{{PHONE}}', phone);
-  writeFileSync(path('./.preview-built.html'), html);
+    const html = readFileSync(path('./preview.html'), 'utf8')
+      .replace('{{DESKTOP}}', desktop)
+      .replace('{{PHONE}}', phone);
+    writeFileSync(path('./.preview-built.html'), html);
 
-  const page = await browser.newPage({
-    viewport: { width: 1600, height: 1000 },
-  });
-  await page.goto(`file://${path('./.preview-built.html')}`);
-  await page.screenshot({ path: path('../docs/brand/preview.png') });
+    const page = await browser.newPage({
+      viewport: { width: 1600, height: 1000 },
+    });
+    await page.goto(`file://${path('./.preview-built.html')}`);
+    await page.screenshot({
+      path: path(`../docs/brand/preview-${scheme}.png`),
+    });
+    await page.close();
+  }
   await browser.close();
 } finally {
   server.kill();

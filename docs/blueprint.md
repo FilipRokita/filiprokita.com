@@ -86,6 +86,13 @@ with every required check green can get there (branch protection). Any other bui
 Cloudflare, `GITHUB_REF_NAME` on GitHub Actions). A build on a laptop never is, whatever branch
 it is on. The title block shows the build date and commit from the same place.
 
+After the first screen the block folds into a chip: the extra rows shrink and fade over about half
+a second instead of vanishing (no motion with `prefers-reduced-motion`).
+
+The drawer dims the page with its own shadow, and its `::backdrop` is transparent. Safari on
+iPhone colors its address bar from a backdrop at the top edge and keeps that color after the dialog
+closes.
+
 ## The way in
 
 The chip draws its corners now and then, and a handwritten hint points at it for 7 seconds on

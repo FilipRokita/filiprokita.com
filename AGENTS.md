@@ -163,6 +163,7 @@ security practices, testability, accessibility and performance, etc. The list is
 examples, not a limit. Check the code, the installed tooling or the official docs
 rather than guessing, and ask the user only when the answer would change the
 product's direction or cannot be found.
+
 ## 11. Themes
 
 Every color comes from a token in `src/styles/tokens.css`, never a hardcoded value.
