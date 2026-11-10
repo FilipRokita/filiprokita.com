@@ -86,6 +86,25 @@ test.describe('blueprint mode', () => {
     await expect.poll(colors).not.toContain('#0a3577');
   });
 
+  test('the drawing is not drawn again when only the height of the window changes', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name === 'phone', 'One profile is enough');
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/');
+    await toggleBlueprint(page);
+    const drawing = await page.locator('.bp-layer svg').elementHandle();
+    // The address bar of a phone grows and shrinks: that is a change of height only.
+    await page.setViewportSize({ width: 1280, height: 700 });
+    await page.waitForTimeout(500);
+    expect(await drawing?.evaluate((node) => node.isConnected)).toBe(true);
+    // A change of width does draw it again.
+    await page.setViewportSize({ width: 1100, height: 700 });
+    await expect
+      .poll(() => drawing?.evaluate((node) => node.isConnected))
+      .toBe(false);
+  });
+
   test('a /#blueprint link opens the page in the mode, and leaving clears the link', async ({
     page,
   }) => {
