@@ -45,6 +45,20 @@ test.describe('theme', () => {
     await expect(toggle).toHaveAccessibleName('Switch to dark theme');
   });
 
+  test('the theme toggle is a square as tall as the blueprint chip', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const toggle = await page
+      .locator('header [data-theme-toggle]')
+      .boundingBox();
+    const chip = await page
+      .locator('header [data-blueprint-chip]')
+      .boundingBox();
+    expect(toggle?.height).toBeCloseTo(chip?.height ?? 0, 0);
+    expect(toggle?.width).toBeCloseTo(toggle?.height ?? 0, 0);
+  });
+
   test('the header toggle switches the theme and remembers it', async ({
     page,
   }) => {
