@@ -478,7 +478,7 @@ test.describe('blueprint mode', () => {
   });
 
   test.describe('the way in', () => {
-    test('the chip draws its corners after a moment, and the hint appears at most twice', async ({
+    test('the chip draws its corners after a moment, and the hint appears', async ({
       browser,
     }, testInfo) => {
       test.skip(testInfo.project.name === 'phone', 'One profile is enough');
@@ -490,9 +490,10 @@ test.describe('blueprint mode', () => {
       const chip = page.getByRole('button', { name: 'Blueprint' });
       await expect(chip).toHaveAttribute('data-tease', '', { timeout: 6000 });
       await expect(chip).toHaveAttribute('data-hint', '', { timeout: 8000 });
-      expect(
-        await page.evaluate(() => localStorage.getItem('blueprint-hints')),
-      ).toBe('1');
+      // Moving around the page does not take the hint away.
+      await page.mouse.move(300, 300);
+      await page.mouse.wheel(0, 200);
+      await expect(chip).toHaveAttribute('data-hint', '');
       await context.close();
     });
 

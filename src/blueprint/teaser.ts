@@ -5,13 +5,13 @@ const FIRST_TEASE = 2500;
 const TEASE_EVERY = 25_000;
 const TEASE_FOR = 2000;
 const HINT_AFTER = 5500;
-const HINT_FOR = 7000;
-const HINTS_AT_MOST = 2;
+const HINT_FOR = 10_000;
 
 /**
  * Makes the chip catch the eye, gently: its corners draw themselves now and then, and once or twice
  * a handwritten hint points at it. Both stop for good after the first use, and neither runs for
- * someone who asked for less motion.
+ * someone who asked for less motion. The hint stays for its full time, whatever the visitor does
+ * on the page, and goes away when they go for the chip itself.
  */
 export function createTeaser(chip: HTMLElement) {
   /** Everything the teaser listens to or waits for, so that `stop` can end it all at once. */
@@ -39,12 +39,10 @@ export function createTeaser(chip: HTMLElement) {
   const hideHint = () => chip.removeAttribute('data-hint');
 
   const showHint = async () => {
-    const shown = Number(memory.read('hints') ?? 0);
-    if (quiet() || shown >= HINTS_AT_MOST) return;
+    if (quiet()) return;
     // The handwriting is fetched now, so the hint never appears in the wrong font first.
     if (!(await loadHandwriting())) return;
     if (quiet() || session?.signal.aborted) return;
-    memory.write('hints', String(shown + 1));
     chip.setAttribute('data-hint', '');
     later(hideHint, HINT_FOR);
   };
@@ -63,9 +61,8 @@ export function createTeaser(chip: HTMLElement) {
     signal.addEventListener('abort', () => clearInterval(every), {
       once: true,
     });
-    for (const type of ['pointerdown', 'keydown', 'wheel'] as const) {
-      addEventListener(type, hideHint, { passive: true, signal });
-    }
+    chip.addEventListener('pointerenter', hideHint, { signal });
+    chip.addEventListener('focus', hideHint, { signal });
   };
 
   /** Used for the first time: the teaser has done its job, for good. */
