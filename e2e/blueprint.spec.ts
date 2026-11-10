@@ -279,4 +279,97 @@ test.describe('blueprint mode', () => {
       );
     });
   });
+
+  test.describe('the drawing of the home page', () => {
+    test.beforeEach(async ({ page }, testInfo) => {
+      test.skip(
+        testInfo.project.name === 'phone',
+        'The notes need a wide page',
+      );
+      await page.goto('/');
+      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await expect(page.locator('.bp-text--hand').first()).toBeVisible();
+    });
+
+    test('has dimensions measured from the real elements', async ({ page }) => {
+      const width = await page
+        .locator('.hero h1 .line')
+        .evaluate((line) => Math.round(line.getBoundingClientRect().width));
+      await expect(
+        page.locator('.bp-text--dimension', { hasText: `${width} px` }),
+      ).toHaveCount(1);
+    });
+
+    test('has handwritten notes, and none sits on another', async ({
+      page,
+    }) => {
+      const notes = page.locator(
+        '.bp-layer .bp-text--hand, .bp-layer .bp-text--hand-small',
+      );
+      expect(await notes.count()).toBeGreaterThan(8);
+      const boxes = await notes.evaluateAll((texts) =>
+        texts.map((text) => {
+          const { x, y, width, height } = text.getBoundingClientRect();
+          return { x, y, width, height };
+        }),
+      );
+      // A note of several lines is several texts, so only compare texts that are far apart in height.
+      for (const [i, a] of boxes.entries()) {
+        for (const b of boxes.slice(i + 1)) {
+          const sameLine = Math.abs(a.y - b.y) < 4;
+          const overlap =
+            a.x < b.x + b.width - 4 &&
+            a.x + a.width - 4 > b.x &&
+            a.y < b.y + b.height - 6 &&
+            a.y + a.height - 6 > b.y;
+          expect(sameLine && overlap).toBe(false);
+        }
+      }
+    });
+
+    test('the bill of materials is the measurement of the build', async ({
+      page,
+      request,
+    }) => {
+      const bom = await (await request.get('/blueprint/bom.json')).json();
+      const home = bom['/'];
+      const kilobytes = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
+      const texts = await page
+        .locator('.bp-layer .bp-text--notes')
+        .allTextContents();
+      expect(texts).toContain(kilobytes(home.html.bytes));
+      expect(texts).toContain(kilobytes(home.css.bytes));
+      expect(texts).toContain(kilobytes(home.js.bytes));
+      expect(texts).toContain(String(home.images.n));
+    });
+
+    test('the palette shows the real tokens of the site', async ({ page }) => {
+      const texts = await page
+        .locator('.bp-layer .bp-text--size')
+        .allTextContents();
+      for (const token of ['--bg', '--fg', '--muted', '--accent']) {
+        expect(texts).toContain(token);
+      }
+    });
+
+    test('the stamp only says CI passed on a build of main', async ({
+      page,
+    }) => {
+      const stamp = page.locator('.bp-stamp-text');
+      const text = await stamp.textContent();
+      expect(['CI PASSED', 'PREVIEW']).toContain(text);
+    });
+
+    test('the detail view magnifies the real arrow of the page', async ({
+      page,
+    }) => {
+      const real = await page
+        .locator('.hero a.link[href*="linkedin"] svg path')
+        .getAttribute('d');
+      await expect(page.locator('.bp-magnified')).toHaveAttribute(
+        'd',
+        real ?? '',
+      );
+    });
+  });
 });

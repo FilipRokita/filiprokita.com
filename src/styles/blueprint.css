@@ -249,7 +249,12 @@
 
   /* After the first screen only the project name is left, so the block never covers content. */
   .bp-title[data-compact] {
-    width: 250px;
+    width: 300px;
+  }
+
+  .bp-title[data-away] {
+    opacity: 0;
+    transition: opacity 0.3s;
   }
 
   .bp-title[data-compact] .bp-row:not(:first-child) {
@@ -266,6 +271,142 @@
 
     .bp-title .bp-row:not(:first-child) {
       display: none;
+    }
+  }
+
+  /* ---- Dimensions, notes and the other marks of the drawing. ---- */
+
+  .bp-fill {
+    fill: var(--accent);
+    stroke: none;
+  }
+
+  .bp-swatch {
+    stroke: var(--accent);
+  }
+
+  .bp-magnified {
+    fill: none;
+    stroke: var(--fg);
+    stroke-width: 1.4;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+  }
+
+  .bp-text--dimension,
+  .bp-text--hand,
+  .bp-text--hand-small {
+    /* A halo in the paper color, so a line behind the text does not cut through it. */
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-linejoin: round;
+  }
+
+  .bp-text--dimension {
+    fill: var(--fg);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    stroke-width: 6px;
+  }
+
+  .bp-text--mark {
+    fill: var(--fg);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .bp-text--notes,
+  .bp-text--notes-title {
+    fill: var(--fg);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .bp-text--notes-title {
+    fill: var(--accent);
+    font-weight: 700;
+  }
+
+  .bp-text--hand,
+  .bp-text--hand-small {
+    fill: var(--redline);
+    font-family: var(--font-hand), 'Segoe Print', 'Bradley Hand', cursive;
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: 0;
+    stroke-width: 5px;
+  }
+
+  .bp-text--hand-small {
+    font-size: 19px;
+  }
+
+  /* The signature in the title block, and the stamp that slams down on it at the end. */
+  .bp-cell .bp-signature {
+    display: inline-block;
+    font:
+      700 26px/1 var(--font-hand),
+      cursive;
+    letter-spacing: 0.02em;
+    text-decoration: underline wavy
+      color-mix(in oklab, var(--fg) 55%, transparent) 1px;
+    text-underline-offset: 5px;
+    text-transform: none;
+    transform: rotate(-4deg);
+  }
+
+  .bp-stamp {
+    position: absolute;
+    top: -62px;
+    right: -16px;
+    overflow: visible;
+    opacity: 0.92;
+    transform: rotate(-9deg);
+    animation: bp-slam 0.45s cubic-bezier(0.2, 1.5, 0.4, 1) 2.1s both;
+  }
+
+  .bp-stamp-ink {
+    fill: none;
+    stroke: #ff7070;
+  }
+
+  .bp-stamp-outer {
+    stroke-width: 3.2;
+  }
+
+  .bp-stamp-inner {
+    stroke-width: 1.2;
+  }
+
+  .bp-stamp-text,
+  .bp-stamp-small {
+    fill: #ff7070;
+    stroke: none;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-weight: 800;
+  }
+
+  .bp-stamp-text {
+    font-size: 29px;
+    letter-spacing: 3px;
+  }
+
+  .bp-stamp-small {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .bp-title[data-compact] .bp-stamp {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  @keyframes bp-slam {
+    from {
+      opacity: 0;
+      transform: rotate(-22deg) scale(1.9);
     }
   }
 
@@ -528,7 +669,8 @@
     }
 
     .bp-fade,
-    .bp-title {
+    .bp-title,
+    .bp-stamp {
       animation: none;
       opacity: 1;
     }

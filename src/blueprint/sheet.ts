@@ -10,14 +10,17 @@ const INNER = 20;
 const ZONE = 150;
 /** After this much scrolling the title block shrinks to a chip, so it never covers the content. */
 const COMPACT_AFTER = 260;
+/** Within this distance of the end of the page the title block steps aside, so it never hides the footer. */
+const CLEAR_BEFORE_END = 140;
 const DRAWING_NUMBER = 'FR-001';
 
-const cell = (label: string, value: string) => {
+const cell = (label: string, value: string, signature = false) => {
   const element = document.createElement('div');
   element.className = 'bp-cell';
   const small = document.createElement('small');
   small.textContent = label;
   const strong = document.createElement('b');
+  if (signature) strong.className = 'bp-signature';
   strong.textContent = value;
   element.append(small, strong);
   return element;
@@ -29,6 +32,84 @@ const row = (...cells: HTMLElement[]) => {
   element.append(...cells);
   return element;
 };
+
+/** The rubber stamp: it says the page passed CI only when this is a build of main, which only passes get into. */
+function stamp() {
+  const { date, onMain } = __BUILD__;
+  const ink = create(
+    'filter',
+    { id: 'bp-ink', x: '-5%', y: '-5%', width: '110%', height: '110%' },
+    create('feTurbulence', {
+      type: 'fractalNoise',
+      baseFrequency: 0.85,
+      numOctaves: 2,
+      seed: 4,
+      result: 'noise',
+    }),
+    create('feColorMatrix', {
+      in: 'noise',
+      type: 'matrix',
+      values: '0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75',
+      result: 'holes',
+    }),
+    create('feComposite', {
+      in: 'SourceGraphic',
+      in2: 'holes',
+      operator: 'in',
+      result: 'worn',
+    }),
+    create('feDisplacementMap', { in: 'worn', in2: 'noise', scale: 2.4 }),
+  );
+  const big = create('text', {
+    class: 'bp-stamp-text',
+    x: 98,
+    y: 43,
+    'text-anchor': 'middle',
+  });
+  big.textContent = onMain ? 'CI PASSED' : 'PREVIEW';
+  const small = create('text', {
+    class: 'bp-stamp-small',
+    x: 98,
+    y: 61,
+    'text-anchor': 'middle',
+  });
+  small.textContent = `${onMain ? 'MAIN' : 'NOT MAIN'} · ${date}`;
+  const inked = create(
+    'g',
+    { filter: 'url(#bp-ink)', class: 'bp-stamp-ink' },
+    create('rect', {
+      x: 3,
+      y: 3,
+      width: 190,
+      height: 74,
+      rx: 7,
+      class: 'bp-stamp-outer',
+    }),
+    create('rect', {
+      x: 10,
+      y: 10,
+      width: 176,
+      height: 60,
+      rx: 3,
+      class: 'bp-stamp-inner',
+    }),
+    big,
+    small,
+  );
+  return create(
+    'svg',
+    {
+      class: 'bp-stamp',
+      viewBox: '0 0 196 80',
+      width: 196,
+      height: 80,
+      'aria-hidden': 'true',
+      focusable: 'false',
+    },
+    create('defs', {}, ink),
+    inked,
+  );
+}
 
 /** The title block of the drawing. Every value is a fact about this build. */
 function titleBlock() {
@@ -45,12 +126,13 @@ function titleBlock() {
       cell('REVISION', commit || 'local'),
     ),
     row(
-      cell('DRAWN', site.name.replace(/(\w+) (\w)\w*/, '$1 $2.')),
+      cell('DRAWN', site.name.replace(/(\w+) (\w)\w*/, '$1 $2.'), true),
       cell('CHECKED', onMain ? 'CI' : 'DRAFT'),
       cell('SHEET', '1 / 1'),
     ),
     row(cell('SCALE', '1 : 1 (px)'), cell('DATE', date)),
   );
+  block.append(stamp());
   return block;
 }
 
@@ -143,8 +225,12 @@ export function mountSheet(signal: AbortSignal) {
   document.body.append(frame, title);
 
   const draw = () => drawFrame(frame);
-  const compact = () =>
+  const compact = () => {
     title.toggleAttribute('data-compact', scrollY > COMPACT_AFTER);
+    const left =
+      document.documentElement.scrollHeight - (scrollY + innerHeight);
+    title.toggleAttribute('data-away', left < CLEAR_BEFORE_END);
+  };
   draw();
   compact();
   addEventListener('resize', draw, { signal });
