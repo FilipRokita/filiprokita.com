@@ -14,12 +14,12 @@ const REMARKS: Remark[] = [
     about: () => find('main h1'),
     box: textBox,
     lines: (title) => [
-      `Geist, ${Math.round(parseFloat(getComputedStyle(title).fontSize))}px.`,
-      'REV F: it used to be much bigger.',
+      `Geist, ${Math.round(parseFloat(getComputedStyle(title).fontSize))}px. REV F: was bigger.`,
     ],
-    at: (box) => ({ x: right(box) + 60, y: box.y + 40 }),
+    at: (box) => ({ x: right(box) + 60, y: box.y + 4 }),
     to: (box) => ({ x: right(box) - 10, y: box.y + box.h * 0.4 }),
     options: { bend: 20, rotate: -3 },
+    caption: true,
   },
   {
     about: () => find('[data-back]'),

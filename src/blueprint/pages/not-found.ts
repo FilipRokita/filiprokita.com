@@ -27,6 +27,14 @@ const REMARKS: Remark[] = [
     to: (_box, ring) => ({ x: right(ring) + 4, y: ring.y + ring.h / 2 }),
     options: { bend: 12, rotate: 2, small: true },
   },
+  {
+    about: () => find('#not-found p:not(.mono)'),
+    lines: ['two links. no search box.', 'you will cope.'],
+    at: (box) => ({ x: right(box) - 170, y: box.y + box.h + 44 }),
+    to: (box) => ({ x: right(box) - 120, y: box.y + box.h + 4 }),
+    options: { bend: -16, rotate: 2, small: true },
+    caption: true,
+  },
 ];
 
 export function paintNotFound(context: PageContext) {

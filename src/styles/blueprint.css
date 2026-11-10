@@ -272,7 +272,9 @@
   }
 
   @media (max-width: 40rem) {
-    .bp-title {
+    /* On a phone the block is the same short strip before and after scrolling. */
+    .bp-title,
+    .bp-title[data-compact] {
       right: 26px;
       bottom: 26px;
       left: 26px;
