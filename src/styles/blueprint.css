@@ -176,6 +176,17 @@
     pointer-events: none;
   }
 
+  .bp-edge {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 89;
+    height: 8px;
+    background: var(--bg);
+    pointer-events: none;
+  }
+
   .bp-frame-line {
     fill: none;
     stroke: var(--accent);

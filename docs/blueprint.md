@@ -15,7 +15,8 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
 - A mouse also gets a crosshair with a readout of the element under it. Touch gets neither the
   crosshair nor navigation: a tap opens the code.
 - The browser bar (`theme-color`) turns blueprint blue too, and goes back to the theme's color
-  when the mode is off.
+  when the mode is off. Safari on iPhone ignores `theme-color`, so a fixed 8 px strip of the
+  sheet's color sits at the bottom edge, where Safari takes its bar color from.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built
