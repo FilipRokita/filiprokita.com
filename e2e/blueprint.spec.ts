@@ -1,7 +1,18 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const BLUEPRINT_BACKGROUND = 'rgb(10, 53, 119)';
+
+/**
+ * Clicks the chip. When that turns the mode on, it waits until the mode has finished loading, because
+ * the drawer and the inspector only listen once it has. A real visitor cannot click that fast.
+ */
+async function toggleBlueprint(page: Page) {
+  const chip = page.getByRole('button', { name: 'Blueprint' });
+  const turningOn = (await chip.getAttribute('aria-pressed')) === 'false';
+  await chip.click();
+  if (turningOn) await expect(page.locator('.bp-frame')).toBeVisible();
+}
 
 test.describe('blueprint mode', () => {
   test.beforeEach(async ({ page }) => {
@@ -41,7 +52,7 @@ test.describe('blueprint mode', () => {
     expect(await page.evaluate(() => document.adoptedStyleSheets.length)).toBe(
       0,
     );
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('html')).toHaveAttribute('data-blueprint', '');
     expect(
       await page.evaluate(() => document.adoptedStyleSheets.length),
@@ -53,7 +64,7 @@ test.describe('blueprint mode', () => {
   }) => {
     await page.goto('/#blueprint');
     await expect(page.locator('html')).toHaveAttribute('data-blueprint', '');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
     expect(new URL(page.url()).hash).toBe('');
   });
@@ -66,7 +77,7 @@ test.describe('blueprint mode', () => {
     });
     const page = await context.newPage();
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('html')).toHaveAttribute('data-blueprint', '');
     await expect(page.locator('html')).not.toHaveClass(/theme-vt/);
     await context.close();
@@ -79,13 +90,13 @@ test.describe('blueprint mode', () => {
     const added = page.locator('[data-blueprint-ui]');
     await expect(added).toHaveCount(0);
 
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('.bp-frame')).toBeVisible();
     await expect(page.locator('.bp-title')).toBeVisible();
     await expect(page.locator('.bp-title')).toContainText('Filip Rokita');
     await expect(page.locator('.bp-layer')).toHaveCount(1);
 
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     // Nothing the mode added stays: not the frame, not the title block, not the drawing.
     await expect(added).toHaveCount(0);
     await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
@@ -95,7 +106,7 @@ test.describe('blueprint mode', () => {
     page,
   }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     // The header's label is part of the fixed sheet, the others are part of the page.
     const labels = await page.locator('.bp-text--tag').allTextContents();
     for (const name of [
@@ -112,7 +123,7 @@ test.describe('blueprint mode', () => {
 
   test('the title block shrinks after the first screen', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     const title = page.locator('.bp-title');
     await expect(title).not.toHaveAttribute('data-compact');
     await page.evaluate(() => scrollTo(0, 1200));
@@ -123,7 +134,7 @@ test.describe('blueprint mode', () => {
     page,
   }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('.bp-layer svg')).toHaveAttribute(
       'aria-hidden',
       'true',
@@ -142,7 +153,7 @@ test.describe('blueprint mode', () => {
     page,
   }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('.bp-frame')).toBeVisible();
     const { violations } = await new AxeBuilder({ page }).analyze();
     expect(violations).toEqual([]);
@@ -150,7 +161,7 @@ test.describe('blueprint mode', () => {
 
   test('a printout is the plain page', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await toggleBlueprint(page);
     await expect(page.locator('.bp-frame')).toBeVisible();
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('.bp-frame')).toBeHidden();
@@ -163,7 +174,7 @@ test.describe('blueprint mode', () => {
       page,
     }) => {
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       const before = page.url();
       const pages = page.context().pages().length;
 
@@ -184,7 +195,7 @@ test.describe('blueprint mode', () => {
     }, testInfo) => {
       test.skip(testInfo.project.name === 'phone', 'The phone has no menu');
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.getByRole('link', { name: 'Projects', exact: true }).click();
       await expect(page.getByRole('dialog')).toBeVisible();
       expect(new URL(page.url()).hash).toBe('');
@@ -194,13 +205,13 @@ test.describe('blueprint mode', () => {
       page,
     }) => {
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.locator('.hero a.link[href*="linkedin"]').click();
       await expect(page.getByRole('dialog')).toBeVisible();
       await page.keyboard.press('Escape');
       await expect(page.getByRole('dialog')).toBeHidden();
       // Turning the mode off gives the links back.
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
       await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
     });
@@ -209,7 +220,7 @@ test.describe('blueprint mode', () => {
       page,
     }) => {
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.locator('footer').click({ position: { x: 5, y: 5 } });
       const drawer = page.getByRole('dialog');
       await expect(drawer).toBeVisible();
@@ -229,7 +240,7 @@ test.describe('blueprint mode', () => {
       page,
     }) => {
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.locator('.hero a.link[href*="linkedin"]').click();
       await expect(page.getByRole('dialog')).toBeVisible();
       const { violations } = await new AxeBuilder({ page })
@@ -240,7 +251,7 @@ test.describe('blueprint mode', () => {
 
     test('the command palette still works in the mode', async ({ page }) => {
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.keyboard.press('Control+k');
       const palette = page.getByRole('dialog', { name: 'Command palette' });
       await expect(palette).toBeVisible();
@@ -256,7 +267,7 @@ test.describe('blueprint mode', () => {
     }, testInfo) => {
       test.skip(testInfo.project.name === 'phone', 'A phone has no mouse');
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       // The mode finishes loading a moment after the click. Move the mouse once it has.
       await expect(page.locator('.bp-frame')).toBeVisible();
       await page.mouse.move(700, 330);
@@ -271,7 +282,7 @@ test.describe('blueprint mode', () => {
     }, testInfo) => {
       test.skip(testInfo.project.name !== 'phone', 'Touch only');
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await page.touchscreen.tap(200, 400);
       await expect(page.getByRole('dialog')).toBeVisible();
       await expect(page.locator('.bp-inspector')).not.toHaveAttribute(
@@ -287,7 +298,7 @@ test.describe('blueprint mode', () => {
         'The notes need a wide page',
       );
       await page.goto('/');
-      await page.getByRole('button', { name: 'Blueprint' }).click();
+      await toggleBlueprint(page);
       await expect(page.locator('.bp-text--hand').first()).toBeVisible();
     });
 
