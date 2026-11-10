@@ -5,7 +5,7 @@ const FIRST_TEASE = 2500;
 const TEASE_EVERY = 25_000;
 const TEASE_FOR = 2000;
 const HINT_AFTER = 5500;
-const HINT_FOR = 10_000;
+const HINT_FOR = 7000;
 
 /**
  * Makes the chip catch the eye, gently: its corners draw themselves now and then, and once or twice
