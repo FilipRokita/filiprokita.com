@@ -17,6 +17,7 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
 - The browser bar (`theme-color`) turns blueprint blue too, and goes back to the theme's color
   when the mode is off. Safari on iPhone ignores `theme-color`, so a fixed 8 px strip of the
   sheet's color sits at the bottom edge, where Safari takes its bar color from.
+- The mode is always dark, whatever theme the visitor has. Nothing is saved while it forces dark, so turning it off (or a reload) gives back the saved theme, or the system one. A theme chosen with the toggle while the mode is on is saved and kept.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built
@@ -40,6 +41,7 @@ flowchart LR
 | Module | What it does |
 | :--- | :--- |
 | `src/components/BlueprintChip.astro` | The entry point: the chip, its teaser and the loader. The hint and the corner animation are CSS, driven by two attributes |
+| `src/blueprint/dark.ts` | Sets the theme to dark for the session and gives the visitor's theme back at the end |
 | `src/blueprint/mode.ts` | Turns the mode on and off with the circle reveal, owns the session (an `AbortController`), and shows a glimpse (`peek`) |
 | `src/blueprint/layer.ts` | The drawing: one SVG as big as the page, built again when the page changes size (not when only the window's height changes, as on a phone when the address bar moves) |
 | `src/blueprint/sheet.ts` | The sheet border, the title block (a chip after the first screen) and the stamp |
