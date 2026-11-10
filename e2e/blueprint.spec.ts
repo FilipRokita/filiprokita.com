@@ -635,6 +635,8 @@ test.describe('blueprint mode', () => {
       // On and off again, in turn: nothing mounted twice, nothing left behind.
       await expect(chip).toHaveAttribute('aria-pressed', 'false');
       await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+      // The pointer is still on the chip, which shows its glimpse. Move it away first.
+      await page.mouse.move(600, 600);
       await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
     });
 
