@@ -6,6 +6,7 @@
  * `start` and removed again in `stop`, so that off really means off.
  */
 import blueprintCss from '../styles/blueprint.css?inline';
+import { tintBrowserBar } from './browser-bar';
 import { mountDrawer } from './drawer';
 import { mountInspector } from './inspector';
 import { mountLayer } from './layer';
@@ -58,6 +59,7 @@ const start = () => {
   loadStyles();
   session = new AbortController();
   root.setAttribute(ATTRIBUTE, '');
+  tintBrowserBar(session.signal);
   mountSheet(session.signal);
   mountLayer(session.signal);
   mountInspector(session.signal);

@@ -59,6 +59,33 @@ test.describe('blueprint mode', () => {
     ).toBeGreaterThan(0);
   });
 
+  test('the browser bar is blue in the mode, and goes back to the theme when it is off', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const colors = () =>
+      page
+        .locator('meta[name="theme-color"]')
+        .evaluateAll((metas) =>
+          metas.map((meta) => meta.getAttribute('content')),
+        );
+    const before = await colors();
+    await toggleBlueprint(page);
+    expect(new Set(await colors())).toEqual(new Set(['#0a3577']));
+    // A change of theme while the mode is on keeps the bar blue.
+    await page.evaluate(() => {
+      document.documentElement.dataset.theme = 'light';
+      window.applyThemeColor?.('light');
+    });
+    await expect
+      .poll(async () => new Set(await colors()))
+      .toEqual(new Set(['#0a3577']));
+    await toggleBlueprint(page);
+    await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+    expect(before).not.toContain('#0a3577');
+    await expect.poll(colors).not.toContain('#0a3577');
+  });
+
   test('a /#blueprint link opens the page in the mode, and leaving clears the link', async ({
     page,
   }) => {
