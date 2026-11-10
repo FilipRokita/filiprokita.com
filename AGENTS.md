@@ -163,3 +163,22 @@ security practices, testability, accessibility and performance, etc. The list is
 examples, not a limit. Check the code, the installed tooling or the official docs
 rather than guessing, and ask the user only when the answer would change the
 product's direction or cannot be found.
+## 11. Themes
+
+Every color comes from a token in `src/styles/tokens.css`, never a hardcoded value.
+Check any new or changed UI in both light and dark. See
+[`docs/design-system.md`](docs/design-system.md).
+
+## 12. Blueprint mode
+
+Give every new component that renders its own element `data-bp="Name.astro"` on its
+root, so a click shows the right source. A big new block also goes in `BLOCKS` in
+`src/blueprint/labels.ts`, to get a label on the drawing. When a page changes, review
+its remarks in `src/blueprint/pages/`: a remark must stay true. See
+[`docs/blueprint.md`](docs/blueprint.md).
+
+## 13. Skills
+
+The `update-projects` skill keeps the project entries in step with the public GitHub
+repositories. Use it when refreshing or adding projects. It is optional, a helper and
+not a gate.

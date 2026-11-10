@@ -12,6 +12,7 @@ const { lit = false } = Astro.props;
 <div
   class="absolute inset-0 pointer-events-none print:hidden"
   aria-hidden="true"
+  data-bp="Guides.astro"
 >
   <div class="mx-auto grid h-full w-[min(var(--container-page),100%-2*var(--spacing-edge))] grid-cols-4 gap-x-gutter sm:grid-cols-6 md:grid-cols-12">
     {Array.from({ length: 12 }, (_, i) => (

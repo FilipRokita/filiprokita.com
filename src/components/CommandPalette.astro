@@ -8,7 +8,7 @@ interface Item {
   label: string;
   href?: string;
   external?: boolean;
-  action?: 'theme';
+  action?: 'theme' | 'blueprint';
 }
 
 const projects = visibleProjects(await getCollection('projects'));
@@ -25,6 +25,7 @@ const items: Item[] = [
     href: `/projects/${project.id}/`,
   })),
   { group: 'Actions', label: 'Switch theme', action: 'theme' },
+  { group: 'Actions', label: 'Blueprint mode', action: 'blueprint' },
   { group: 'Actions', label: 'Email', href: `mailto:${site.email}` },
   { group: 'Actions', label: 'LinkedIn', href: site.linkedin, external: true },
   { group: 'Actions', label: 'GitHub', href: site.github, external: true },
@@ -32,7 +33,12 @@ const items: Item[] = [
 ---
 
 <!-- Opens with Ctrl K or Cmd K only. There is deliberately no button for it. -->
-<dialog class="palette" aria-label="Command palette" data-palette>
+<dialog
+  class="palette"
+  aria-label="Command palette"
+  data-palette
+  data-bp="CommandPalette.astro"
+>
   <input
     class="palette-input mono"
     type="text"
@@ -180,13 +186,20 @@ const items: Item[] = [
     select(0);
   };
 
+  // Actions that grow a circle ask for it from the middle of the entry that was chosen.
+  const events = {
+    theme: 'switch-theme',
+    blueprint: 'blueprint:toggle',
+  } as const;
+
   const run = (option: HTMLLIElement) => {
     // Read the position while the entry is still on screen.
     const box = option.getBoundingClientRect();
     dialog?.close();
-    if (option.dataset.action === 'theme') {
+    const action = option.dataset.action;
+    if (action === 'theme' || action === 'blueprint') {
       dispatchEvent(
-        new CustomEvent('switch-theme', {
+        new CustomEvent(events[action], {
           detail: { x: box.left + box.width / 2, y: box.top + box.height / 2 },
         }),
       );

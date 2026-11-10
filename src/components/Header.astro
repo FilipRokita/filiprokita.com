@@ -1,10 +1,14 @@
 ---
 import { site, sections } from '../config/site';
+import BlueprintChip from './BlueprintChip.astro';
 import Container from './Container.astro';
 import Logo from './Logo.astro';
 ---
 
-<header class="site-header print:hidden sticky top-0 z-20 border-b border-rule bg-bg pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] sm:bg-bg/85 sm:backdrop-blur-md">
+<header
+  data-bp="Header.astro"
+  class="site-header print:hidden sticky top-0 z-20 border-b border-rule bg-bg pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] sm:bg-bg/85 sm:backdrop-blur-md"
+>
   <Container class="flex min-h-15 items-center justify-between gap-6">
     <a
       href="/"
@@ -17,7 +21,7 @@ import Logo from './Logo.astro';
     <!-- Phones have no menu: the page is short, and the hero and the footer carry the contact links. -->
     <nav
       aria-label="Main"
-      class="mono flex items-center gap-[clamp(.9rem,.4rem+1.6vw,2rem)] max-sm:hidden"
+      class="mono flex items-center gap-[clamp(.9rem,.4rem+1.6vw,2rem)] max-sm:hidden sm:ml-auto"
     >
       {sections.map(({ id, label }) => (
         <a
@@ -29,6 +33,7 @@ import Logo from './Logo.astro';
         </a>
       ))}
     </nav>
+    <BlueprintChip class="max-sm:ml-auto" />
   </Container>
 </header>
 

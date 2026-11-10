@@ -39,10 +39,13 @@ existing build, use `npx playwright test`.
 To cover a new route, add it to the `routes` list in `e2e/routes.ts`. Every route then gets the smoke, axe and
 Content Security Policy checks.
 
+`blueprint.spec.ts` covers blueprint mode: on and off with nothing left behind (on every kind of page), the labels, the code drawer, the inspector (mouse only), the drawing and its real numbers, the teaser, the palette entry, print, the phone version and axe in the mode.
+
 The other browser specs are `shell.spec.ts` (theme, keyboard, navigation, no JavaScript),
 `motion.spec.ts` (the intro animation and reduced motion), `palette.spec.ts` (the command palette), `print.spec.ts` (print styles), `security.spec.ts` (the
 policy) and `not-found.spec.ts` (the 404 page). Unit tests in `tests/` cover the
-contrast math, tokens, the projects helpers and schema, and the SEO helpers.
+contrast math, tokens, the projects helpers and schema, the SEO helpers, and the pure parts of blueprint mode (the
+palette contrast, the syntax coloring, finding the line of a source, the hand-drawn paths and the bill of materials).
 
 ## Lighthouse
 
@@ -83,3 +86,4 @@ and fails on any policy violation, so a change that needs `unsafe-inline` cannot
   scroll-driven animations, and every one of them has a plain fallback (the page is
   readable and complete without the effect). Check them by hand before a big redesign.
 - The Speculation Rules prerender works in Chromium only. Other browsers ignore it.
+- Blueprint mode is tested in Chromium only, like the rest. The circle reveal needs view transitions and the styles need constructable stylesheets, so check Safari by hand.

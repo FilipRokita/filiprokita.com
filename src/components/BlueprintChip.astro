@@ -1,0 +1,283 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<!--
+  The way into blueprint mode. Only this chip and a small script ship with the page: the
+  drawing itself loads the first time it is needed. The chip is hidden (but keeps its room, so
+  nothing shifts) until the script shows it, because without JavaScript it cannot work.
+-->
+<button
+  type="button"
+  class:list={['blueprint-chip mono print:hidden', className]}
+  aria-pressed="false"
+  data-blueprint-chip
+  data-bp="BlueprintChip.astro"
+  data-pending
+>
+  <svg
+    class="corners"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path
+      pathLength="1"
+      d="M0 30V0H14M86 0H100V30M100 70V100H86M14 100H0V70"
+    ></path>
+  </svg>
+  <svg
+    class="icon"
+    viewBox="0 0 16 16"
+    width="13"
+    height="13"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M1.5 1.5h13v13h-13zM1.5 6h13M1.5 10.5h13M6 1.5v13M10.5 1.5v13"></path>
+  </svg>
+  <span>Blueprint</span>
+  <span class="hint" aria-hidden="true">
+    <svg viewBox="0 0 32 36" width="32" height="36" focusable="false">
+      <path
+        pathLength="1"
+        d="M4 34C6 22 14 11 26 4M26 4L15 4M26 4L24 15"
+      ></path>
+    </svg>
+    psst, try the blueprint
+  </span>
+</button>
+
+<style>
+  .blueprint-chip {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.55em;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--rule);
+    color: var(--fg);
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .blueprint-chip[data-pending] {
+    visibility: hidden;
+  }
+
+  /* A bigger area to tap than the chip looks. */
+  .blueprint-chip::before {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+  }
+
+  /* The corners are drawn by the teaser. At rest they are not there. */
+  .corners {
+    position: absolute;
+    inset: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .corners path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 0;
+  }
+
+  /* The teaser draws the corners now and then. */
+  .blueprint-chip[data-tease] .corners path {
+    animation: corners-draw 2s ease both;
+  }
+
+  .blueprint-chip[data-tease] .icon {
+    animation: icon-turn 2s ease both;
+  }
+
+  @keyframes corners-draw {
+    0% {
+      opacity: 1;
+      stroke-dashoffset: 1;
+    }
+    45%,
+    80% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      opacity: 0;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes icon-turn {
+    40% {
+      transform: rotate(90deg) scale(1.15);
+    }
+  }
+
+  /* One handwritten hint, on every visit until the mode is used, with its arrow under the chip. */
+  .hint {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: -0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--accent);
+    font-family: var(--font-hand), cursive;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    text-transform: none;
+    transform: rotate(-3deg);
+  }
+
+  .hint svg {
+    margin-left: 55%;
+    overflow: visible;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .blueprint-chip[data-hint] .hint {
+    animation:
+      hint-in 0.6s ease both,
+      hint-out 0.6s ease 6.4s forwards;
+  }
+
+  .blueprint-chip[data-hint] .hint svg {
+    animation: arrow-draw 0.9s ease 0.5s forwards;
+  }
+
+  @keyframes hint-in {
+    from {
+      opacity: 0;
+      transform: rotate(-3deg) translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(-3deg);
+    }
+  }
+
+  @keyframes hint-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes arrow-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .icon {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1;
+  }
+
+  @media (hover: hover) {
+    .blueprint-chip:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .corners,
+    .hint {
+      display: none;
+    }
+  }
+
+  .blueprint-chip[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .blueprint-chip[aria-pressed='true'] .icon {
+    stroke: var(--on-accent);
+  }
+</style>
+
+<script>
+  import { createTeaser } from '../blueprint/teaser';
+  import type { Origin } from '../blueprint/mode';
+
+  const chip = document.querySelector<HTMLButtonElement>(
+    '[data-blueprint-chip]',
+  );
+
+  if (chip) {
+    const load = () => import('../blueprint/mode');
+    const teaser = createTeaser(chip);
+
+    const run = async (origin?: Origin) => {
+      teaser.stop();
+      const { toggleBlueprint } = await load();
+      const on = await toggleBlueprint(origin);
+      chip.setAttribute('aria-pressed', String(on));
+      // A shared /#blueprint link must not turn the mode back on at the next reload.
+      if (!on && location.hash === '#blueprint') {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+    };
+
+    // A glimpse of the mode while the chip is hovered or focused with the keyboard.
+    const peek = async (on: boolean) => (await load()).peek(on);
+
+    chip.removeAttribute('data-pending');
+    chip.addEventListener('click', () => {
+      const box = chip.getBoundingClientRect();
+      void run({ x: box.left + box.width / 2, y: box.top + box.height / 2 });
+    });
+    chip.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') void peek(true);
+    });
+    chip.addEventListener('pointerleave', () => void peek(false));
+    chip.addEventListener('focus', () => {
+      if (chip.matches(':focus-visible')) void peek(true);
+    });
+    chip.addEventListener('blur', () => void peek(false));
+    // Start fetching the drawing as soon as someone shows interest, so the click feels instant.
+    for (const type of ['pointerenter', 'focus', 'touchstart']) {
+      chip.addEventListener(type, load, { once: true, passive: true });
+    }
+    // Other parts of the page (the command palette) ask for the mode with a point to grow from.
+    addEventListener('blueprint:toggle', (event) => {
+      void run((event as CustomEvent<Origin | undefined>).detail);
+    });
+    if (location.hash === '#blueprint') void run();
+    else teaser.start();
+  }
+</script>
