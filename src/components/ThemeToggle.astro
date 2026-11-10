@@ -1,11 +1,11 @@
 ---
-// Rendered hidden (but keeping its room, so nothing shifts) until the script shows it, because
-// without JavaScript it cannot work.
+// A square as tall as the blueprint chip beside it (both are `h-7`). Rendered hidden, but keeping
+// its room so nothing shifts, until the script shows it: without JavaScript it cannot work.
 ---
 
 <button
   type="button"
-  class="theme-toggle print:hidden inline-flex size-9 flex-none cursor-pointer items-center justify-center border border-rule text-fg"
+  class="theme-toggle print:hidden inline-flex size-7 flex-none cursor-pointer items-center justify-center border border-rule text-fg"
   data-theme-toggle
   data-bp="ThemeToggle.astro"
   data-pending
@@ -24,19 +24,11 @@
 
 <style>
   .theme-toggle {
-    position: relative;
     transition: border-color 0.2s;
   }
 
   .theme-toggle[data-pending] {
     visibility: hidden;
-  }
-
-  /* A bigger area to tap than the button looks. */
-  .theme-toggle::before {
-    content: '';
-    position: absolute;
-    inset: -0.4rem;
   }
 
   .theme-toggle svg {

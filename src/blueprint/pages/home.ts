@@ -57,17 +57,12 @@ const REMARKS: Remark[] = [
     options: { bend: -14, rotate: -2, small: true },
   },
   {
-    about: () => find('header [data-theme-toggle]'),
-    // The header is sticky, so it is measured where it sits at the top of the page.
-    box: (toggle) => ({
-      ...boxOf(toggle),
-      y: toggle.getBoundingClientRect().top,
-    }),
-    lines: ['light/dark = a circle reveal.', 'totally necessary. worth it.'],
-    // The drawing is behind the header, so the arrow ends just under it, below the toggle.
-    at: (box) => ({ x: box.x - 470, y: bottom(box) + 44 }),
-    to: (box) => ({ x: box.x + box.w / 2, y: bottom(box) + 24 }),
-    options: { bend: -14, rotate: 2, small: true },
+    about: () => find('[data-hello]'),
+    lines: ['the mode switcher', 'used to live here.'],
+    // To the left of the label, on its row, so the arrow is long enough to read.
+    at: (box) => ({ x: box.x - 170, y: box.y - 10 }),
+    to: (box) => ({ x: box.x - 12, y: box.y + box.h / 2 }),
+    options: { bend: 10, rotate: 1, small: true },
   },
   {
     about: () => find('#about'),

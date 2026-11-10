@@ -176,3 +176,9 @@ root, so a click shows the right source. A big new block also goes in `BLOCKS` i
 `src/blueprint/labels.ts`, to get a label on the drawing. When a page changes, review
 its remarks in `src/blueprint/pages/`: a remark must stay true. See
 [`docs/blueprint.md`](docs/blueprint.md).
+
+## 13. Site-wide UI
+
+A new action for the whole site, like switching the theme, also goes in the command
+palette (`CommandPalette.astro`). Sections and projects reach it by themselves. A new
+element that has no place on paper gets `print:hidden`.
