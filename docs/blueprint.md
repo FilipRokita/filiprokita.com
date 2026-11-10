@@ -17,8 +17,8 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
 - The browser bar (`theme-color`) turns blueprint blue too, and goes back to the theme's color
   when the mode is off. Safari on iPhone ignores `theme-color`. The sheet is as tall as the large
   viewport (`100lvh`) and is not drawn again when the address bar moves, so it never resizes. Its
-  bottom edge is under the bar until the bar slides away. The title block hangs from the bottom of
-  the small viewport (`100svh`), so it is always in view and does not jump.
+  bottom edge is under the bar until the bar slides away. The title block stays at the bottom of the
+  screen and moves with it when the bar slides away.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built
