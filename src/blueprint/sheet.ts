@@ -139,8 +139,8 @@ function titleBlock() {
 /** The sheet border with its lettered and numbered zones. */
 function drawFrame(frame: SVGSVGElement) {
   const width = innerWidth;
-  // The sheet is as tall as the small viewport (address bar shown), so it keeps its size when
-  // Safari's bars come and go. CSS gives the frame that height.
+  // The sheet is as tall as the large viewport (address bar hidden), so it keeps its size when
+  // the browser's bars come and go. CSS gives the frame that height.
   const height = frame.getBoundingClientRect().height;
   const columns = Math.max(4, Math.round(width / ZONE));
   const rows = Math.max(3, Math.round(height / ZONE));
@@ -224,14 +224,7 @@ export function mountSheet(signal: AbortSignal) {
     focusable: 'false',
   });
   const title = titleBlock();
-  // A fixed strip of the sheet's color from the bottom of the sheet to the bottom of the screen.
-  // Safari on iPhone paints its bottom bar from such an element at the edge. It hangs from the top,
-  // so it does not move when the address bar does.
-  const strip = document.createElement('div');
-  strip.className = 'bp-edge';
-  strip.setAttribute('data-blueprint-ui', '');
-  strip.setAttribute('aria-hidden', 'true');
-  document.body.append(strip, frame, title);
+  document.body.append(frame, title);
 
   // The sheet is drawn again only when its own size changed, not when the address bar moves.
   let size = '';
@@ -255,7 +248,6 @@ export function mountSheet(signal: AbortSignal) {
   signal.addEventListener(
     'abort',
     () => {
-      strip.remove();
       frame.remove();
       title.remove();
     },

@@ -173,21 +173,9 @@
     left: 0;
     z-index: 90;
     width: 100%;
-    /* The small viewport: the sheet does not resize when the address bar comes and goes. */
-    height: 100svh;
-    pointer-events: none;
-  }
-
-  .bp-edge {
-    position: fixed;
-    /* It reaches 8 px up into the sheet, so some of it shows when the address bar is out. */
-    top: calc(100svh - 8px);
-    right: 0;
-    left: 0;
-    z-index: 89;
-    /* The large viewport is the tallest the screen gets, so the strip always reaches the bottom. */
+    /* The large viewport: the sheet does not resize when the address bar comes and goes. The
+       bottom of it is under the bar until the bar slides away. */
     height: 100lvh;
-    background: var(--bg);
     pointer-events: none;
   }
 
@@ -219,7 +207,7 @@
   .bp-title {
     position: fixed;
     right: 30px;
-    /* Hung from the top, so it stays on the sheet when the address bar slides away. */
+    /* Hung from the bottom of the small viewport (bar shown), so it is always visible and does not move. */
     top: 100svh;
     transform: translateY(calc(-100% - 30px));
     z-index: 100;
