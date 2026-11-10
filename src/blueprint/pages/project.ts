@@ -20,7 +20,6 @@ const REMARKS: Remark[] = [
     at: (box) => ({ x: right(box) + 60, y: box.y + 40 }),
     to: (box) => ({ x: right(box) - 10, y: box.y + box.h * 0.4 }),
     options: { bend: 20, rotate: -3 },
-    caption: true,
   },
   {
     about: () => find('[data-back]'),
@@ -41,7 +40,6 @@ const REMARKS: Remark[] = [
     at: (box) => ({ x: box.x + box.w * 0.55, y: bottom(box) + 46 }),
     to: (box) => ({ x: box.x + box.w * 0.5 + 8, y: bottom(box) - 14 }),
     options: { bend: 14, small: true },
-    caption: true,
   },
   {
     about: () => find('#screenshots'),
@@ -72,7 +70,6 @@ const REMARKS: Remark[] = [
     at: (box) => ({ x: right(box) + 100, y: box.y + 10 }),
     to: (_box, ring) => ({ x: right(ring) + 4, y: ring.y + ring.h / 2 }),
     options: { bend: -14, rotate: 2, small: true },
-    caption: true,
   },
 ];
 

@@ -644,8 +644,7 @@ test.describe('blueprint mode', () => {
       page,
     }, testInfo) => {
       test.skip(testInfo.project.name !== 'phone', 'Phone only');
-      await page.goto('/projects/tapisode/');
-      await toggleBlueprint(page);
+      await page.goto('/#blueprint');
       await expect(
         page.locator('.bp-text--hand, .bp-text--hand-small').first(),
       ).toBeVisible();
