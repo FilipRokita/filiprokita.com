@@ -1,0 +1,65 @@
+/*
+ * Blueprint mode: the page as a technical drawing of itself. This file loads only when the
+ * mode is first opened (see src/blueprint/mode.ts), so it costs nothing for most visitors.
+ *
+ * The palette below is the one place besides tokens.css that holds raw colors. Everything
+ * else on the page is recolored by overriding the same tokens the site already uses.
+ * Screen only: print keeps its own light colors.
+ */
+@media screen {
+  html[data-blueprint] {
+    --bg: #0a3577;
+    --fg: #eaf3ff;
+    --muted: #a8c3ec;
+    --rule: rgb(168 205 255 / 0.28);
+    --panel: #0c3f8a;
+    --accent: #8fd8ff;
+    --on-accent: #0a3577;
+    color-scheme: dark;
+  }
+
+  /* Graph paper: a fine grid every 24px and a stronger one every 120px. */
+  html[data-blueprint] body {
+    background-image:
+      radial-gradient(
+        ellipse at 50% 0%,
+        rgb(120 180 255 / 0.18),
+        transparent 60%
+      ),
+      linear-gradient(rgb(190 220 255 / 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(190 220 255 / 0.14) 1px, transparent 1px),
+      linear-gradient(rgb(190 220 255 / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(190 220 255 / 0.055) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      120px 120px,
+      120px 120px,
+      24px 24px,
+      24px 24px;
+  }
+
+  html[data-blueprint] body::after {
+    display: none;
+  }
+
+  /* The column lines are always lit, and the pointer lines are not needed. */
+  html[data-blueprint] .guide,
+  html[data-blueprint] .guide::after {
+    border-left-color: rgb(143 216 255 / 0.38) !important;
+  }
+
+  html[data-blueprint] .hero .lit {
+    display: none;
+  }
+
+  /* Screenshots look like prints: one color, dimmed. */
+  html[data-blueprint] figure img {
+    filter: grayscale(1) contrast(1.2) brightness(0.78);
+    mix-blend-mode: screen;
+  }
+
+  html[data-blueprint] h1,
+  html[data-blueprint] h2 {
+    text-shadow: 0 0 22px rgb(143 216 255 / 0.22);
+  }
+}

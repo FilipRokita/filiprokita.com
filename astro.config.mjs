@@ -19,6 +19,24 @@ const commit = (() => {
   }
 })();
 
+// Whether this build is of main. Only main gets there through the required checks, so only it may say so.
+const onMain = (() => {
+  const branch =
+    process.env.WORKERS_CI_BRANCH ?? process.env.GITHUB_REF_NAME ?? '';
+  if (branch) return branch === 'main';
+  try {
+    return (
+      execSync('git rev-parse --abbrev-ref HEAD', {
+        stdio: ['ignore', 'pipe', 'ignore'],
+      })
+        .toString()
+        .trim() === 'main'
+    );
+  } catch {
+    return false;
+  }
+})();
+
 // The inline theme script runs before paint, so it cannot be a bundled file. The CSP allows it by hash.
 const themeInitHash = `sha256-${createHash('sha256')
   .update(readFileSync('./src/scripts/theme-init.js', 'utf8'))
@@ -59,6 +77,15 @@ export default defineConfig({
       styles: ['normal'],
       subsets: ['latin'],
     },
+    {
+      // Handwriting for the blueprint notes. Declared only: the file loads when a note uses it.
+      provider: fontProviders.fontsource(),
+      name: 'Caveat',
+      cssVariable: '--font-hand',
+      weights: ['700'],
+      styles: ['normal'],
+      subsets: ['latin'],
+    },
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -66,6 +93,7 @@ export default defineConfig({
       __BUILD__: JSON.stringify({
         date: new Date().toISOString().slice(0, 10),
         commit,
+        onMain,
       }),
     },
   },
