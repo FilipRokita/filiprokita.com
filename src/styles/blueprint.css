@@ -217,7 +217,7 @@
     letter-spacing: 0.07em;
     text-transform: uppercase;
     pointer-events: none;
-    transition: width 0.35s ease;
+    transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
     animation: bp-fade 0.8s ease 0.5s both;
   }
 
@@ -267,8 +267,20 @@
     transition: opacity 0.3s;
   }
 
+  /* The rows fold away instead of vanishing, so the block shrinks smoothly. */
+  .bp-title .bp-row:not(:first-child) {
+    max-height: 64px;
+    overflow: hidden;
+    transition:
+      max-height 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.25s ease,
+      border-top-width 0.45s ease;
+  }
+
   .bp-title[data-compact] .bp-row:not(:first-child) {
-    display: none;
+    max-height: 0;
+    border-top-width: 0;
+    opacity: 0;
   }
 
   @media (max-width: 40rem) {
@@ -441,7 +453,9 @@
     background: color-mix(in oklab, var(--bg) 88%, black);
     color: var(--fg);
     overflow: hidden;
-    box-shadow: -30px 0 80px rgb(2 14 40 / 0.6);
+    box-shadow:
+      -30px 0 80px rgb(2 14 40 / 0.6),
+      0 0 0 100vmax rgb(4 22 56 / 0.55);
   }
 
   .bp-drawer[open] {
@@ -449,9 +463,10 @@
     animation: bp-slide 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
+  /* The dim is drawn by the drawer's own shadow, not by the backdrop: Safari on iPhone colors its
+     address bar from a backdrop at the top edge and keeps the color after the dialog closes. */
   .bp-drawer::backdrop {
-    background: rgb(4 22 56 / 0.55);
-    backdrop-filter: blur(2px);
+    background: transparent;
   }
 
   @keyframes bp-slide {
@@ -686,6 +701,11 @@
     .bp-stamp {
       animation: none;
       opacity: 1;
+    }
+
+    .bp-title,
+    .bp-title .bp-row:not(:first-child) {
+      transition: none;
     }
   }
 }

@@ -41,7 +41,7 @@ when the accent changes:
 | `public/favicon.svg` | The logo as a favicon |
 | `docs/brand/banner-dark.svg`, `banner-light.svg` | The README banner |
 | `public/og.png`, `public/apple-touch-icon.png` | The share image and the touch icon. Run `npm run assets` |
-| `docs/brand/preview.png` | The README screenshot |
+| `docs/brand/preview-dark.png`, `preview-light.png` | The README screenshot. Run `npm run preview-image` |
 
 ### High contrast and print
 

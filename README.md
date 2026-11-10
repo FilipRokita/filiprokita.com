@@ -16,7 +16,10 @@
   <img src="https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=black" alt="Prettier">
   <img src="https://img.shields.io/badge/Lighthouse-100_goal-F44B21?logo=lighthouse&logoColor=white" alt="Lighthouse goal">
   <br><br>
-  <img src="docs/brand/preview.png" alt="The home page in the dark theme" width="900">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/preview-dark.png">
+    <img src="docs/brand/preview-light.png" alt="The home page" width="900">
+  </picture>
 </div>
 
 A site meant to be as good as the code behind it: fast, accessible and tested, with
