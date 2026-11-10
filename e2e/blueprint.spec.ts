@@ -552,6 +552,19 @@ test.describe('blueprint mode', () => {
       await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
     });
 
+    test('the glimpse measures the title on project pages and the 404 too', async ({
+      page,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'A phone cannot hover');
+      for (const path of ['/projects/evencost/', '/nope/']) {
+        await page.goto(path);
+        await page.getByRole('button', { name: 'Blueprint' }).hover();
+        await expect(page.locator('.bp-text--dimension').first()).toBeVisible();
+        await page.mouse.move(600, 500);
+        await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
+      }
+    });
+
     test('the command palette has an entry for it', async ({ page }) => {
       await page.goto('/');
       await page.keyboard.press('Control+k');

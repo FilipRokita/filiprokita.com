@@ -88,8 +88,8 @@ it is on. The title block shows the build date and commit from the same place.
 
 The chip draws its corners now and then, and a handwritten hint points at it for 7 seconds on
 every visit. Moving, scrolling or typing does not hide the hint, going for the chip does. Both stop for good after the first use (`localStorage`, every access is guarded) and neither
-runs with reduced motion. Hovering the chip lights the column lines and draws the name's
-dimensions, then removes them. The handwriting font (Caveat) is declared on every page but only
+runs with reduced motion. Hovering the chip lights the column lines and draws the dimensions of the page title
+and of the first section title in view, then removes them. The handwriting font (Caveat) is declared on every page but only
 downloaded when a hint or the drawing needs it.
 
 ## Phones
