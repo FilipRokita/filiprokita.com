@@ -207,9 +207,7 @@
   .bp-title {
     position: fixed;
     right: 30px;
-    /* Hung from the bottom of the small viewport (bar shown), so it is always visible and does not move. */
-    top: 100svh;
-    transform: translateY(calc(-100% - 30px));
+    bottom: 30px;
     z-index: 100;
     width: 330px;
     border: 1px solid var(--accent);
@@ -293,8 +291,7 @@
     .bp-title,
     .bp-title[data-compact] {
       right: 26px;
-      top: 100svh;
-      transform: translateY(calc(-100% - 26px));
+      bottom: 26px;
       left: 26px;
       width: auto;
     }
