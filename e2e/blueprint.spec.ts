@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const BLUEPRINT_BACKGROUND = 'rgb(10, 53, 119)';
@@ -69,5 +70,91 @@ test.describe('blueprint mode', () => {
     await expect(page.locator('html')).toHaveAttribute('data-blueprint', '');
     await expect(page.locator('html')).not.toHaveClass(/theme-vt/);
     await context.close();
+  });
+
+  test('the sheet and the drawing appear, and off really means off', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const added = page.locator('[data-blueprint-ui]');
+    await expect(added).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await expect(page.locator('.bp-frame')).toBeVisible();
+    await expect(page.locator('.bp-title')).toBeVisible();
+    await expect(page.locator('.bp-title')).toContainText('Filip Rokita');
+    await expect(page.locator('.bp-layer')).toHaveCount(1);
+
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    // Nothing the mode added stays: not the frame, not the title block, not the drawing.
+    await expect(added).toHaveCount(0);
+    await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+  });
+
+  test('the blocks are labeled with the file that renders them', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    // The header's label is part of the fixed sheet, the others are part of the page.
+    const labels = await page.locator('.bp-text--tag').allTextContents();
+    for (const name of [
+      'Header.astro',
+      'Hero.astro',
+      'Section.astro',
+      'ProjectRow.astro',
+      'Figure.astro',
+      'Footer.astro',
+    ]) {
+      expect(labels).toContain(name);
+    }
+  });
+
+  test('the title block shrinks after the first screen', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    const title = page.locator('.bp-title');
+    await expect(title).not.toHaveAttribute('data-compact');
+    await page.evaluate(() => scrollTo(0, 1200));
+    await expect(title).toHaveAttribute('data-compact', '');
+  });
+
+  test('nothing the mode adds is read out by a screen reader', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await expect(page.locator('.bp-layer svg')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
+    await expect(page.locator('.bp-frame')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
+    await expect(page.locator('.bp-title')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
+  });
+
+  test('has no accessibility violations in blueprint mode', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await expect(page.locator('.bp-frame')).toBeVisible();
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    expect(violations).toEqual([]);
+  });
+
+  test('a printout is the plain page', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Blueprint' }).click();
+    await expect(page.locator('.bp-frame')).toBeVisible();
+    await page.emulateMedia({ media: 'print' });
+    await expect(page.locator('.bp-frame')).toBeHidden();
+    await expect(page.locator('.bp-title')).toBeHidden();
+    await expect(page.locator('.bp-layer')).toBeHidden();
   });
 });

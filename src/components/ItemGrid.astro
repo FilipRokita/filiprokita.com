@@ -16,6 +16,7 @@ const { section, items, columns } = Astro.props;
 ---
 
 <ul
+  data-bp="ItemGrid.astro"
   class:list={[
     'item-grid mt-[clamp(2.5rem,1rem+4vw,5rem)] list-none border-t border-rule p-0',
     columns === 3 ? 'cols-3' : 'cols-4',

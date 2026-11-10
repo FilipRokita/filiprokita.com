@@ -15,6 +15,8 @@
     --panel: #0c3f8a;
     --accent: #8fd8ff;
     --on-accent: #0a3577;
+    /* The pen of the reviewer: handwritten notes and revision marks. */
+    --redline: #ffe08a;
     color-scheme: dark;
   }
 
@@ -61,5 +63,229 @@
   html[data-blueprint] h1,
   html[data-blueprint] h2 {
     text-shadow: 0 0 22px rgb(143 216 255 / 0.22);
+  }
+
+  /* ---- The drawing: every mark is added by the mode and removed when it turns off. ---- */
+
+  .bp-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .bp-layer svg {
+    display: block;
+  }
+
+  .bp-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1;
+    stroke-opacity: 0.85;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .bp-line--faint {
+    stroke-opacity: 0.4;
+  }
+
+  .bp-line--dash {
+    stroke-dasharray: 5 4;
+  }
+
+  .bp-line--dashdot {
+    stroke-dasharray: 18 4 2 4;
+    stroke-opacity: 0.55;
+  }
+
+  .bp-line--redline {
+    stroke: var(--redline);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .bp-tag {
+    fill: var(--accent);
+  }
+
+  .bp-text {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    letter-spacing: 0.06em;
+  }
+
+  .bp-text--tag {
+    fill: var(--on-accent);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .bp-text--size {
+    fill: var(--fg);
+    fill-opacity: 0.8;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /* Draw on: solid lines draw themselves, everything else fades in. */
+  .bp-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: bp-draw 1.1s cubic-bezier(0.5, 0, 0.2, 1) var(--d, 0s) forwards;
+  }
+
+  .bp-fade {
+    opacity: 0;
+    animation: bp-fade 0.7s ease var(--d, 0s) forwards;
+  }
+
+  @keyframes bp-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes bp-fade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---- The sheet: a border with zones, and the title block. Fixed to the screen. ---- */
+
+  .bp-frame {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .bp-frame-line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-opacity: 0.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .bp-frame-line--outer {
+    stroke-width: 1.5px;
+  }
+
+  .bp-frame-line--inner {
+    stroke-opacity: 0.35;
+  }
+
+  .bp-zone {
+    fill: var(--fg);
+    fill-opacity: 0.8;
+    font:
+      600 9px var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .bp-title {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 100;
+    width: 330px;
+    border: 1px solid var(--accent);
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    color: var(--fg);
+    font:
+      500 10px/1.2 var(--font-geist-mono),
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    pointer-events: none;
+    transition: width 0.35s ease;
+    animation: bp-fade 0.8s ease 0.5s both;
+  }
+
+  .bp-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  .bp-row + .bp-row {
+    border-top: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  .bp-cell {
+    padding: 6px 8px;
+  }
+
+  .bp-cell + .bp-cell {
+    border-left: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  .bp-cell small {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    opacity: 0.65;
+  }
+
+  .bp-cell b {
+    color: var(--fg);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .bp-row:first-child b {
+    font-size: 15px;
+  }
+
+  /* After the first screen only the project name is left, so the block never covers content. */
+  .bp-title[data-compact] {
+    width: 250px;
+  }
+
+  .bp-title[data-compact] .bp-row:not(:first-child) {
+    display: none;
+  }
+
+  @media (max-width: 40rem) {
+    .bp-title {
+      right: 26px;
+      bottom: 26px;
+      left: 26px;
+      width: auto;
+    }
+
+    .bp-title .bp-row:not(:first-child) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bp-draw {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+
+    .bp-fade,
+    .bp-title {
+      animation: none;
+      opacity: 1;
+    }
+  }
+}
+
+/* Whatever is on the screen, a printout is the plain page. */
+@media print {
+  [data-blueprint-ui] {
+    display: none !important;
   }
 }

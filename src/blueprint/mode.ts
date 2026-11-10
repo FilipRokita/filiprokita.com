@@ -6,6 +6,8 @@
  * `start` and removed again in `stop`, so that off really means off.
  */
 import blueprintCss from '../styles/blueprint.css?inline';
+import { mountLayer } from './layer';
+import { mountSheet } from './sheet';
 
 const ATTRIBUTE = 'data-blueprint';
 const root = document.documentElement;
@@ -41,6 +43,8 @@ const start = () => {
   }
   session = new AbortController();
   root.setAttribute(ATTRIBUTE, '');
+  mountSheet(session.signal);
+  mountLayer(session.signal);
 };
 
 const stop = () => {

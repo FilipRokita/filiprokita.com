@@ -16,6 +16,7 @@ const { class: className } = Astro.props;
   class:list={['blueprint-chip mono print:hidden', className]}
   aria-pressed="false"
   data-blueprint-chip
+  data-bp="BlueprintChip.astro"
   data-pending
 >
   <svg
@@ -71,6 +72,26 @@ const { class: className } = Astro.props;
     content: '';
     position: absolute;
     inset: -0.5rem;
+  }
+
+  /* The corners are drawn by the teaser. At rest they are not there. */
+  .corners {
+    position: absolute;
+    inset: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .corners path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 0;
   }
 
   .icon {
