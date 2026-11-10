@@ -19,7 +19,7 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
   background. The sheet is as tall as the small viewport (`100svh`), is not drawn again when the
   address bar moves, and the title block hangs from the top of the sheet, so nothing jumps when the
   bar slides away.
-- The mode is always dark, whatever theme the visitor has. Nothing is saved while it forces dark, so turning it off (or a reload) gives back the saved theme, or the system one. A theme chosen with the toggle while the mode is on is saved and kept.
+- The mode is always dark, whatever theme the visitor has, so on iPhone the top strip by the Dynamic Island stands out less next to the blue. Nothing is saved while it forces dark, so turning it off (or a reload) gives back the saved theme, or the system one. A theme chosen with the toggle while the mode is on is saved and kept.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built

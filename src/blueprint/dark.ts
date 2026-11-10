@@ -1,5 +1,7 @@
 /**
- * Blueprint mode is always dark, whatever the visitor uses. The theme attribute is set to dark for
+ * Blueprint mode is always dark, whatever the visitor uses. On iPhone the strip at the top (by the
+ * Dynamic Island) takes the page's color, and a dark one stands out less next to the blueprint
+ * blue than a light one. Why Safari takes it this way is not documented by Apple. The theme attribute is set to dark for
  * the session only and nothing is saved, so when the mode ends (or the page is reloaded) the
  * visitor's own theme is back: the saved choice, or the system one when there is none.
  */
