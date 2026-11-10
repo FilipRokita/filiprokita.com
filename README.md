@@ -53,7 +53,7 @@ never a change to page code.
 | Styling | [Tailwind CSS](https://tailwindcss.com) v4 via `@tailwindcss/vite` |
 | Images | `<Image />` from `astro:assets` |
 | Animation | Plain CSS first, a library only if CSS is not enough |
-| Interactivity | A few small scripts: theme switch, clock, active menu link, command palette, lit column lines |
+| Interactivity | A few small scripts: theme switch, clock, active menu link, command palette, lit column lines, and blueprint mode (lazy) |
 | Quality | ESLint, Prettier, Vitest, Playwright with axe, Lighthouse CI, a hashed Content Security Policy |
 | Runtime | Node 26 (LTS), npm |
 
@@ -98,6 +98,7 @@ The live site at [www.filiprokita.com](https://www.filiprokita.com) runs on thes
 | [🏛️ Architecture](docs/architecture.md) | Technical decisions and the build and deploy flow |
 | [🧰 Dev environment](docs/dev-environment.md) | The dev container and tooling |
 | [🎨 Design system](docs/design-system.md) | Tokens, themes, typography and motion |
+| [📐 Blueprint mode](docs/blueprint.md) | The mode that draws the site as a technical drawing, and how it is built |
 | [📝 Content](docs/content.md) | How to add, hide or remove a project |
 | [🧪 Testing](docs/testing.md) | Test types, how to run them and what CI checks |
 | [🗂️ Repo layout](docs/repo-layout.md) | What every entry in the repository root is for |

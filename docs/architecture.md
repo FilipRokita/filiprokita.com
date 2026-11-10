@@ -40,6 +40,7 @@ The copy of the list sections lives in `src/config/home.ts`.
 | Animation | CSS first | No JavaScript cost. A library only if CSS cannot do it |
 | Page transitions | Native CSS first | `<ClientRouter />` adds client JavaScript, so it is added only if CSS is not enough |
 | Interactivity | A few small vanilla scripts, no framework | The page works without them. React only if a feature truly needs it |
+| Blueprint mode | A lazy module behind a small chip | Only the chip ships to everyone. The drawing loads on first use. See [Blueprint mode](blueprint.md) |
 | Hosting | Cloudflare Workers static assets | Fast CDN, free for static sites, no adapter needed. Configured in `wrangler.jsonc` |
 | Package manager | npm | Ships with Node. Corepack is no longer bundled since Node 25 |
 | Quality gates | ESLint, Prettier, `astro check`, Playwright with axe, Lighthouse CI, gitleaks | Every change is checked by CI before it reaches `main`. See [Testing](testing.md) |

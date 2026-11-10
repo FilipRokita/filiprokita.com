@@ -7,7 +7,7 @@ The tokens, the themes and the motion rules, and where each one lives.
 All raw colors, the type scale, the spacing scale and the breakpoints are defined in
 [`src/styles/tokens.css`](../src/styles/tokens.css). The logo (`Logo.astro`), the
 `theme-color` meta tags in `BaseLayout.astro` (they repeat the `--bg` values) and the
-grain in `base.css` are the only other places with raw colors.
+grain in `base.css` are the only other places with raw colors, besides the blueprint palette: [`src/styles/blueprint.css`](../src/styles/blueprint.css) is a self-contained, lazy file with its own colors, applied by overriding these tokens (see [Blueprint mode](blueprint.md)).
 
 **The rule:** a component never writes a raw color. It uses a token, through a Tailwind
 utility (`bg-bg`, `text-muted`, ...) or `var(--token)` in CSS. That is what keeps the
@@ -131,7 +131,8 @@ focus ring style (`:focus-visible`), a faint static grain (not on phones, where 
 | Part | Where | Notes |
 | :--- | :--- | :--- |
 | Layout | `src/layouts/BaseLayout.astro` | Head, fonts, theme script, skip link, header, main, footer |
-| Header | `src/components/Header.astro` | Logo and nav. The nav marks the section in view. Phones have no menu, only the logo |
+| Header | `src/components/Header.astro` | Logo, nav and the blueprint chip. The nav marks the section in view. Phones have no menu, only the logo and the chip |
+| BlueprintChip | `src/components/BlueprintChip.astro` | The way into blueprint mode, with its teaser. See [Blueprint mode](blueprint.md) |
 | Footer | `src/components/Footer.astro` | Build date and commit, links, theme toggle |
 | Arrow | `src/components/Arrow.astro` | The one arrow icon (right, left, up-right): a thin SVG stroke with a sharp tip, so every arrow matches the site's lines |
 | Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
@@ -144,6 +145,8 @@ focus ring style (`:focus-visible`), a faint static grain (not on phones, where 
 | ItemGrid | `src/components/ItemGrid.astro` | Numbered items in 3 or 4 columns, 2 on tablets, 1 on phones |
 | Figure | `src/components/Figure.astro` | A framed, captioned image |
 | ProjectRow | `src/components/ProjectRow.astro` | One project on the home page |
+
+Every component root carries `data-bp="File.astro"`, which blueprint mode reads to name the file behind what you click.
 
 Site facts (name, links, section list) are in `src/config/site.ts`. The build date and
 commit come from `astro.config.mjs`.
