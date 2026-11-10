@@ -22,12 +22,15 @@ const DASHED: LineKind[] = ['dash', 'dashdot'];
  */
 export class Drawing {
   readonly svg: SVGSVGElement;
+  /** The width of the sheet, so a note can keep inside it. */
+  readonly width: number;
   private clock = 0;
   /** The same every time: the hand-drawn lines must not change from one visit to the next. */
   readonly random = seeded(7);
   readonly reserved = new Reservations();
 
   constructor(width: number, height: number) {
+    this.width = width;
     this.svg = create('svg', {
       width,
       height,

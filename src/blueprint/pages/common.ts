@@ -1,7 +1,7 @@
 import type { PageContext } from '../context';
-import { dimensionDown } from '../dimensions';
-import { bottom, boxOf } from '../measure';
-import { findAll } from './query';
+import { dimensionDown, dimensionName } from '../dimensions';
+import { bottom, boxOf, textBox } from '../measure';
+import { find, findAll } from './query';
 
 /** The height of every section, down the left edge of the sheet. */
 export function paintSectionHeights({ drawing, wide }: PageContext) {
@@ -16,4 +16,10 @@ export function paintSectionHeights({ drawing, wide }: PageContext) {
       extendTo: 40,
     });
   }
+}
+
+/** The width and height of the big title of a page, measured from its text. */
+export function paintTitleDimensions({ drawing, wide }: PageContext) {
+  const title = find('main h1');
+  if (title && wide) dimensionName(drawing, textBox(title));
 }

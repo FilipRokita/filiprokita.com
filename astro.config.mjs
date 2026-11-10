@@ -19,23 +19,10 @@ const commit = (() => {
   }
 })();
 
-// Whether this build is of main. Only main gets there through the required checks, so only it may say so.
-const onMain = (() => {
-  const branch =
-    process.env.WORKERS_CI_BRANCH ?? process.env.GITHUB_REF_NAME ?? '';
-  if (branch) return branch === 'main';
-  try {
-    return (
-      execSync('git rev-parse --abbrev-ref HEAD', {
-        stdio: ['ignore', 'pipe', 'ignore'],
-      })
-        .toString()
-        .trim() === 'main'
-    );
-  } catch {
-    return false;
-  }
-})();
+// Whether this build is of main. Only main gets there through the required checks, so only it may say
+// so. It is known from the CI of the host (Cloudflare, GitHub Actions). A build on a laptop never is.
+const onMain =
+  (process.env.WORKERS_CI_BRANCH ?? process.env.GITHUB_REF_NAME) === 'main';
 
 // The inline theme script runs before paint, so it cannot be a bundled file. The CSP allows it by hash.
 const themeInitHash = `sha256-${createHash('sha256')

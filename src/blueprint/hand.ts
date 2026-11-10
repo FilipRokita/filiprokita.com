@@ -95,6 +95,8 @@ export interface NoteOptions {
 }
 
 const LINE_HEIGHT = { big: 23, small: 19 };
+/** The least room between a note and the edge of the sheet. */
+const EDGE = 20;
 
 /**
  * A handwritten note: some lines of text, and an arrow to a point. The text is measured for real,
@@ -109,33 +111,32 @@ export function note(
 ) {
   const lineHeight = small ? LINE_HEIGHT.small : LINE_HEIGHT.big;
   drawing.advance(0.12);
-  const texts = lines.map((line, index) =>
-    drawing.text(
-      at.x,
-      at.y + index * lineHeight,
-      line,
-      small ? 'hand-small' : 'hand',
-      { rotate },
-    ),
+  const texts = lines.map((line) =>
+    drawing.text(at.x, at.y, line, small ? 'hand-small' : 'hand'),
   );
   const width = Math.max(...texts.map((text) => text.getComputedTextLength()));
   const height = lines.length * lineHeight;
 
-  // Nothing is written over another note: move the lines down until the place is free.
-  const area = { x: at.x, y: at.y - lineHeight, w: width, h: height };
-  const free = drawing.reserved.claim(area);
-  const shift = free.y - area.y;
-  if (shift) {
-    texts.forEach((text, index) => {
-      const y = at.y + shift + index * lineHeight;
-      text.setAttribute('y', String(round(y)));
-      if (rotate)
-        text.setAttribute(
-          'transform',
-          `rotate(${rotate} ${round(at.x)} ${round(at.y + shift)})`,
-        );
-    });
-  }
+  // The note stays on the sheet, and is never written over another note: it is moved left until
+  // it fits, and down until the place is free.
+  const x = Math.max(EDGE, Math.min(at.x, drawing.width - EDGE - width));
+  const free = drawing.reserved.claim({
+    x,
+    y: at.y - lineHeight,
+    w: width,
+    h: height,
+  });
+  texts.forEach((text, index) => {
+    const y = free.y + lineHeight * (index + 1);
+    text.setAttribute('x', String(round(x)));
+    text.setAttribute('y', String(round(y)));
+    if (rotate) {
+      text.setAttribute(
+        'transform',
+        `rotate(${rotate} ${round(x)} ${round(y)})`,
+      );
+    }
+  });
   if (!target) return;
 
   const top = free.y + lineHeight * 0.2;

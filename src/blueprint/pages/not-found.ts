@@ -1,7 +1,6 @@
 import type { PageContext } from '../context';
-import { dimensionAcross } from '../dimensions';
 import { labelBox, right, textBox } from '../measure';
-import { paintSectionHeights } from './common';
+import { paintSectionHeights, paintTitleDimensions } from './common';
 import { find } from './query';
 import type { Remark } from './remarks';
 import { paintRemarks } from './remarks';
@@ -33,18 +32,7 @@ const REMARKS: Remark[] = [
 ];
 
 export function paintNotFound(context: PageContext) {
-  const { drawing, wide } = context;
-  const title = find('main h1');
-  if (title && wide) {
-    const name = textBox(title);
-    dimensionAcross(drawing, {
-      x1: name.x,
-      x2: right(name),
-      y: name.y - 20,
-      label: `${Math.round(name.w)} px`,
-      extendTo: name.y + 6,
-    });
-  }
+  paintTitleDimensions(context);
   paintSectionHeights(context);
   paintRemarks(context, REMARKS);
 }

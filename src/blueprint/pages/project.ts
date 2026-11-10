@@ -1,7 +1,6 @@
 import type { PageContext } from '../context';
-import { dimensionAcross } from '../dimensions';
 import { bottom, boxOf, right, textBox } from '../measure';
-import { paintSectionHeights } from './common';
+import { paintSectionHeights, paintTitleDimensions } from './common';
 import { paintBom, paintPalette } from './facts';
 import { find } from './query';
 import type { Remark } from './remarks';
@@ -25,7 +24,10 @@ const REMARKS: Remark[] = [
   },
   {
     about: () => find('[data-back]'),
-    lines: ['a real "back": it returns to', 'where you were on the list.'],
+    lines: [
+      'a real "back" when you came',
+      'from the list: same place, same scroll.',
+    ],
     at: (box) => ({ x: right(box) + 60, y: box.y + 4 }),
     to: (box) => ({ x: right(box) + 4, y: box.y + box.h / 2 }),
     options: { bend: 14, small: true },
@@ -75,18 +77,7 @@ const REMARKS: Remark[] = [
 ];
 
 export function paintProject(context: PageContext) {
-  const { drawing, wide } = context;
-  const title = find('main h1');
-  if (title && wide) {
-    const name = textBox(title);
-    dimensionAcross(drawing, {
-      x1: name.x,
-      x2: right(name),
-      y: name.y - 20,
-      label: `${Math.round(name.w)} px`,
-      extendTo: name.y + 6,
-    });
-  }
+  paintTitleDimensions(context);
   paintSectionHeights(context);
   paintRemarks(context, REMARKS);
   paintBom(context, find('#decisions') ?? find('#what-it-is'));

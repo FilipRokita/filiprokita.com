@@ -564,4 +564,97 @@ test.describe('blueprint mode', () => {
       ).toHaveAttribute('aria-pressed', 'true');
     });
   });
+
+  test.describe('what the review found', () => {
+    test('a double click leaves the mode in one clean state', async ({
+      page,
+    }) => {
+      await page.goto('/');
+      const chip = page.getByRole('button', { name: 'Blueprint' });
+      await chip.dblclick();
+      // On and off again, in turn: nothing mounted twice, nothing left behind.
+      await expect(chip).toHaveAttribute('aria-pressed', 'false');
+      await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+      await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
+    });
+
+    test('the drawing shrinks again when the page does', async ({
+      page,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'Needs a window to resize');
+      await page.goto('/#blueprint');
+      await expect(page.locator('.bp-layer svg')).toBeVisible();
+      const pageHeight = () =>
+        page.evaluate(() => document.body.getBoundingClientRect().height);
+      // How much taller the drawing is than the page it covers.
+      const extra = async () =>
+        (await page.evaluate(() =>
+          Number(
+            document.querySelector('.bp-layer svg')?.getAttribute('height'),
+          ),
+        )) - (await pageHeight());
+
+      // The page settles a moment after the mode opens (images and fonts arrive).
+      await page.waitForTimeout(800);
+      const original = page.viewportSize() ?? { width: 1280, height: 720 };
+      const wide = await pageHeight();
+      await page.setViewportSize({ width: 1000, height: 900 });
+      await expect.poll(pageHeight).toBeGreaterThan(wide + 100);
+      await page.setViewportSize(original);
+      // The page is shorter again. The drawing, once built again, must be too.
+      await expect.poll(pageHeight).toBeLessThan(wide + 10);
+      await page.waitForTimeout(800);
+      expect(await extra()).toBeLessThanOrEqual(8);
+    });
+
+    test('the palette follows a change of theme', async ({
+      page,
+    }, testInfo) => {
+      test.skip(
+        testInfo.project.name === 'phone',
+        'The palette is for wide pages',
+      );
+      await page.goto('/');
+      await toggleBlueprint(page);
+      const colors = () =>
+        page.locator('.bp-layer .bp-text--size').allTextContents();
+      await expect.poll(colors).toContain('#0b0b0c');
+      await page.keyboard.press('Control+k');
+      await page.keyboard.type('theme');
+      await page.keyboard.press('Enter');
+      await expect.poll(colors).toContain('#f4f3ef');
+    });
+
+    test('the drawer does not animate for someone who asked for less motion', async ({
+      page,
+    }) => {
+      await page.goto('/');
+      await toggleBlueprint(page);
+      await page.locator('.hero a.link[href*="linkedin"]').click();
+      const drawer = page.getByRole('dialog');
+      await expect(drawer).toBeVisible();
+      expect(
+        await drawer.evaluate(
+          (element) => getComputedStyle(element).animationName,
+        ),
+      ).toBe('none');
+    });
+
+    test('no handwritten note runs off the screen on a phone', async ({
+      page,
+    }, testInfo) => {
+      test.skip(testInfo.project.name !== 'phone', 'Phone only');
+      await page.goto('/projects/tapisode/');
+      await toggleBlueprint(page);
+      await expect(
+        page.locator('.bp-text--hand, .bp-text--hand-small').first(),
+      ).toBeVisible();
+      const widest = await page
+        .locator('.bp-text--hand, .bp-text--hand-small')
+        .evaluateAll((texts) =>
+          Math.max(...texts.map((text) => text.getBoundingClientRect().right)),
+        );
+      expect(widest).toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
+    });
+  });
 });

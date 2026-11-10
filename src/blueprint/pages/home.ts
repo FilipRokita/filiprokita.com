@@ -1,12 +1,6 @@
 import { detailBubble } from '../bubble';
 import type { PageContext } from '../context';
-import {
-  crosshair,
-  dimensionAcross,
-  dimensionDown,
-  ruler,
-  sectionMark,
-} from '../dimensions';
+import { crosshair, dimensionName, ruler, sectionMark } from '../dimensions';
 import { note } from '../hand';
 import { bottom, boxOf, labelBox, right } from '../measure';
 import { paintSectionHeights } from './common';
@@ -134,20 +128,7 @@ function paintHero({ drawing, width, wide, gutter }: PageContext) {
   const heroBox = boxOf(hero);
   const name = boxOf(line);
 
-  dimensionAcross(drawing, {
-    x1: name.x,
-    x2: right(name),
-    y: name.y - 26,
-    label: `${Math.round(name.w)} px`,
-    extendTo: name.y + 6,
-  });
-  dimensionDown(drawing, {
-    x: name.x - 22,
-    y1: name.y,
-    y2: bottom(name),
-    label: `${Math.round(name.h)}`,
-    extendTo: name.x + 4,
-  });
+  dimensionName(drawing, name);
   crosshair(drawing, right(heroBox) - 3, heroBox.y + 3);
   crosshair(drawing, heroBox.x + 3, bottom(heroBox) - 3);
   crosshair(drawing, right(heroBox) - 3, bottom(heroBox) - 3);

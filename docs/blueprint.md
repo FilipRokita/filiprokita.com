@@ -80,8 +80,9 @@ build, so the table is simply not drawn.
 
 The stamp says **CI PASSED** only for a build of the `main` branch, because only a pull request
 with every required check green can get there (branch protection). Any other build is stamped
-**PREVIEW**. `astro.config.mjs` works out `onMain` from `WORKERS_CI_BRANCH`, `GITHUB_REF_NAME` or
-git. The title block shows the build date and commit from the same place.
+**PREVIEW**. `astro.config.mjs` works out `onMain` from the host's CI variables (`WORKERS_CI_BRANCH` on
+Cloudflare, `GITHUB_REF_NAME` on GitHub Actions). A build on a laptop never is, whatever branch
+it is on. The title block shows the build date and commit from the same place.
 
 ## The way in
 

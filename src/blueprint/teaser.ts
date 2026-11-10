@@ -14,8 +14,16 @@ const HINTS_AT_MOST = 2;
  * someone who asked for less motion.
  */
 export function createTeaser(chip: HTMLElement) {
-  const timers: ReturnType<typeof setTimeout>[] = [];
-  let every: ReturnType<typeof setInterval> | undefined;
+  /** Everything the teaser listens to or waits for, so that `stop` can end it all at once. */
+  let session: AbortController | undefined;
+  const timers = new Set<ReturnType<typeof setTimeout>>();
+  const later = (callback: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      timers.delete(timer);
+      callback();
+    }, delay);
+    timers.add(timer);
+  };
 
   const quiet = () =>
     document.hidden ||
@@ -25,9 +33,7 @@ export function createTeaser(chip: HTMLElement) {
   const tease = () => {
     if (quiet()) return;
     chip.setAttribute('data-tease', '');
-    timers.push(
-      setTimeout(() => chip.removeAttribute('data-tease'), TEASE_FOR),
-    );
+    later(() => chip.removeAttribute('data-tease'), TEASE_FOR);
   };
 
   const hideHint = () => chip.removeAttribute('data-hint');
@@ -37,10 +43,10 @@ export function createTeaser(chip: HTMLElement) {
     if (quiet() || shown >= HINTS_AT_MOST) return;
     // The handwriting is fetched now, so the hint never appears in the wrong font first.
     if (!(await loadHandwriting())) return;
-    if (quiet()) return;
+    if (quiet() || session?.signal.aborted) return;
     memory.write('hints', String(shown + 1));
     chip.setAttribute('data-hint', '');
-    timers.push(setTimeout(hideHint, HINT_FOR));
+    later(hideHint, HINT_FOR);
   };
 
   const start = () => {
@@ -49,21 +55,25 @@ export function createTeaser(chip: HTMLElement) {
       memory.read('used')
     )
       return;
-    timers.push(
-      setTimeout(tease, FIRST_TEASE),
-      setTimeout(() => void showHint(), HINT_AFTER),
-    );
-    every = setInterval(tease, TEASE_EVERY);
+    session = new AbortController();
+    const { signal } = session;
+    later(tease, FIRST_TEASE);
+    later(() => void showHint(), HINT_AFTER);
+    const every = setInterval(tease, TEASE_EVERY);
+    signal.addEventListener('abort', () => clearInterval(every), {
+      once: true,
+    });
     for (const type of ['pointerdown', 'keydown', 'wheel'] as const) {
-      addEventListener(type, hideHint, { passive: true });
+      addEventListener(type, hideHint, { passive: true, signal });
     }
   };
 
-  /** Used for the first time: the teaser has done its job. */
+  /** Used for the first time: the teaser has done its job, for good. */
   const stop = () => {
     memory.write('used', '1');
+    session?.abort();
     timers.forEach(clearTimeout);
-    clearInterval(every);
+    timers.clear();
     chip.removeAttribute('data-tease');
     hideHint();
   };

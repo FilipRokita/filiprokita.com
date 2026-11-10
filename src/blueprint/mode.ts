@@ -70,11 +70,9 @@ const stop = () => {
   root.removeAttribute(ATTRIBUTE);
 };
 
-/**
- * Turns the mode on or off and resolves to the new state. With an `origin` the change grows
- * as a circle from that point, the same way a theme change does.
- */
-export async function toggleBlueprint(origin?: Origin): Promise<boolean> {
+/** Turns the mode on or off. The change grows as a circle from `origin` when there is one. */
+async function change(origin?: Origin): Promise<boolean> {
+  // The state is read here, when it is this change's turn, and not when it was asked for.
   const next = !isBlueprint();
   const apply = next ? start : stop;
   if (!origin || !document.startViewTransition || reducedMotion.matches) {
@@ -90,4 +88,16 @@ export async function toggleBlueprint(origin?: Origin): Promise<boolean> {
     root.classList.remove('theme-vt');
   }
   return next;
+}
+
+let queue: Promise<unknown> = Promise.resolve();
+
+/**
+ * Turns the mode on or off and resolves to the new state. Changes happen one after the other, so a
+ * double click, or a click and a palette entry together, can never mount the mode twice.
+ */
+export function toggleBlueprint(origin?: Origin): Promise<boolean> {
+  const result = queue.then(() => change(origin));
+  queue = result.catch(() => undefined);
+  return result;
 }

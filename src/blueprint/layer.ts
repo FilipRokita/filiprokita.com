@@ -10,8 +10,8 @@ const REBUILD_DELAY = 150;
 
 /**
  * The drawing of the page: one SVG as big as the page, behind the header and above the
- * content. It is built again whenever the page changes size, because every mark is measured
- * from the real elements.
+ * content. It is built again whenever the page changes size or colors, because every mark is
+ * measured from the real elements.
  */
 export function mountLayer(signal: AbortSignal) {
   const layer = document.createElement('div');
@@ -26,6 +26,9 @@ export function mountLayer(signal: AbortSignal) {
     // A newer build, or turning the mode off, makes this one pointless.
     if (run !== latest || signal.aborted) return;
 
+    // The old drawing counts towards the height of the page. Take it away before measuring.
+    layer.replaceChildren();
+    layer.style.height = '0px';
     const { width, height } = pageSize();
     layer.style.height = `${height}px`;
     const drawing = new Drawing(width, height);
@@ -43,21 +46,38 @@ export function mountLayer(signal: AbortSignal) {
 
   let timer: ReturnType<typeof setTimeout> | undefined;
   const rebuild = () => {
+    if (signal.aborted) return;
     clearTimeout(timer);
     timer = setTimeout(() => void build(), REBUILD_DELAY);
   };
 
   void build();
   addEventListener('resize', rebuild, { signal });
-  const observer = new ResizeObserver(rebuild);
-  observer.observe(document.body);
-  void document.fonts.ready.then(rebuild);
+  // The page can change size without the window changing: text reflows, a font arrives.
+  let first = true;
+  const sizes = new ResizeObserver(() => {
+    if (first) first = false;
+    else rebuild();
+  });
+  sizes.observe(document.body);
+  // The palette shows the colors of the theme, so a change of theme redraws it.
+  const themes = new MutationObserver(rebuild);
+  themes.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+  matchMedia('(prefers-color-scheme: light)').addEventListener(
+    'change',
+    rebuild,
+    { signal },
+  );
 
   signal.addEventListener(
     'abort',
     () => {
       clearTimeout(timer);
-      observer.disconnect();
+      sizes.disconnect();
+      themes.disconnect();
       layer.remove();
     },
     { once: true },

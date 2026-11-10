@@ -1,4 +1,6 @@
 import type { Drawing } from './drawing';
+import type { Box } from './measure';
+import { bottom, right } from './measure';
 import { round } from './svg';
 
 const TICK = 6;
@@ -102,4 +104,22 @@ export function ruler(drawing: Drawing, x: number, y: number, length = 200) {
     drawing.text(x + at, y + 14, String(at), 'size', { anchor: 'middle' });
   }
   drawing.text(x + length + 14, y + 4, 'PX', 'size');
+}
+
+/** The dimensions of a big title: its width across the top and its height down the left. */
+export function dimensionName(drawing: Drawing, name: Box) {
+  dimensionAcross(drawing, {
+    x1: name.x,
+    x2: right(name),
+    y: name.y - 26,
+    label: `${Math.round(name.w)} px`,
+    extendTo: name.y + 6,
+  });
+  dimensionDown(drawing, {
+    x: name.x - 22,
+    y1: name.y,
+    y2: bottom(name),
+    label: `${Math.round(name.h)}`,
+    extendTo: name.x + 4,
+  });
 }
