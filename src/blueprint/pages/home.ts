@@ -153,7 +153,7 @@ const REMARKS: Remark[] = [
       '<- this link = the exact commit',
       'that built this page. receipts.',
     ],
-    at: (box) => ({ x: right(box) + 40, y: box.y - 30 }),
+    at: (box) => ({ x: right(box) + 36, y: box.y - 4 }),
     options: { small: true },
   },
 ];
