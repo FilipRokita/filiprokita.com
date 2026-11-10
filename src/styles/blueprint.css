@@ -269,7 +269,8 @@
       width: auto;
     }
 
-    .bp-title .bp-row:not(:first-child) {
+    .bp-title .bp-row:not(:first-child),
+    .bp-title .bp-stamp {
       display: none;
     }
   }

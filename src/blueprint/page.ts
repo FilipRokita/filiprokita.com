@@ -3,6 +3,8 @@ import { BLOCKS } from './labels';
 import { boxOf } from './measure';
 import { brackets, sizeLabel, tag } from './marks';
 import { paintHome } from './pages/home';
+import { paintNotFound } from './pages/not-found';
+import { paintProject } from './pages/project';
 import { find } from './pages/query';
 
 /** Below this width the drawing is the short version: no sizes, no long dimension lines. */
@@ -29,5 +31,10 @@ export function paintPage(context: PageContext) {
     tag(drawing, box, name);
     if (wide) sizeLabel(drawing, box);
   }
-  if (kindOfPage() === 'home') paintHome(context);
+  const painters = {
+    home: paintHome,
+    project: paintProject,
+    'not-found': paintNotFound,
+  };
+  painters[kindOfPage()](context);
 }

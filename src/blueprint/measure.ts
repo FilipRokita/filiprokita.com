@@ -67,5 +67,23 @@ export function labelBox(section: Element): Box {
   const labelBox = label ? boxOf(label) : { x: 0, y: 0, w: 0, h: 0 };
   const top =
     boxOf(section).y + parseFloat(getComputedStyle(section).paddingTop);
-  return { x: labelBox.x, y: top, w: labelBox.w, h: labelBox.h };
+  return {
+    x: labelBox.x,
+    y: top,
+    w: label ? textBox(label).w : 0,
+    h: labelBox.h,
+  };
+}
+
+/** The box around the text of an element, which is narrower than the element when it is a full-width block. */
+export function textBox(element: Element): Box {
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const rect = range.getBoundingClientRect();
+  return {
+    x: rect.left + scrollX,
+    y: rect.top + scrollY,
+    w: rect.width,
+    h: rect.height,
+  };
 }

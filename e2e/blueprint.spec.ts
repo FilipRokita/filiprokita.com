@@ -383,4 +383,97 @@ test.describe('blueprint mode', () => {
       );
     });
   });
+
+  test.describe('the other pages', () => {
+    test('a project page has its own notes, measured from its elements', async ({
+      page,
+    }, testInfo) => {
+      test.skip(
+        testInfo.project.name === 'phone',
+        'The notes need a wide page',
+      );
+      await page.goto('/projects/tapisode/');
+      await toggleBlueprint(page);
+      await expect(
+        page.locator('.bp-text--hand', { hasText: 'REV F' }),
+      ).toBeVisible();
+      const columns = await page.locator('.facts').getAttribute('data-count');
+      await expect(
+        page.locator('.bp-text--hand-small', {
+          hasText: `${columns} facts here`,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.locator('.bp-text--tag', { hasText: 'Figure.astro' }),
+      ).toBeVisible();
+    });
+
+    test('the 404 page says why it is a 404', async ({ page }, testInfo) => {
+      test.skip(
+        testInfo.project.name === 'phone',
+        'The notes need a wide page',
+      );
+      await page.goto('/no-such-page/');
+      await toggleBlueprint(page);
+      await expect(
+        page.locator('.bp-text--hand', { hasText: 'status 404' }),
+      ).toBeVisible();
+      await expect(
+        page.locator('.bp-text--hand-small', { hasText: 'noindex' }),
+      ).toBeVisible();
+    });
+
+    for (const route of ['/projects/forecheck/', '/no-such-page/']) {
+      test(`${route} has no accessibility violations in blueprint mode`, async ({
+        page,
+      }) => {
+        await page.goto(route);
+        await toggleBlueprint(page);
+        const { violations } = await new AxeBuilder({ page }).analyze();
+        expect(violations).toEqual([]);
+      });
+
+      test(`${route} is left completely when the mode turns off`, async ({
+        page,
+      }) => {
+        await page.goto(route);
+        await toggleBlueprint(page);
+        await toggleBlueprint(page);
+        await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
+        await expect(page.locator('html')).not.toHaveAttribute(
+          'data-blueprint',
+        );
+      });
+    }
+  });
+
+  test.describe('on a phone', () => {
+    test.beforeEach(async ({ page }, testInfo) => {
+      test.skip(testInfo.project.name !== 'phone', 'Phone only');
+      await page.goto('/');
+      await toggleBlueprint(page);
+    });
+
+    test('the drawing is the short version: captions, no dimensions', async ({
+      page,
+    }) => {
+      await expect(
+        page.locator('.bp-text--hand-small, .bp-text--hand').first(),
+      ).toBeVisible();
+      await expect(page.locator('.bp-text--dimension')).toHaveCount(0);
+      await expect(page.locator('.bp-text--size')).toHaveCount(0);
+      await expect(page.locator('.bp-stamp')).toBeHidden();
+    });
+
+    test('nothing the drawing adds makes the page wider than the screen', async ({
+      page,
+    }) => {
+      const overflow = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      );
+      expect(overflow).toBeLessThanOrEqual(0);
+    });
+  });
 });
