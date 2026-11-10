@@ -105,8 +105,8 @@ to the screen only, so a printout is the plain page.
 
 ## Known limits
 
-- It is tested in Chromium only. The circle reveal uses view transitions and the styles use
-  constructable stylesheets (Safari 16.4 and up). Safari on a phone has not been tried: check it
-  by hand.
+- The automated tests run in Chromium only. The circle reveal uses view transitions and the
+  styles use constructable stylesheets (Safari 16.4 and up). Safari on an iPhone was checked by
+  hand and works.
 - The handwritten remarks are about this site's current pages. When a page changes, check its
   remarks in `src/blueprint/pages/`.
