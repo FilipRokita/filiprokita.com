@@ -59,7 +59,8 @@ try {
 
     const html = readFileSync(path('./preview.html'), 'utf8')
       .replace('{{DESKTOP}}', desktop)
-      .replace('{{PHONE}}', phone);
+      .replace('{{PHONE}}', phone)
+      .replace('{{SCHEME}}', scheme);
     writeFileSync(path('./.preview-built.html'), html);
 
     const page = await browser.newPage({
