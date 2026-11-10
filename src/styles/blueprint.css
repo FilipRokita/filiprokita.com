@@ -178,6 +178,19 @@
     pointer-events: none;
   }
 
+  .bp-edge {
+    position: fixed;
+    /* It reaches 8 px up into the sheet, so some of it shows when the address bar is out. */
+    top: calc(100svh - 8px);
+    right: 0;
+    left: 0;
+    z-index: 89;
+    /* The large viewport is the tallest the screen gets, so the strip always reaches the bottom. */
+    height: 100lvh;
+    background: var(--bg);
+    pointer-events: none;
+  }
+
   .bp-frame-line {
     fill: none;
     stroke: var(--accent);

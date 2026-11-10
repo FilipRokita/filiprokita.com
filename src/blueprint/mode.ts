@@ -7,7 +7,6 @@
  */
 import blueprintCss from '../styles/blueprint.css?inline';
 import { tintBrowserBar } from './browser-bar';
-import { lockDark } from './dark';
 import { mountDrawer } from './drawer';
 import { mountInspector } from './inspector';
 import { mountLayer } from './layer';
@@ -60,8 +59,6 @@ const start = () => {
   loadStyles();
   session = new AbortController();
   root.setAttribute(ATTRIBUTE, '');
-  // First, so on the way out the theme is back before the browser bar looks at it.
-  lockDark(session.signal);
   tintBrowserBar(session.signal);
   mountSheet(session.signal);
   mountLayer(session.signal);

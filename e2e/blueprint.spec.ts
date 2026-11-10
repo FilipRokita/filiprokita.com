@@ -86,28 +86,6 @@ test.describe('blueprint mode', () => {
     await expect.poll(colors).not.toContain('#0a3577');
   });
 
-  test('the mode is dark and gives the visitor theme back when it is off', async ({
-    page,
-  }) => {
-    await page.emulateMedia({ colorScheme: 'light' });
-    await page.goto('/');
-    const html = page.locator('html');
-    await expect(html).not.toHaveAttribute('data-theme');
-    await toggleBlueprint(page);
-    await expect(html).toHaveAttribute('data-theme', 'dark');
-    // Nothing is saved while the mode forces dark.
-    expect(await page.evaluate(() => localStorage.getItem('theme'))).toBeNull();
-    await toggleBlueprint(page);
-    await expect(html).not.toHaveAttribute('data-theme');
-
-    await page.evaluate(() => localStorage.setItem('theme', 'light'));
-    await page.reload();
-    await toggleBlueprint(page);
-    await expect(html).toHaveAttribute('data-theme', 'dark');
-    await toggleBlueprint(page);
-    await expect(html).toHaveAttribute('data-theme', 'light');
-  });
-
   test('the drawing is not drawn again when only the height of the window changes', async ({
     page,
   }, testInfo) => {
@@ -162,6 +140,7 @@ test.describe('blueprint mode', () => {
     await expect(page.locator('.bp-frame')).toBeVisible();
     await expect(page.locator('.bp-title')).toBeVisible();
     await expect(page.locator('.bp-title')).toContainText('Filip Rokita');
+    await expect(page.locator('.bp-edge')).toHaveCount(1);
     await expect(page.locator('.bp-layer')).toHaveCount(1);
 
     await toggleBlueprint(page);

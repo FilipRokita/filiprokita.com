@@ -1,5 +1,4 @@
 import tokensCss from '../styles/tokens.css?raw';
-import { visitorTheme } from './dark';
 
 export interface SiteColors {
   bg: string;
@@ -17,9 +16,15 @@ const PAIRS = new Map(
   ].map(([, name, light, dark]) => [name, { light, dark }] as const),
 );
 
+const currentTheme = (): 'light' | 'dark' => {
+  const chosen = document.documentElement.dataset.theme;
+  if (chosen === 'light' || chosen === 'dark') return chosen;
+  return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+};
+
 /** The colors the site really uses in the theme the visitor has, for the palette on the drawing. */
 export function siteColors(): SiteColors {
-  const theme = visitorTheme();
+  const theme = currentTheme();
   const pick = (name: string) => PAIRS.get(name)?.[theme] ?? '#000000';
   return {
     bg: pick('bg'),
