@@ -1,22 +1,12 @@
 import { loadBom } from './bom';
+import { WIDE } from './context';
 import { Drawing } from './drawing';
+import { loadHandwriting } from './handwriting';
 import { pageSize } from './measure';
-import { paintPage, WIDE } from './page';
+import { paintPage } from './page';
 import { gutterWidth, siteColors } from './tokens';
 
 const REBUILD_DELAY = 150;
-
-/** The handwriting font is only fetched when it is first used, so it is asked for before measuring notes. */
-let handwriting: Promise<unknown> | undefined;
-const loadHandwriting = () => {
-  const family = getComputedStyle(document.documentElement).getPropertyValue(
-    '--font-hand',
-  );
-  handwriting ??= document.fonts
-    .load(`700 23px ${family}`, 'Aa')
-    .catch(() => []);
-  return handwriting;
-};
 
 /**
  * The drawing of the page: one SVG as big as the page, behind the header and above the

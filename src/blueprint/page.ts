@@ -7,9 +7,6 @@ import { paintNotFound } from './pages/not-found';
 import { paintProject } from './pages/project';
 import { find } from './pages/query';
 
-/** Below this width the drawing is the short version: no sizes, no long dimension lines. */
-export const WIDE = 900;
-
 type PageKind = 'home' | 'project' | 'not-found';
 
 /** Which page this is, told by what is on it: only the home page has a hero. */

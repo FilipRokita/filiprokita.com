@@ -9,6 +9,7 @@ import blueprintCss from '../styles/blueprint.css?inline';
 import { mountDrawer } from './drawer';
 import { mountInspector } from './inspector';
 import { mountLayer } from './layer';
+import { showPeek } from './peek';
 import { mountSheet } from './sheet';
 
 const ATTRIBUTE = 'data-blueprint';
@@ -26,23 +27,35 @@ export interface Origin {
  * the content security policy allows this. Every rule is under `html[data-blueprint]`, so they do
  * nothing until the mode is on.
  */
+let stylesLoaded = false;
 const loadStyles = () => {
+  if (stylesLoaded) return;
   const sheet = new CSSStyleSheet();
   sheet.replaceSync(blueprintCss);
   document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+  stylesLoaded = true;
 };
-let stylesLoaded = false;
 
 /** Aborted when the mode turns off. Everything mounted for the mode listens to its signal. */
 let session: AbortController | null = null;
 
 export const isBlueprint = () => root.hasAttribute(ATTRIBUTE);
 
+/** Takes away the glimpse of the mode, if one is showing. */
+let endPeek: (() => void) | null = null;
+
+/** Shows or hides a glimpse of the mode, for when the chip is hovered or focused. */
+export function peek(on: boolean) {
+  endPeek?.();
+  endPeek = null;
+  if (!on || isBlueprint()) return;
+  loadStyles();
+  endPeek = showPeek();
+}
+
 const start = () => {
-  if (!stylesLoaded) {
-    loadStyles();
-    stylesLoaded = true;
-  }
+  peek(false);
+  loadStyles();
   session = new AbortController();
   root.setAttribute(ATTRIBUTE, '');
   mountSheet(session.signal);

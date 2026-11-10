@@ -65,6 +65,16 @@
     text-shadow: 0 0 22px rgb(143 216 255 / 0.22);
   }
 
+  /* A glimpse of the mode while the chip is hovered: the column lines light up. */
+  html[data-blueprint-peek] .guide,
+  html[data-blueprint-peek] .guide::after {
+    border-left-color: color-mix(
+      in oklab,
+      var(--accent) 45%,
+      transparent
+    ) !important;
+  }
+
   /* ---- The drawing: every mark is added by the mode and removed when it turns off. ---- */
 
   .bp-layer {

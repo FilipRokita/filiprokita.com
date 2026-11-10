@@ -476,4 +476,92 @@ test.describe('blueprint mode', () => {
       expect(overflow).toBeLessThanOrEqual(0);
     });
   });
+
+  test.describe('the way in', () => {
+    test('the chip draws its corners after a moment, and the hint appears at most twice', async ({
+      browser,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'One profile is enough');
+      const context = await browser.newContext({
+        reducedMotion: 'no-preference',
+      });
+      const page = await context.newPage();
+      await page.goto('/');
+      const chip = page.getByRole('button', { name: 'Blueprint' });
+      await expect(chip).toHaveAttribute('data-tease', '', { timeout: 6000 });
+      await expect(chip).toHaveAttribute('data-hint', '', { timeout: 8000 });
+      expect(
+        await page.evaluate(() => localStorage.getItem('blueprint-hints')),
+      ).toBe('1');
+      await context.close();
+    });
+
+    test('someone who asked for less motion gets no teaser', async ({
+      browser,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'One profile is enough');
+      const context = await browser.newContext({ reducedMotion: 'reduce' });
+      const page = await context.newPage();
+      await page.goto('/');
+      await page.waitForTimeout(3500);
+      const chip = page.getByRole('button', { name: 'Blueprint' });
+      await expect(chip).not.toHaveAttribute('data-tease');
+      await expect(chip).not.toHaveAttribute('data-hint');
+      await context.close();
+    });
+
+    test('after the first use the teaser is over for good', async ({
+      browser,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'One profile is enough');
+      const context = await browser.newContext({
+        reducedMotion: 'no-preference',
+      });
+      const page = await context.newPage();
+      await page.goto('/');
+      await toggleBlueprint(page);
+      expect(
+        await page.evaluate(() => localStorage.getItem('blueprint-used')),
+      ).toBe('1');
+      await toggleBlueprint(page);
+      await page.reload();
+      await page.waitForTimeout(3500);
+      await expect(
+        page.getByRole('button', { name: 'Blueprint' }),
+      ).not.toHaveAttribute('data-tease');
+      await context.close();
+    });
+
+    test('hovering the chip shows a glimpse and leaves nothing behind', async ({
+      page,
+    }, testInfo) => {
+      test.skip(testInfo.project.name === 'phone', 'A phone cannot hover');
+      await page.goto('/');
+      const chip = page.getByRole('button', { name: 'Blueprint' });
+      await chip.hover();
+      await expect(page.locator('html')).toHaveAttribute(
+        'data-blueprint-peek',
+        '',
+      );
+      await expect(page.locator('.bp-text--dimension').first()).toBeVisible();
+      await page.mouse.move(600, 500);
+      await expect(page.locator('html')).not.toHaveAttribute(
+        'data-blueprint-peek',
+      );
+      await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
+    });
+
+    test('the command palette has an entry for it', async ({ page }) => {
+      await page.goto('/');
+      await page.keyboard.press('Control+k');
+      await page.keyboard.type('blueprint');
+      const option = page.getByRole('option', { name: /Blueprint mode/ });
+      await expect(option).toBeVisible();
+      await page.keyboard.press('Enter');
+      await expect(page.locator('html')).toHaveAttribute('data-blueprint', '');
+      await expect(
+        page.getByRole('button', { name: 'Blueprint' }),
+      ).toHaveAttribute('aria-pressed', 'true');
+    });
+  });
 });

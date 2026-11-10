@@ -42,6 +42,15 @@ const { class: className } = Astro.props;
     <path d="M1.5 1.5h13v13h-13zM1.5 6h13M1.5 10.5h13M6 1.5v13M10.5 1.5v13"></path>
   </svg>
   <span>Blueprint</span>
+  <span class="hint" aria-hidden="true">
+    psst, try the blueprint
+    <svg viewBox="0 0 40 44" width="40" height="44" focusable="false">
+      <path
+        pathLength="1"
+        d="M5 40C3 26 14 12 28 5M28 5L17 5M28 5L26 16"
+      ></path>
+    </svg>
+  </span>
 </button>
 
 <style>
@@ -94,6 +103,104 @@ const { class: className } = Astro.props;
     opacity: 0;
   }
 
+  /* The teaser draws the corners now and then. */
+  .blueprint-chip[data-tease] .corners path {
+    animation: corners-draw 2s ease both;
+  }
+
+  .blueprint-chip[data-tease] .icon {
+    animation: icon-turn 2s ease both;
+  }
+
+  @keyframes corners-draw {
+    0% {
+      opacity: 1;
+      stroke-dashoffset: 1;
+    }
+    45%,
+    80% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      opacity: 0;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes icon-turn {
+    40% {
+      transform: rotate(90deg) scale(1.15);
+    }
+  }
+
+  /* One handwritten hint, once or twice in all, with its arrow under the chip. */
+  .hint {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -0.3rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding-top: 14px;
+    color: var(--accent);
+    font-family: var(--font-hand), cursive;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    text-transform: none;
+    transform: rotate(-3deg);
+  }
+
+  .hint svg {
+    margin-top: -6px;
+    overflow: visible;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .blueprint-chip[data-hint] .hint {
+    animation:
+      hint-in 0.6s ease both,
+      hint-out 0.6s ease 6.4s forwards;
+  }
+
+  .blueprint-chip[data-hint] .hint svg {
+    animation: arrow-draw 0.9s ease 0.5s forwards;
+  }
+
+  @keyframes hint-in {
+    from {
+      opacity: 0;
+      transform: rotate(-3deg) translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(-3deg);
+    }
+  }
+
+  @keyframes hint-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes arrow-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
   .icon {
     fill: none;
     stroke: var(--accent);
@@ -103,6 +210,13 @@ const { class: className } = Astro.props;
   @media (hover: hover) {
     .blueprint-chip:hover {
       border-color: var(--accent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .corners,
+    .hint {
+      display: none;
     }
   }
 
@@ -118,6 +232,7 @@ const { class: className } = Astro.props;
 </style>
 
 <script>
+  import { createTeaser } from '../blueprint/teaser';
   import type { Origin } from '../blueprint/mode';
 
   const chip = document.querySelector<HTMLButtonElement>(
@@ -126,8 +241,10 @@ const { class: className } = Astro.props;
 
   if (chip) {
     const load = () => import('../blueprint/mode');
+    const teaser = createTeaser(chip);
 
     const run = async (origin?: Origin) => {
+      teaser.stop();
       const { toggleBlueprint } = await load();
       const on = await toggleBlueprint(origin);
       chip.setAttribute('aria-pressed', String(on));
@@ -137,11 +254,22 @@ const { class: className } = Astro.props;
       }
     };
 
+    // A glimpse of the mode while the chip is hovered or focused with the keyboard.
+    const peek = async (on: boolean) => (await load()).peek(on);
+
     chip.removeAttribute('data-pending');
     chip.addEventListener('click', () => {
       const box = chip.getBoundingClientRect();
       void run({ x: box.left + box.width / 2, y: box.top + box.height / 2 });
     });
+    chip.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') void peek(true);
+    });
+    chip.addEventListener('pointerleave', () => void peek(false));
+    chip.addEventListener('focus', () => {
+      if (chip.matches(':focus-visible')) void peek(true);
+    });
+    chip.addEventListener('blur', () => void peek(false));
     // Start fetching the drawing as soon as someone shows interest, so the click feels instant.
     for (const type of ['pointerenter', 'focus', 'touchstart']) {
       chip.addEventListener(type, load, { once: true, passive: true });
@@ -151,5 +279,6 @@ const { class: className } = Astro.props;
       void run((event as CustomEvent<Origin | undefined>).detail);
     });
     if (location.hash === '#blueprint') void run();
+    else teaser.start();
   }
 </script>
