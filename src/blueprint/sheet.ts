@@ -139,7 +139,9 @@ function titleBlock() {
 /** The sheet border with its lettered and numbered zones. */
 function drawFrame(frame: SVGSVGElement) {
   const width = innerWidth;
-  const height = innerHeight;
+  // The sheet is as tall as the small viewport (address bar shown), so it keeps its size when
+  // Safari's bars come and go. CSS gives the frame that height.
+  const height = frame.getBoundingClientRect().height;
   const columns = Math.max(4, Math.round(width / ZONE));
   const rows = Math.max(3, Math.round(height / ZONE));
   frame.setAttribute('viewBox', `0 0 ${width} ${height}`);
@@ -230,7 +232,14 @@ export function mountSheet(signal: AbortSignal) {
   strip.setAttribute('aria-hidden', 'true');
   document.body.append(strip, frame, title);
 
-  const draw = () => drawFrame(frame);
+  // The sheet is drawn again only when its own size changed, not when the address bar moves.
+  let size = '';
+  const draw = () => {
+    const next = `${innerWidth}x${frame.getBoundingClientRect().height}`;
+    if (next === size) return;
+    size = next;
+    drawFrame(frame);
+  };
   const compact = () => {
     title.toggleAttribute('data-compact', scrollY > COMPACT_AFTER);
     const left =
