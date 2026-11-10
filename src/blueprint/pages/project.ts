@@ -62,6 +62,7 @@ const REMARKS: Remark[] = [
     at: (box) => ({ x: box.x + box.w * 0.45, y: box.y - 50 }),
     to: (box) => ({ x: box.x + box.w * 0.5, y: box.y + 6 }),
     options: { bend: 16, small: true },
+    caption: true,
   },
   {
     about: () => find('.next strong'),

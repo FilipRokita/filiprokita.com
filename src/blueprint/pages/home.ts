@@ -110,12 +110,50 @@ const REMARKS: Remark[] = [
     options: { bend: -16 },
   },
   {
+    about: () => find('#about p'),
+    lines: [
+      'max 52 characters a line.',
+      'long lines are tiring. short ones are not.',
+    ],
+    at: (box) => ({ x: right(box) - 330, y: bottom(box) + 38 }),
+    to: (box) => ({ x: right(box) - 280, y: bottom(box) - 6 }),
+    options: { bend: -16, rotate: 1, small: true },
+    caption: true,
+  },
+  {
+    about: () => find('#how'),
+    box: labelBox,
+    lines: [
+      'sections are numbered 01 to 05,',
+      'like sheets in a set of drawings.',
+    ],
+    at: (box) => ({ x: box.x, y: box.y + 70 }),
+    to: (box) => ({ x: box.x + 40, y: bottom(box) + 3 }),
+    options: { bend: -14, small: true },
+  },
+  {
+    about: () => find('#how li'),
+    lines: ['4 columns here, 3 above.', 'one grid, the number is just data.'],
+    at: (box) => ({ x: box.x + 30, y: box.y - 44 }),
+    to: (box) => ({ x: box.x + 50, y: box.y + 4 }),
+    options: { bend: 20, rotate: -2, small: true },
+    caption: true,
+  },
+  {
+    about: () => find('#projects a[href*="github.com"]'),
+    lines: ['the full list lives on GitHub.', 'this one is the short version.'],
+    at: (box) => ({ x: right(box) + 40, y: box.y + 34 }),
+    to: (box) => ({ x: right(box) + 6, y: box.y + box.h / 2 }),
+    options: { bend: 14, rotate: -2, small: true },
+    caption: true,
+  },
+  {
     about: () => find('footer a[href*="/commit/"]'),
     lines: [
       '<- this link = the exact commit',
       'that built this page. receipts.',
     ],
-    at: (box) => ({ x: right(box) + 40, y: box.y + 30 }),
+    at: (box) => ({ x: right(box) + 40, y: box.y - 30 }),
     options: { small: true },
   },
 ];
