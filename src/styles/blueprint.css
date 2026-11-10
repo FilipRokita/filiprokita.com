@@ -178,19 +178,6 @@
     pointer-events: none;
   }
 
-  .bp-edge {
-    position: fixed;
-    /* From just above the sheet's bottom edge to the bottom of the screen: at least 8 px, and
-       the navy fills what shows when the address bar slides away. */
-    top: calc(100svh - 8px);
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 89;
-    background: var(--bg);
-    pointer-events: none;
-  }
-
   .bp-frame-line {
     fill: none;
     stroke: var(--accent);
@@ -219,8 +206,9 @@
   .bp-title {
     position: fixed;
     right: 30px;
-    /* Stays on the sheet, not on the screen, when the address bar slides away. */
-    bottom: calc(30px + 100dvh - 100svh);
+    /* Hung from the top, so it stays on the sheet when the address bar slides away. */
+    top: 100svh;
+    transform: translateY(calc(-100% - 30px));
     z-index: 100;
     width: 330px;
     border: 1px solid var(--accent);
@@ -304,7 +292,8 @@
     .bp-title,
     .bp-title[data-compact] {
       right: 26px;
-      bottom: calc(26px + 100dvh - 100svh);
+      top: 100svh;
+      transform: translateY(calc(-100% - 26px));
       left: 26px;
       width: auto;
     }

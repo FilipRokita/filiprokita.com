@@ -162,7 +162,6 @@ test.describe('blueprint mode', () => {
     await expect(page.locator('.bp-frame')).toBeVisible();
     await expect(page.locator('.bp-title')).toBeVisible();
     await expect(page.locator('.bp-title')).toContainText('Filip Rokita');
-    await expect(page.locator('.bp-edge')).toHaveCount(1);
     await expect(page.locator('.bp-layer')).toHaveCount(1);
 
     await toggleBlueprint(page);

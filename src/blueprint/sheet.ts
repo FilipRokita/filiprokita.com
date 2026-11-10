@@ -224,13 +224,7 @@ export function mountSheet(signal: AbortSignal) {
     focusable: 'false',
   });
   const title = titleBlock();
-  // A fixed strip of the sheet's color at the bottom edge. Safari on iPhone paints its bars from
-  // such an element, so the bar stays one color whatever scrolls or opens above it.
-  const strip = document.createElement('div');
-  strip.className = 'bp-edge';
-  strip.setAttribute('data-blueprint-ui', '');
-  strip.setAttribute('aria-hidden', 'true');
-  document.body.append(strip, frame, title);
+  document.body.append(frame, title);
 
   // The sheet is drawn again only when its own size changed, not when the address bar moves.
   let size = '';
@@ -254,7 +248,6 @@ export function mountSheet(signal: AbortSignal) {
   signal.addEventListener(
     'abort',
     () => {
-      strip.remove();
       frame.remove();
       title.remove();
     },
