@@ -139,7 +139,9 @@ function titleBlock() {
 /** The sheet border with its lettered and numbered zones. */
 function drawFrame(frame: SVGSVGElement) {
   const width = innerWidth;
-  const height = innerHeight;
+  // The sheet is as tall as the small viewport (address bar shown), so it keeps its size when
+  // Safari's bars come and go. CSS gives the frame that height.
+  const height = frame.getBoundingClientRect().height;
   const columns = Math.max(4, Math.round(width / ZONE));
   const rows = Math.max(3, Math.round(height / ZONE));
   frame.setAttribute('viewBox', `0 0 ${width} ${height}`);
@@ -222,9 +224,22 @@ export function mountSheet(signal: AbortSignal) {
     focusable: 'false',
   });
   const title = titleBlock();
-  document.body.append(frame, title);
+  // A fixed strip of the sheet's color at the bottom edge. Safari on iPhone paints its bars from
+  // such an element, so the bar stays one color whatever scrolls or opens above it.
+  const strip = document.createElement('div');
+  strip.className = 'bp-edge';
+  strip.setAttribute('data-blueprint-ui', '');
+  strip.setAttribute('aria-hidden', 'true');
+  document.body.append(strip, frame, title);
 
-  const draw = () => drawFrame(frame);
+  // The sheet is drawn again only when its own size changed, not when the address bar moves.
+  let size = '';
+  const draw = () => {
+    const next = `${innerWidth}x${frame.getBoundingClientRect().height}`;
+    if (next === size) return;
+    size = next;
+    drawFrame(frame);
+  };
   const compact = () => {
     title.toggleAttribute('data-compact', scrollY > COMPACT_AFTER);
     const left =
@@ -239,6 +254,7 @@ export function mountSheet(signal: AbortSignal) {
   signal.addEventListener(
     'abort',
     () => {
+      strip.remove();
       frame.remove();
       title.remove();
     },

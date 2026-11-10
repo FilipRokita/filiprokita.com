@@ -116,5 +116,10 @@
     'change',
     render,
   );
+  // Blueprint mode sets the theme itself, so the label follows the attribute too.
+  new MutationObserver(render).observe(root, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
   render();
 </script>
