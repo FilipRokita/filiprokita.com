@@ -176,9 +176,3 @@ root, so a click shows the right source. A big new block also goes in `BLOCKS` i
 `src/blueprint/labels.ts`, to get a label on the drawing. When a page changes, review
 its remarks in `src/blueprint/pages/`: a remark must stay true. See
 [`docs/blueprint.md`](docs/blueprint.md).
-
-## 13. Skills
-
-The `update-projects` skill keeps the project entries in step with the public GitHub
-repositories. Use it when refreshing or adding projects. It is optional, a helper and
-not a gate.
