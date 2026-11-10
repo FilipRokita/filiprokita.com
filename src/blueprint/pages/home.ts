@@ -59,9 +59,10 @@ const REMARKS: Remark[] = [
   {
     about: () => find('[data-hello]'),
     lines: ['the mode switcher', 'used to live here.'],
-    at: (box) => ({ x: box.x - 6, y: bottom(box) + 34 }),
-    to: (box) => ({ x: box.x + box.w * 0.5, y: bottom(box) + 6 }),
-    options: { bend: -12, rotate: 2, small: true },
+    // To the left of the label, on its row, so the arrow is long enough to read.
+    at: (box) => ({ x: box.x - 170, y: box.y - 10 }),
+    to: (box) => ({ x: box.x - 12, y: box.y + box.h / 2 }),
+    options: { bend: 10, rotate: 1, small: true },
   },
   {
     about: () => find('#about'),
