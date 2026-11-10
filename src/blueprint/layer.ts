@@ -52,8 +52,9 @@ export function mountLayer(signal: AbortSignal) {
   };
 
   void build();
-  addEventListener('resize', rebuild, { signal });
-  // The page can change size without the window changing: text reflows, a font arrives.
+  // Watching the page, not the window: on a phone the address bar growing and shrinking resizes
+  // the window all the time, and the drawing must not be drawn again each time. Turning the phone
+  // changes the width of the page, so that is still seen.
   let first = true;
   const sizes = new ResizeObserver(() => {
     if (first) first = false;

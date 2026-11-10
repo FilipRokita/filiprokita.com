@@ -14,6 +14,8 @@ site, and it is made to prove the claim behind it: the code is as good as the pa
   line marked. Nothing navigates while the mode is on.
 - A mouse also gets a crosshair with a readout of the element under it. Touch gets neither the
   crosshair nor navigation: a tap opens the code.
+- The browser bar (`theme-color`) turns blueprint blue too, and goes back to the theme's color
+  when the mode is off.
 - Turning it off puts the page back exactly as it was.
 
 ## How it is built
@@ -38,7 +40,7 @@ flowchart LR
 | :--- | :--- |
 | `src/components/BlueprintChip.astro` | The entry point: the chip, its teaser and the loader. The hint and the corner animation are CSS, driven by two attributes |
 | `src/blueprint/mode.ts` | Turns the mode on and off with the circle reveal, owns the session (an `AbortController`), and shows a glimpse (`peek`) |
-| `src/blueprint/layer.ts` | The drawing: one SVG as big as the page, built again when the page changes size |
+| `src/blueprint/layer.ts` | The drawing: one SVG as big as the page, built again when the page changes size (not when only the window's height changes, as on a phone when the address bar moves) |
 | `src/blueprint/sheet.ts` | The sheet border, the title block (a chip after the first screen) and the stamp |
 | `src/blueprint/pages/` | What is drawn on each kind of page. A page is a list of remarks (`remarks.ts`) plus a few dimensions |
 | `src/blueprint/drawing.ts`, `svg.ts`, `marks.ts`, `dimensions.ts`, `hand.ts`, `table.ts`, `bubble.ts` | Small drawing helpers. Everything is built with DOM calls, never with strings |

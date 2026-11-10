@@ -59,6 +59,52 @@ test.describe('blueprint mode', () => {
     ).toBeGreaterThan(0);
   });
 
+  test('the browser bar is blue in the mode, and goes back to the theme when it is off', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const colors = () =>
+      page
+        .locator('meta[name="theme-color"]')
+        .evaluateAll((metas) =>
+          metas.map((meta) => meta.getAttribute('content')),
+        );
+    const before = await colors();
+    await toggleBlueprint(page);
+    expect(new Set(await colors())).toEqual(new Set(['#0a3577']));
+    // A change of theme while the mode is on keeps the bar blue.
+    await page.evaluate(() => {
+      document.documentElement.dataset.theme = 'light';
+      window.applyThemeColor?.('light');
+    });
+    await expect
+      .poll(async () => new Set(await colors()))
+      .toEqual(new Set(['#0a3577']));
+    await toggleBlueprint(page);
+    await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+    expect(before).not.toContain('#0a3577');
+    await expect.poll(colors).not.toContain('#0a3577');
+  });
+
+  test('the drawing is not drawn again when only the height of the window changes', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name === 'phone', 'One profile is enough');
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/');
+    await toggleBlueprint(page);
+    const drawing = await page.locator('.bp-layer svg').elementHandle();
+    // The address bar of a phone grows and shrinks: that is a change of height only.
+    await page.setViewportSize({ width: 1280, height: 700 });
+    await page.waitForTimeout(500);
+    expect(await drawing?.evaluate((node) => node.isConnected)).toBe(true);
+    // A change of width does draw it again.
+    await page.setViewportSize({ width: 1100, height: 700 });
+    await expect
+      .poll(() => drawing?.evaluate((node) => node.isConnected))
+      .toBe(false);
+  });
+
   test('a /#blueprint link opens the page in the mode, and leaving clears the link', async ({
     page,
   }) => {
@@ -589,6 +635,8 @@ test.describe('blueprint mode', () => {
       // On and off again, in turn: nothing mounted twice, nothing left behind.
       await expect(chip).toHaveAttribute('aria-pressed', 'false');
       await expect(page.locator('html')).not.toHaveAttribute('data-blueprint');
+      // The pointer is still on the chip, which shows its glimpse. Move it away first.
+      await page.mouse.move(600, 600);
       await expect(page.locator('[data-blueprint-ui]')).toHaveCount(0);
     });
 

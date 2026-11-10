@@ -1,26 +1,57 @@
 ---
-// Rendered hidden: the script shows it, because without JavaScript it cannot work.
+// Rendered hidden (but keeping its room, so nothing shifts) until the script shows it, because
+// without JavaScript it cannot work.
 ---
 
 <button
   type="button"
-  class="theme-toggle print:hidden mono inline-flex min-w-[4.5em] cursor-pointer items-center justify-end gap-[.5ch] text-muted sm:min-w-[8.5em]"
+  class="theme-toggle print:hidden inline-flex size-9 flex-none cursor-pointer items-center justify-center border border-rule text-fg"
   data-theme-toggle
   data-bp="ThemeToggle.astro"
-  hidden
+  data-pending
 >
-  <span data-theme-name></span>
-  <span class="hidden sm:inline">mode</span>
+  <svg
+    viewBox="0 0 16 16"
+    width="15"
+    height="15"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <circle cx="8" cy="8" r="6.25"></circle>
+    <path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z"></path>
+  </svg>
 </button>
 
 <style>
   .theme-toggle {
-    transition: color 0.2s;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .theme-toggle[data-pending] {
+    visibility: hidden;
+  }
+
+  /* A bigger area to tap than the button looks. */
+  .theme-toggle::before {
+    content: '';
+    position: absolute;
+    inset: -0.4rem;
+  }
+
+  .theme-toggle svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.2;
+  }
+
+  .theme-toggle path {
+    fill: currentColor;
   }
 
   @media (hover: hover) {
     .theme-toggle:hover {
-      color: var(--fg);
+      border-color: var(--accent);
     }
   }
 </style>
@@ -42,12 +73,12 @@
       : 'dark';
   };
 
-  // The label names the theme a click switches to.
+  // The accessible name says which theme a click switches to.
   const render = () => {
+    const next = current() === 'dark' ? 'light' : 'dark';
     for (const toggle of toggles) {
-      const name = toggle.querySelector('[data-theme-name]');
-      if (name) name.textContent = current() === 'dark' ? 'Light' : 'Dark';
-      toggle.hidden = false;
+      toggle.setAttribute('aria-label', `Switch to ${next} theme`);
+      toggle.removeAttribute('data-pending');
     }
   };
 
