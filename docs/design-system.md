@@ -117,6 +117,7 @@ Defined in [`src/styles/motion.css`](../src/styles/motion.css).
 - Ctrl K or Cmd K opens a command palette (go to a section or project, switch theme,
   open email, LinkedIn or GitHub). It has no button on purpose.
 - Speculation Rules prerender same-origin links on hover or tap (moderate eagerness).
+- A modal window ([`Modal.astro`](../src/components/Modal.astro)) fades in and rises 0.75rem, the same move as the sections, and fades out the same way.
 - A theme change grows the new theme as a circle from the toggle or the palette entry that asked for it.
 - With `prefers-reduced-motion: reduce`, all transitions and animations are off and
   scrolling is instant.
