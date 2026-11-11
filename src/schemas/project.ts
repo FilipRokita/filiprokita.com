@@ -11,12 +11,27 @@ export const projectSchema = <Image extends z.ZodType>(image: () => Image) =>
     summary: z.string().min(1),
     /** Position in the list, from 1. */
     order: z.number().int().positive(),
+    /** What kind of project it is, shown in the facts on its page. */
+    type: z.enum([
+      'Web Application',
+      'AI Agent',
+      'Data Application',
+      'Website',
+    ]),
     /** Takes the project off the site without deleting the file. */
     hidden: z.boolean().default(false),
-    cover: image(),
-    coverAlt: z.string().min(1),
-    /** The mono caption under the cover. */
-    coverCaption: z.string().min(1),
+    /** The first screenshot is the cover shown in the project list. */
+    screenshots: z
+      .array(
+        z.object({
+          src: image(),
+          /** What the screenshot shows, for screen readers. */
+          alt: z.string().min(1),
+          /** The short mono caption under the screenshot. */
+          caption: z.string().min(1),
+        }),
+      )
+      .min(1),
     links: z.object({
       /** Absent for a project that is not an app, such as a GitHub tool. */
       live: z.url().optional(),

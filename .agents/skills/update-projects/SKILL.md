@@ -20,7 +20,7 @@ checks them against their public repositories and drafts new ones. Read
   and homepage. Do not invent features, numbers, dates, employers or tools. If a fact
   is missing, leave the field out and say so.
 - Copy follows `docs/content.md`: plain, evergreen, no em dash.
-- Change no file outside `src/content/projects/` and the cover image for a new project.
+- Change no file outside `src/content/projects/` and the screenshots of a new project.
 
 ## Check the existing entries
 
@@ -37,11 +37,11 @@ checks them against their public repositories and drafts new ones. Read
 1. Run `node scripts/repo-facts.mjs <owner/name>`.
 2. Create `src/content/projects/<slug>.md` with all the required fields from
    `docs/content.md`. Use `order` after the last entry and `hidden: true` until the
-   user has approved the text and added a cover image.
+   user has approved the text and added the screenshots.
 3. Run `npm run check` and `npm run build`. The schema must pass.
-4. Show the draft and what is still missing (cover image, alt text, decisions).
+4. Show the draft and what is still missing (screenshots, alt text, decisions).
 
 ## What it may change
 
-`src/content/projects/*.md`, and for a new project its cover under
+`src/content/projects/*.md`, and for a new project its screenshots under
 `src/assets/projects/<slug>/`. Nothing else.

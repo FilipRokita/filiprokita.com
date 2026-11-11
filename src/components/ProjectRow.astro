@@ -12,7 +12,8 @@ interface Props {
 }
 
 const { project, position, first = false } = Astro.props;
-const { title, summary, cover, coverAlt, coverCaption } = project.data;
+const { title, summary, screenshots } = project.data;
+const { src, alt, caption } = screenshots[0];
 const href = `/projects/${project.id}/`;
 const figureNumber = String(position).padStart(2, '0');
 ---
@@ -30,10 +31,10 @@ const figureNumber = String(position).padStart(2, '0');
   <p class="summary text-muted">{summary}</p>
   <div class="fig">
     <Figure
-      src={cover}
-      alt={coverAlt}
+      src={src}
+      alt={alt}
       number={figureNumber}
-      caption={coverCaption}
+      caption={caption}
       href={href}
       cropped
       eager={first}

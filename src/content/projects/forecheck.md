@@ -2,9 +2,11 @@
 title: Forecheck
 summary: How far can you trust a weather forecast? Models scored against real measurements.
 order: 3
-cover: ../../assets/projects/forecheck/cover.webp
-coverAlt: Forecheck showing verdict cards, error by forecast horizon and a model ranking
-coverCaption: Verdict and ranking
+type: Data Application
+screenshots:
+  - src: ../../assets/projects/forecheck/cover.webp
+    alt: Forecheck showing verdict cards, error by forecast horizon and a model ranking
+    caption: Verdict and ranking
 links:
   live: https://forecheck.filrok.com
   github: https://github.com/FilipRokita/forecheck
@@ -25,5 +27,3 @@ decisions:
 Forecheck answers one question: at my station, which weather model has been right lately, and for how many days ahead can I rely on it? It checks the forecasts against real measurements in Poland.
 
 Every day it saves what three open models predict for the next seven days at 15 stations, and once a day has been measured it scores each forecast. The page gives a clear verdict, such as which model is the most accurate and for how many days its error stays under a set limit.
-
-No accounts and no ads, and all of it is open source.

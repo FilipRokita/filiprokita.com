@@ -16,7 +16,7 @@ test('the whole project row opens the project, not only its title', async ({
     (box?.x ?? 0) + (box?.width ?? 0) / 2,
     (box?.y ?? 0) + (box?.height ?? 0) / 2,
   );
-  await expect(page).toHaveURL(/\/projects\/evencost\/$/);
+  await expect(page).toHaveURL(/\/projects\/pr-test-agent\/$/);
 });
 
 test('each row exposes a single link to assistive technology', async ({
@@ -31,7 +31,13 @@ test('the project title fits on one line on a phone', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'phone', 'Phone only');
-  for (const id of ['pr-test-agent', 'tapisode', 'evencost', 'forecheck']) {
+  for (const id of [
+    'pr-test-agent',
+    'tapisode',
+    'evencost',
+    'forecheck',
+    'filiprokita-com',
+  ]) {
     await page.goto(`/projects/${id}/`);
     const lines = await page.locator('h1').evaluate((h1) => {
       const line = parseFloat(getComputedStyle(h1).lineHeight);

@@ -47,7 +47,7 @@ const REMARKS: Remark[] = [
       const label = find('p.mono', section);
       return label ? textBox(label) : boxOf(section);
     },
-    lines: ['REV G: the screenshot got', 'its own section.'],
+    lines: ['REV G: the screenshots got', 'their own section.'],
     cloud: 8,
     at: (_box, ring) => ({ x: ring.x, y: ring.y - 44 }),
     to: (_box, ring) => ({ x: ring.x + ring.w / 2, y: ring.y - 2 }),

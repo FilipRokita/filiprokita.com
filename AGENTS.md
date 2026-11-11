@@ -122,10 +122,10 @@ Nothing in it is part of the product.
 ## 8. Planning
 
 Plans live in `plans/`, gitignored and local to one machine. One plan is
-one entry: a single `.md` when that's all it needs, a folder (`plan.md` plus its
-attachments) when it produces a mock, research or anything else. Name it for the
-work it does, `invite-expiry` rather than `implementation-plan`, so the next plan
-gets its own entry instead of overwriting this one.
+one folder, always: `plan.md`, plus optional attachments (a mock, research or
+anything else the plan produces). Name the folder for the work it does, `invite-expiry`
+rather than `implementation-plan`, so the next plan gets its own entry instead of
+overwriting this one.
 
 Planning is not building: do not write finished code while planning unless asked.
 Questions about a plan are conversation, not orders: start executing a plan only
@@ -147,7 +147,8 @@ prototypes tied to no plan.
 Every plan ends with a review and testing stage: check that it was fully
 implemented, that every rule and acceptance criterion has code and tests, and
 that the app still works as a whole. Fix what is broken or write it down as a
-named limitation.
+named limitation. The review is independent: run it with a subagent that did not
+write the code.
 
 ## 9. Commits
 

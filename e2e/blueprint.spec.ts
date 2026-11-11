@@ -450,7 +450,7 @@ test.describe('blueprint mode', () => {
         }),
       ).toBeVisible();
       await expect(
-        page.locator('.bp-text--tag', { hasText: 'Figure.astro' }),
+        page.locator('.bp-text--tag', { hasText: 'Screenshots.astro' }),
       ).toBeVisible();
     });
 

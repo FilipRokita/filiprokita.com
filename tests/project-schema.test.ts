@@ -7,11 +7,12 @@ const schema = projectSchema(() => z.string());
 
 const valid = {
   title: 'Tapisode',
+  type: 'Web Application',
   summary: 'A fast tracker.',
   order: 1,
-  cover: 'cover.webp',
-  coverAlt: 'A screenshot',
-  coverCaption: 'Desktop and phone',
+  screenshots: [
+    { src: 'cover.webp', alt: 'A screenshot', caption: 'Desktop and phone' },
+  ],
   links: {
     live: 'https://example.com',
     github: 'https://github.com/example/repo',
@@ -27,6 +28,21 @@ describe('projectSchema', () => {
     expect(parsed.hidden).toBe(false);
   });
 
+  it.each(['Web Application', 'AI Agent', 'Data Application', 'Website'])(
+    'accepts the type %s',
+    (type) => {
+      expect(schema.parse({ ...valid, type }).type).toBe(type);
+    },
+  );
+
+  it('accepts several screenshots', () => {
+    const [first] = valid.screenshots;
+    expect(
+      schema.safeParse({ ...valid, screenshots: [first, first, first] })
+        .success,
+    ).toBe(true);
+  });
+
   it('accepts a project without a live link', () => {
     const { live, ...links } = valid.links;
     expect(live).toBeDefined();
@@ -38,7 +54,17 @@ describe('projectSchema', () => {
     ['an empty summary', { ...valid, summary: '' }],
     ['an order of zero', { ...valid, order: 0 }],
     ['a fractional order', { ...valid, order: 1.5 }],
-    ['a missing cover description', { ...valid, coverAlt: '' }],
+    ['no screenshots', { ...valid, screenshots: [] }],
+    [
+      'a screenshot without a description',
+      { ...valid, screenshots: [{ ...valid.screenshots[0], alt: '' }] },
+    ],
+    [
+      'a screenshot without a caption',
+      { ...valid, screenshots: [{ ...valid.screenshots[0], caption: '' }] },
+    ],
+    ['a missing type', { ...valid, type: undefined }],
+    ['an unknown type', { ...valid, type: 'Startup' }],
     [
       'a live link that is not a URL',
       { ...valid, links: { ...valid.links, live: 'tapisode' } },
