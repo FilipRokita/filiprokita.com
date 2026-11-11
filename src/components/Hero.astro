@@ -6,7 +6,7 @@ import Link from './Link.astro';
 
 <section
   data-bp="Hero.astro"
-  class="hero relative pt-[clamp(2rem,1rem+3vw,4rem)] pb-section"
+  class="hero relative pt-[clamp(2.5rem,1rem+3vw,4rem)] pb-section"
 >
   <Guides />
   <!-- On a mouse, the column lines light up near the pointer. -->
@@ -47,7 +47,9 @@ import Link from './Link.astro';
       data-intro="fade"
       class="mt-[clamp(2.5rem,1rem+5vw,6rem)] grid grid-cols-12 items-start gap-x-gutter gap-y-8"
     >
-      <p class="mono col-span-12 text-muted md:col-span-3">( Overview )</p>
+      <p class="mono col-span-12 text-muted max-md:hidden md:col-span-3">
+        ( Overview )
+      </p>
       <p class="col-span-12 text-step-2 font-[450] tracking-[-0.035em] md:col-span-6 md:col-start-4">
         <span class="block">Software engineer</span>
         <em class="block text-muted not-italic">building apps, data and AI,</em>
