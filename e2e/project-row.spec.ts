@@ -36,7 +36,7 @@ test('the project title fits on one line on a phone', async ({
     'tapisode',
     'evencost',
     'forecheck',
-    'filiprokita-com',
+    'this-website',
   ]) {
     await page.goto(`/projects/${id}/`);
     const lines = await page.locator('h1').evaluate((h1) => {
