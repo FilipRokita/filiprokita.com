@@ -27,5 +27,3 @@ decisions:
 Forecheck answers one question: at my station, which weather model has been right lately, and for how many days ahead can I rely on it? It checks the forecasts against real measurements in Poland.
 
 Every day it saves what three open models predict for the next seven days at 15 stations, and once a day has been measured it scores each forecast. The page gives a clear verdict, such as which model is the most accurate and for how many days its error stays under a set limit.
-
-No accounts and no ads, and all of it is open source.
