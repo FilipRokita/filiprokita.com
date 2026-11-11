@@ -32,7 +32,7 @@ const { id, label, title, caption } = Astro.props;
   /* A small window: a title bar with an X, then whatever is put inside. */
   .modal {
     width: fit-content;
-    max-width: calc(100vw - 2rem);
+    max-width: min(100vw - 2rem, 72rem);
     max-height: calc(100dvh - 2rem);
     margin: auto;
     padding: 0;
@@ -95,6 +95,44 @@ const { id, label, title, caption } = Astro.props;
     height: auto;
     max-height: calc(100dvh - 2rem - 2.75rem - 1px);
     margin-inline: auto;
+  }
+
+  /* It fades and rises in, and back out. Where the browser cannot animate a dialog, it just
+     appears. Nothing moves for a visitor who asks for less motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .modal,
+    .modal::backdrop {
+      opacity: 0;
+      transition:
+        opacity 0.3s ease,
+        transform 0.5s var(--ease-out-expo),
+        overlay 0.5s allow-discrete,
+        display 0.5s allow-discrete;
+    }
+
+    .modal {
+      transform: translateY(1.25rem) scale(0.98);
+    }
+
+    .modal[open],
+    .modal[open]::backdrop {
+      opacity: 1;
+    }
+
+    .modal[open] {
+      transform: none;
+    }
+
+    @starting-style {
+      .modal[open],
+      .modal[open]::backdrop {
+        opacity: 0;
+      }
+
+      .modal[open] {
+        transform: translateY(1.25rem) scale(0.98);
+      }
+    }
   }
 </style>
 
