@@ -7,7 +7,7 @@ screenshots:
     alt: The flow of the PR test agent, from an opened pull request through the agent and a sandbox to a verified verdict
     caption: How it works
   - src: ../../assets/projects/pr-test-agent/bot-comment.webp
-    alt: The bot comment on a pull request, saying 5 added, 3 updated, all verified, with a table of three shuffled runs and changed-line coverage
+    alt: The bot comment on a pull request, saying 5 added, 3 updated, all verified, with a table of test runs and changed-line coverage for the backend and the frontend
     caption: The verdict on the pull request
   - src: ../../assets/projects/pr-test-agent/stacked-pr.webp
     alt: The stacked pull request with the generated tests, listing the test files it adds

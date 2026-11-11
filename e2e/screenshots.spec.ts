@@ -28,4 +28,10 @@ test('a click opens the screenshot large, Esc closes it and focus returns', asyn
   await browser.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
+
+  // A click on the screenshot itself closes it too.
+  await opener.click();
+  await expect(dialog).toBeVisible();
+  await dialog.locator('img').click();
+  await expect(dialog).toBeHidden();
 });
