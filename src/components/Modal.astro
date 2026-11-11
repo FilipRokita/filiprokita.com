@@ -23,7 +23,7 @@ const { id, label, title, caption } = Astro.props;
       </svg>
     </button>
   </div>
-  <div class="body">
+  <div class="body" tabindex="0">
     <slot />
   </div>
 </dialog>
@@ -94,6 +94,12 @@ const { id, label, title, caption } = Astro.props;
     }
   }
 
+  .body {
+    overflow: auto;
+    overscroll-behavior: contain;
+    max-height: calc(100dvh - 2rem - 2.75rem - 1px);
+  }
+
   /* An image inside fits the window, whatever its size. */
   .body :global(img) {
     display: block;
@@ -102,6 +108,16 @@ const { id, label, title, caption } = Astro.props;
     height: auto;
     max-height: calc(100dvh - 2rem - 2.75rem - 1px);
     margin-inline: auto;
+  }
+
+  /* On a phone a wide image would be too small to read, so it keeps a readable width and
+     the window scrolls sideways. */
+  @media (max-width: 40rem) {
+    .body :global(img) {
+      width: 56rem;
+      max-width: none;
+      max-height: none;
+    }
   }
 
   /* It fades in and rises 0.75rem, like the sections do, and back out. Where the browser cannot animate a dialog, it just
