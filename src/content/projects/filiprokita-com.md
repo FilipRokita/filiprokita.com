@@ -1,5 +1,5 @@
 ---
-title: This website
+title: This Website
 summary: Fast, accessible and tested, with nothing it does not need.
 order: 5
 type: Website
@@ -30,7 +30,7 @@ decisions:
     text: Only a small chip ships to everyone. The drawing, the inspector and the code view load on the first use.
 ---
 
-This is the site you are on. It is meant to be as good as the code behind it: fast, accessible and tested, with nothing it does not need.
+This is the site you are on, and it is meant to be as good as the code behind it.
 
 It is built with Astro and strict TypeScript, and every color comes from a design token that works in light and dark. The project pages come from Markdown files, so the site does not go stale as the work changes.
 

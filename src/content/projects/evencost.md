@@ -1,6 +1,6 @@
 ---
 title: EvenCost
-summary: Split costs with friends. Cent-exact splits and a settle-up that clears the whole group.
+summary: Split costs with friends, exact to the cent.
 order: 4
 type: Web Application
 screenshots:
