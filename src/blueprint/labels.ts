@@ -8,6 +8,7 @@ export const BLOCKS = new Set([
   'Section.astro',
   'ProjectRow.astro',
   'Figure.astro',
+  'Screenshots.astro',
   'Footer.astro',
 ]);
 

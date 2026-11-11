@@ -2,8 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import Arrow from '../../components/Arrow.astro';
-import Figure from '../../components/Figure.astro';
 import Link from '../../components/Link.astro';
+import Screenshots from '../../components/Screenshots.astro';
 import Section from '../../components/Section.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { nextProject, visibleProjects } from '../../lib/projects';
@@ -24,20 +24,12 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { project, next, figureNumber } = Astro.props;
-const {
-  title,
-  summary,
-  cover,
-  coverAlt,
-  coverCaption,
-  links,
-  stack,
-  decisions,
-} = project.data;
+const { title, summary, type, screenshots, links, stack, decisions } =
+  project.data;
 const { Content } = await render(project);
 
 const facts = [
-  { label: 'Type', value: 'Side project' },
+  { label: 'Type', value: type },
   { label: 'Stack', value: stack.join(', ') },
 ];
 // Type, Stack, Source, and Live when the project has a live preview.
@@ -106,17 +98,11 @@ const factCount = facts.length + (links.live ? 2 : 1);
       id="screenshots"
       index="02"
       label="Screenshots"
-      title={coverCaption}
+      title="What it looks like,"
+      accent="up close."
     >
       <div class="mt-[clamp(2rem,1rem+3vw,4rem)]">
-        <Figure
-          src={cover}
-          alt={coverAlt}
-          number={figureNumber}
-          caption={coverCaption}
-          showCaption={false}
-          sizes="(min-width: 64rem) 66vw, 100vw"
-        />
+        <Screenshots screenshots={screenshots} number={figureNumber} />
       </div>
     </Section>
     {decisions && (

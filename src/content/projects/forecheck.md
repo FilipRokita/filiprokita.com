@@ -2,9 +2,10 @@
 title: Forecheck
 summary: How far can you trust a weather forecast? Models scored against real measurements.
 order: 3
-cover: ../../assets/projects/forecheck/cover.webp
-coverAlt: Forecheck showing verdict cards, error by forecast horizon and a model ranking
-coverCaption: Verdict and ranking
+screenshots:
+  - src: ../../assets/projects/forecheck/cover.webp
+    alt: Forecheck showing verdict cards, error by forecast horizon and a model ranking
+    caption: Verdict and ranking
 links:
   live: https://forecheck.filrok.com
   github: https://github.com/FilipRokita/forecheck

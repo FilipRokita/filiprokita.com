@@ -9,9 +9,9 @@ const valid = {
   title: 'Tapisode',
   summary: 'A fast tracker.',
   order: 1,
-  cover: 'cover.webp',
-  coverAlt: 'A screenshot',
-  coverCaption: 'Desktop and phone',
+  screenshots: [
+    { src: 'cover.webp', alt: 'A screenshot', caption: 'Desktop and phone' },
+  ],
   links: {
     live: 'https://example.com',
     github: 'https://github.com/example/repo',
@@ -27,6 +27,19 @@ describe('projectSchema', () => {
     expect(parsed.hidden).toBe(false);
   });
 
+  it('defaults the type to a side project and accepts a website', () => {
+    expect(schema.parse(valid).type).toBe('Side project');
+    expect(schema.parse({ ...valid, type: 'Website' }).type).toBe('Website');
+  });
+
+  it('accepts several screenshots', () => {
+    const [first] = valid.screenshots;
+    expect(
+      schema.safeParse({ ...valid, screenshots: [first, first, first] })
+        .success,
+    ).toBe(true);
+  });
+
   it('accepts a project without a live link', () => {
     const { live, ...links } = valid.links;
     expect(live).toBeDefined();
@@ -38,7 +51,16 @@ describe('projectSchema', () => {
     ['an empty summary', { ...valid, summary: '' }],
     ['an order of zero', { ...valid, order: 0 }],
     ['a fractional order', { ...valid, order: 1.5 }],
-    ['a missing cover description', { ...valid, coverAlt: '' }],
+    ['no screenshots', { ...valid, screenshots: [] }],
+    [
+      'a screenshot without a description',
+      { ...valid, screenshots: [{ ...valid.screenshots[0], alt: '' }] },
+    ],
+    [
+      'a screenshot without a caption',
+      { ...valid, screenshots: [{ ...valid.screenshots[0], caption: '' }] },
+    ],
+    ['an unknown type', { ...valid, type: 'Startup' }],
     [
       'a live link that is not a URL',
       { ...valid, links: { ...valid.links, live: 'tapisode' } },

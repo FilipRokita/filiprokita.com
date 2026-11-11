@@ -2,9 +2,16 @@
 title: PR Test Agent
 summary: An AI agent that writes and verifies unit tests for pull requests.
 order: 4
-cover: ../../assets/projects/pr-test-agent/cover.webp
-coverAlt: The flow of the PR test agent, from an opened pull request through the agent and a sandbox to a verified verdict
-coverCaption: How it works
+screenshots:
+  - src: ../../assets/projects/pr-test-agent/cover.webp
+    alt: The flow of the PR test agent, from an opened pull request through the agent and a sandbox to a verified verdict
+    caption: How it works
+  - src: ../../assets/projects/pr-test-agent/bot-comment.webp
+    alt: The bot comment on a pull request, saying 5 added, 3 updated, all verified, with a table of three shuffled runs and changed-line coverage
+    caption: The verdict on the pull request
+  - src: ../../assets/projects/pr-test-agent/stacked-pr.webp
+    alt: The stacked pull request with the generated tests, listing the test files it adds
+    caption: The tests in a stacked pull request
 links:
   github: https://github.com/FilipRokita/pr-test-agent
 stack: [Python, Claude Agent SDK, GitHub Actions]

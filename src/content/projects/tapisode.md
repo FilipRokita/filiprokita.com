@@ -2,9 +2,10 @@
 title: Tapisode
 summary: A fast, phone-first tracker for movies and TV shows.
 order: 1
-cover: ../../assets/projects/tapisode/cover.webp
-coverAlt: Tapisode on a desktop and a phone
-coverCaption: Desktop and phone
+screenshots:
+  - src: ../../assets/projects/tapisode/cover.webp
+    alt: Tapisode on a desktop and a phone
+    caption: Desktop and phone
 links:
   live: https://tapisode.filrok.com
   github: https://github.com/FilipRokita/tapisode

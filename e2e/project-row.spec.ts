@@ -31,7 +31,13 @@ test('the project title fits on one line on a phone', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'phone', 'Phone only');
-  for (const id of ['pr-test-agent', 'tapisode', 'evencost', 'forecheck']) {
+  for (const id of [
+    'pr-test-agent',
+    'tapisode',
+    'evencost',
+    'forecheck',
+    'filiprokita-com',
+  ]) {
     await page.goto(`/projects/${id}/`);
     const lines = await page.locator('h1').evaluate((h1) => {
       const line = parseFloat(getComputedStyle(h1).lineHeight);

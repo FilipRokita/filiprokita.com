@@ -2,9 +2,10 @@
 title: EvenCost
 summary: Split costs with friends. Cent-exact splits and a settle-up that clears the whole group.
 order: 2
-cover: ../../assets/projects/evencost/cover.webp
-coverAlt: EvenCost showing a group on a desktop and a phone
-coverCaption: Group view
+screenshots:
+  - src: ../../assets/projects/evencost/cover.webp
+    alt: EvenCost showing a group on a desktop and a phone
+    caption: Group view
 links:
   live: https://evencost.filrok.com
   github: https://github.com/FilipRokita/evencost

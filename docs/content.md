@@ -19,10 +19,15 @@ flowchart LR
 
 ## Add a project
 
-1. Put the screenshot in `src/assets/projects/<name>/` (WebP, about 1600 px wide).
+1. Put the screenshots in `src/assets/projects/<name>/` (WebP, about 1600 px wide). The
+   first one is the cover in the project list, so it must look right cropped to its top.
 2. Add `src/content/projects/<name>.md` with the fields below. The text under the
    fields is the project's description.
 3. Run `npm run build`. A mistake in a field fails the build and names the file.
+4. Add its page, `/projects/<name>/`, to [`e2e/routes.ts`](../e2e/routes.ts) and to the
+   phone title check in `e2e/project-row.spec.ts`.
+
+On its page, a click on a screenshot opens it large. Esc or a click closes it.
 
 ## The fields
 
@@ -34,9 +39,8 @@ The schema is in [`src/schemas/project.ts`](../src/schemas/project.ts).
 | `summary` | yes | One line, shown in the list and under the title |
 | `order` | yes | Position in the list, from 1 |
 | `hidden` | no | `true` takes the project off the site and keeps the file. Default `false` |
-| `cover` | yes | The screenshot, a path relative to the file. Checked and optimized |
-| `coverAlt` | yes | What the screenshot shows, for screen readers |
-| `coverCaption` | yes | The short caption under the screenshot |
+| `type` | no | `Side project` (the default) or `Website`. Shown in the facts on the project page |
+| `screenshots` | yes | One or more, each with `src` (a path relative to the file, checked and optimized), `alt` (for screen readers) and `caption`. The first is the cover |
 | `links.github` | yes | The repository |
 | `links.live` | no | The live preview. Leave it out for a project that is not an app |
 | `stack` | yes | The technologies, shown on the project page only |
@@ -61,15 +65,6 @@ words. A project with thin docs gets fewer entries, not filler.
 > Only write what is true. Every claim about a project or its author must trace to the
 > project's repository or to the author.
 
-## The diagram for the PR test agent
-
-That project has no screenshot, because it is a GitHub tool and not an app. Its cover
-is a flow diagram rendered as an image and treated exactly like a screenshot.
-
-The source is [`diagram.html`](../src/assets/projects/pr-test-agent/diagram.html). To
-change the diagram, edit it and render a 1600 by 820 screenshot of the page (for
-example with Playwright), then save it as `cover.webp` in the same folder.
-
 ## Keep projects up to date
 
 The skill [`update-projects`](../.agents/skills/update-projects/SKILL.md) compares the
@@ -81,5 +76,5 @@ is a symlink to it for Claude Code, so there is one copy.
   <owner/name>".
 - The helper `node scripts/repo-facts.mjs --entries` prints the facts it works from.
   It reads public repositories only and writes nothing.
-- The skill may change only `src/content/projects/*.md` and a new project's cover. It
+- The skill may change only `src/content/projects/*.md` and a new project's screenshots. It
   shows every change before writing it, and new drafts start with `hidden: true`.
