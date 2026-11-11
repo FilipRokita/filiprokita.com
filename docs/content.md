@@ -27,7 +27,9 @@ flowchart LR
 4. Add its page, `/projects/<name>/`, to [`e2e/routes.ts`](../e2e/routes.ts) and to the
    phone title check in `e2e/project-row.spec.ts`.
 
-On its page, a click on a screenshot opens it large. Esc or a click closes it.
+On its page, a click on a screenshot opens it large. The X, Esc or a click outside closes it.
+On a phone there is no preview: the screenshot is already the full width of the page, and
+pinching zooms it in sharp.
 
 ## The fields
 

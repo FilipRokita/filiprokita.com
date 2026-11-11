@@ -93,6 +93,10 @@ const label = (index: number) =>
     cursor: zoom-in;
   }
 
+  .mat:disabled {
+    cursor: default;
+  }
+
   .mat img {
     display: block;
     width: 100%;
@@ -151,3 +155,16 @@ const label = (index: number) =>
     }
   }
 </style>
+
+<script>
+  // The preview is for screens wide enough to gain from it. On a phone the screenshot is
+  // already the full width of the page, and pinching it zooms in sharp, so it is not a button.
+  const wide = matchMedia('(min-width: 40rem)');
+  const sync = () => {
+    document
+      .querySelectorAll<HTMLButtonElement>('.mat')
+      .forEach((button) => (button.disabled = !wide.matches));
+  };
+  sync();
+  wide.addEventListener('change', sync);
+</script>

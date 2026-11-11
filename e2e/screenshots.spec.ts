@@ -17,7 +17,8 @@ test('every screenshot has its own numbered figure and caption', async ({
 
 test('a click opens the screenshot large, Esc closes it and focus returns', async ({
   page: browser,
-}) => {
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'phone', 'No preview on a phone');
   await browser.emulateMedia({ reducedMotion: 'reduce' });
   await browser.goto(page);
   const opener = browser.locator('#screenshots button.mat').first();
@@ -39,7 +40,8 @@ test('a click opens the screenshot large, Esc closes it and focus returns', asyn
 
 test('a click on the backdrop closes the preview', async ({
   page: browser,
-}) => {
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'phone', 'No preview on a phone');
   await browser.emulateMedia({ reducedMotion: 'reduce' });
   await browser.goto(page);
   const opener = browser.locator('#screenshots button.mat').first();
@@ -54,7 +56,8 @@ test('a click on the backdrop closes the preview', async ({
 
 test('in blueprint mode the click shows the source, not the preview', async ({
   page: browser,
-}) => {
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'phone', 'No preview on a phone');
   await browser.emulateMedia({ reducedMotion: 'reduce' });
   await browser.goto(page);
   await browser.getByRole('button', { name: 'Blueprint', exact: true }).click();
@@ -64,4 +67,14 @@ test('in blueprint mode the click shows the source, not the preview', async ({
   await opener.click();
   await expect(browser.locator('.bp-drawer[open]')).toBeVisible();
   await expect(browser.locator('#screenshots dialog').first()).toBeHidden();
+});
+
+test('on a phone the screenshots are not buttons', async ({
+  page: browser,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'phone', 'Phone only');
+  await browser.goto(page);
+  const buttons = browser.locator('#screenshots button.mat');
+  await expect(buttons).toHaveCount(3);
+  for (const button of await buttons.all()) await expect(button).toBeDisabled();
 });
