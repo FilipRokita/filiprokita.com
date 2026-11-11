@@ -7,7 +7,7 @@ const schema = projectSchema(() => z.string());
 
 const valid = {
   title: 'Tapisode',
-  type: 'Web app',
+  type: 'Web Application',
   summary: 'A fast tracker.',
   order: 1,
   screenshots: [
@@ -28,7 +28,7 @@ describe('projectSchema', () => {
     expect(parsed.hidden).toBe(false);
   });
 
-  it.each(['Web app', 'AI agent', 'Data project', 'Website'])(
+  it.each(['Web Application', 'AI Agent', 'Data Application', 'Website'])(
     'accepts the type %s',
     (type) => {
       expect(schema.parse({ ...valid, type }).type).toBe(type);
