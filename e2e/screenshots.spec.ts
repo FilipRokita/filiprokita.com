@@ -12,7 +12,7 @@ test('every screenshot has its own numbered figure and caption', async ({
   const labels = await figures
     .locator('figcaption span:first-child')
     .allTextContents();
-  expect(labels).toEqual(['Fig. 02', 'Fig. 02.2', 'Fig. 02.3']);
+  expect(labels).toEqual(['Fig. 05', 'Fig. 05.2', 'Fig. 05.3']);
 });
 
 test('a click opens the screenshot large, Esc closes it and focus returns', async ({

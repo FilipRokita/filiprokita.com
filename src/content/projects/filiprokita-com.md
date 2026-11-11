@@ -1,7 +1,7 @@
 ---
 title: This website
 summary: Fast, accessible and tested, with nothing it does not need.
-order: 2
+order: 5
 type: Website
 screenshots:
   - src: ../../assets/projects/filiprokita-com/home.webp

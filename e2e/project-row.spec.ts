@@ -16,7 +16,7 @@ test('the whole project row opens the project, not only its title', async ({
     (box?.x ?? 0) + (box?.width ?? 0) / 2,
     (box?.y ?? 0) + (box?.height ?? 0) / 2,
   );
-  await expect(page).toHaveURL(/\/projects\/filiprokita-com\/$/);
+  await expect(page).toHaveURL(/\/projects\/pr-test-agent\/$/);
 });
 
 test('each row exposes a single link to assistive technology', async ({
