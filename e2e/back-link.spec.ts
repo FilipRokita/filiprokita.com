@@ -23,6 +23,48 @@ test.describe('"All projects" link', () => {
     );
   });
 
+  test('still goes back to the list after a few "Next project" clicks', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop', 'One profile is enough');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const row = page.getByRole('link', { name: 'Forecheck', exact: true });
+    await row.scrollIntoViewIfNeeded();
+    const before = await page.evaluate(() => Math.round(scrollY));
+    await row.click();
+    await expect(page).toHaveURL(/\/projects\/forecheck\/$/);
+
+    // Two projects further on.
+    await page.locator('a.next').click();
+    await expect(page).toHaveURL(/\/projects\/(?!forecheck)[a-z-]+\/$/);
+    await page.locator('a.next').click();
+    await expect(page).toHaveURL(/\/projects\/[a-z-]+\/$/);
+
+    await page.getByRole('link', { name: 'All projects' }).click();
+    await expect(page).toHaveURL(/:\d+\/$/);
+    await expect
+      .poll(() => page.evaluate(() => Math.round(scrollY)))
+      .toBeGreaterThan(before - 5);
+    expect(await page.evaluate(() => Math.round(scrollY))).toBeLessThan(
+      before + 5,
+    );
+  });
+
+  test('goes back by the right number of steps after the Back button was used', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop', 'One profile is enough');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.getByRole('link', { name: 'Forecheck', exact: true }).click();
+    await page.locator('a.next').click();
+    await page.goBack();
+    await expect(page).toHaveURL(/\/projects\/forecheck\/$/);
+    await page.getByRole('link', { name: 'All projects' }).click();
+    await expect(page).toHaveURL(/:\d+\/$/);
+  });
+
   test('is a normal link to the projects when the page is opened directly', async ({
     page,
   }) => {

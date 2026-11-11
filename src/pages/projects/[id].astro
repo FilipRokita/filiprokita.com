@@ -241,21 +241,47 @@ const factCount = facts.length + (links.live ? 2 : 1);
 </style>
 
 <script>
-  // Coming from the home page, "All projects" goes back to where the visitor was,
-  // at the same scroll position. Opened directly, it is a normal link to the projects.
+  // Coming from the home page, "All projects" goes back to where the visitor was, at the same
+  // scroll position. That holds after "Next project" too: each project page remembers how many
+  // project pages deep it is, counted from the list, and "All projects" goes back that many steps.
+  // Opened directly, or when the count cannot be trusted, it is a normal link to the projects.
   const link = document.querySelector<HTMLAnchorElement>('[data-back]');
-  const cameFromHome = (() => {
+  const KEY = 'project-depth';
+
+  // A history entry keeps its own depth, so reload, Back and Forward stay right. A new visit
+  // works it out from the page it came from.
+  const depthOf = (): number | undefined => {
+    const saved = (history.state as { depth?: number } | null)?.depth;
+    if (typeof saved === 'number') return saved;
     try {
       const from = new URL(document.referrer);
-      return from.origin === location.origin && from.pathname === '/';
+      if (from.origin !== location.origin) return undefined;
+      if (from.pathname === '/') return 1;
+      if (from.pathname.startsWith('/projects/')) {
+        const previous = Number(sessionStorage.getItem(KEY));
+        return previous >= 1 ? previous + 1 : undefined;
+      }
     } catch {
-      return false;
+      // No referrer, or storage is blocked: a normal link is fine.
     }
-  })();
+    return undefined;
+  };
 
-  // A new tab opened from the home page has no history to go back to, and a click with
-  // a modifier key (open in a new tab or window) must keep its normal meaning.
-  if (link && cameFromHome && history.length > 1) {
+  const depth = depthOf();
+  try {
+    if (depth) {
+      history.replaceState({ ...history.state, depth }, '');
+      sessionStorage.setItem(KEY, String(depth));
+    } else {
+      sessionStorage.removeItem(KEY);
+    }
+  } catch {
+    // Storage can be blocked.
+  }
+
+  // A tab opened from another page has no history to go back through, and a click with a
+  // modifier key (open in a new tab or window) must keep its normal meaning.
+  if (link && depth && history.length > depth) {
     link.addEventListener('click', (event) => {
       const modified =
         event.button !== 0 ||
@@ -265,7 +291,7 @@ const factCount = facts.length + (links.live ? 2 : 1);
         event.altKey;
       if (modified) return;
       event.preventDefault();
-      history.back();
+      history.go(-depth);
     });
   }
 </script>
