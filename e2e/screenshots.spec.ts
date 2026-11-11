@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 // The site itself is the project with several screenshots.
-const page = '/projects/filiprokita-com/';
+const page = '/projects/this-website/';
 
 test('every screenshot has its own numbered figure and caption', async ({
   page: browser,

@@ -4,13 +4,13 @@ summary: Fast, accessible and tested, with nothing it does not need.
 order: 5
 type: Website
 screenshots:
-  - src: ../../assets/projects/filiprokita-com/home.webp
+  - src: ../../assets/projects/this-website/home.webp
     alt: The home page of this website in the dark theme
     caption: Home page
-  - src: ../../assets/projects/filiprokita-com/blueprint.webp
+  - src: ../../assets/projects/this-website/blueprint.webp
     alt: Blueprint mode on the home page, the page redrawn as a technical drawing with dimensions and notes
     caption: Blueprint mode
-  - src: ../../assets/projects/filiprokita-com/project-page.webp
+  - src: ../../assets/projects/this-website/project-page.webp
     alt: A project page in the light theme, with the title, the facts and the first section
     caption: A project page, light
 links:

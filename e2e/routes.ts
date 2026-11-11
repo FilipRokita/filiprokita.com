@@ -5,5 +5,5 @@ export const routes = [
   '/projects/evencost/',
   '/projects/forecheck/',
   '/projects/pr-test-agent/',
-  '/projects/filiprokita-com/',
+  '/projects/this-website/',
 ];
