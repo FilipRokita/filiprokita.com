@@ -36,3 +36,32 @@ test('a click opens the screenshot large, Esc closes it and focus returns', asyn
   await dialog.getByRole('button', { name: 'Close' }).click();
   await expect(dialog).toBeHidden();
 });
+
+test('a click on the backdrop closes the preview', async ({
+  page: browser,
+}) => {
+  await browser.emulateMedia({ reducedMotion: 'reduce' });
+  await browser.goto(page);
+  const opener = browser.locator('#screenshots button.mat').first();
+  const dialog = browser.locator('#screenshots dialog').first();
+  await opener.scrollIntoViewIfNeeded();
+  await opener.click();
+  await expect(dialog).toBeVisible();
+  // The corner of the viewport is the backdrop, outside the window.
+  await browser.mouse.click(2, 2);
+  await expect(dialog).toBeHidden();
+});
+
+test('in blueprint mode the click shows the source, not the preview', async ({
+  page: browser,
+}) => {
+  await browser.emulateMedia({ reducedMotion: 'reduce' });
+  await browser.goto(page);
+  await browser.getByRole('button', { name: 'Blueprint', exact: true }).click();
+  await expect(browser.locator('.bp-frame')).toBeVisible();
+  const opener = browser.locator('#screenshots button.mat').first();
+  await opener.scrollIntoViewIfNeeded();
+  await opener.click();
+  await expect(browser.locator('.bp-drawer[open]')).toBeVisible();
+  await expect(browser.locator('#screenshots dialog').first()).toBeHidden();
+});

@@ -87,6 +87,13 @@ const { id, label, title, caption } = Astro.props;
     stroke-width: 1.5;
   }
 
+  /* On paper there is no window. */
+  @media print {
+    .modal {
+      display: none;
+    }
+  }
+
   /* An image inside fits the window, whatever its size. */
   .body :global(img) {
     display: block;
@@ -143,12 +150,14 @@ const { id, label, title, caption } = Astro.props;
     if (!(event.target instanceof Element)) return;
     const opener = event.target.closest<HTMLElement>('[data-modal-open]');
     if (opener) {
-      document
-        .querySelector<HTMLDialogElement>(`#${opener.dataset.modalOpen}`)
-        ?.showModal();
+      const dialog = document.getElementById(opener.dataset.modalOpen ?? '');
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
     } else if (event.target.closest('[data-modal-close]')) {
       event.target.closest('dialog')?.close();
-    } else if (event.target instanceof HTMLDialogElement) {
+    } else if (
+      event.target instanceof HTMLDialogElement &&
+      event.target.classList.contains('modal')
+    ) {
       event.target.close();
     }
   });
