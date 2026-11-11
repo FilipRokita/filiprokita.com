@@ -24,16 +24,28 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
 
 <a
   data-bp="Link.astro"
-  class:list={['link', { rest: !arrow || underlined }, className]}
+  class:list={[
+    'link',
+    { rest: !arrow || underlined, 'back-link': arrow === '←' },
+    className,
+  ]}
   href={href}
   target={external ? '_blank' : undefined}
   rel={external ? [rel, 'noopener'].filter(Boolean).join(' ') : rel}
   {...rest}
 >
-  {arrow === '←' && <Arrow direction="left" class="back" />}
-  <slot />
-  {external && <span class="sr-only"> (opens in a new tab)</span>}
-  {arrow === '↗' && <Arrow direction="up-right" class="arr" />}
+  {arrow === '←' ? (
+    <span class="shift">
+      <Arrow direction="left" class="back" />
+      <slot />
+    </span>
+  ) : (
+    <>
+      <slot />
+      {external && <span class="sr-only"> (opens in a new tab)</span>}
+      {arrow === '↗' && <Arrow direction="up-right" class="arr" />}
+    </>
+  )}
 </a>
 
 <style>
@@ -75,6 +87,12 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
     transform: scaleX(1);
   }
 
+  /* On a link back the arrow and the text move together, like the project titles do. */
+  .shift {
+    display: inline-block;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
   .link :global(.back) {
     margin-right: 0.4rem;
     color: var(--accent);
@@ -94,6 +112,15 @@ const external = typeof href === 'string' && /^https?:\/\//.test(href);
 
     .link:hover :global(.arr) {
       transform: translate(0.2rem, -0.2rem);
+    }
+
+    /* A link back moves instead of filling a line. */
+    .link.back-link:hover::before {
+      transform: scaleX(0);
+    }
+
+    .link:hover .shift {
+      transform: translateX(-0.6rem);
     }
   }
 </style>
