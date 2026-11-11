@@ -1,18 +1,18 @@
 ---
-title: filiprokita.com
-summary: This site. Fast, accessible and tested, with nothing it does not need.
-order: 5
+title: This website
+summary: Fast, accessible and tested, with nothing it does not need.
+order: 2
 type: Website
 screenshots:
   - src: ../../assets/projects/filiprokita-com/home.webp
-    alt: The home page of filiprokita.com in the light theme
+    alt: The home page of this website in the dark theme
     caption: Home page
   - src: ../../assets/projects/filiprokita-com/blueprint.webp
     alt: Blueprint mode on the home page, the page redrawn as a technical drawing with dimensions and notes
     caption: Blueprint mode
   - src: ../../assets/projects/filiprokita-com/project-page.webp
-    alt: A project page in the dark theme, with the title, the facts and the first section
-    caption: A project page, dark
+    alt: A project page in the light theme, with the title, the facts and the first section
+    caption: A project page, light
 links:
   live: https://www.filiprokita.com
   github: https://github.com/FilipRokita/filiprokita.com
