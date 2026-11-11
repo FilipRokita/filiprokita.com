@@ -7,6 +7,7 @@ const schema = projectSchema(() => z.string());
 
 const valid = {
   title: 'Tapisode',
+  type: 'Web app',
   summary: 'A fast tracker.',
   order: 1,
   screenshots: [
@@ -27,10 +28,12 @@ describe('projectSchema', () => {
     expect(parsed.hidden).toBe(false);
   });
 
-  it('defaults the type to a side project and accepts a website', () => {
-    expect(schema.parse(valid).type).toBe('Side project');
-    expect(schema.parse({ ...valid, type: 'Website' }).type).toBe('Website');
-  });
+  it.each(['Web app', 'AI agent', 'Data project', 'Website'])(
+    'accepts the type %s',
+    (type) => {
+      expect(schema.parse({ ...valid, type }).type).toBe(type);
+    },
+  );
 
   it('accepts several screenshots', () => {
     const [first] = valid.screenshots;
@@ -60,6 +63,7 @@ describe('projectSchema', () => {
       'a screenshot without a caption',
       { ...valid, screenshots: [{ ...valid.screenshots[0], caption: '' }] },
     ],
+    ['a missing type', { ...valid, type: undefined }],
     ['an unknown type', { ...valid, type: 'Startup' }],
     [
       'a live link that is not a URL',

@@ -12,7 +12,7 @@ export const projectSchema = <Image extends z.ZodType>(image: () => Image) =>
     /** Position in the list, from 1. */
     order: z.number().int().positive(),
     /** What kind of project it is, shown in the facts on its page. */
-    type: z.enum(['Side project', 'Website']).default('Side project'),
+    type: z.enum(['Web app', 'AI agent', 'Data project', 'Website']),
     /** Takes the project off the site without deleting the file. */
     hidden: z.boolean().default(false),
     /** The first screenshot is the cover shown in the project list. */

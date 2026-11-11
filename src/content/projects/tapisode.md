@@ -2,6 +2,7 @@
 title: Tapisode
 summary: A fast, phone-first tracker for movies and TV shows.
 order: 1
+type: Web app
 screenshots:
   - src: ../../assets/projects/tapisode/cover.webp
     alt: Tapisode on a desktop and a phone

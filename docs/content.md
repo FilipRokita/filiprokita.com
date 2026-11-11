@@ -41,7 +41,7 @@ The schema is in [`src/schemas/project.ts`](../src/schemas/project.ts).
 | `summary` | yes | One line, shown in the list and under the title |
 | `order` | yes | Position in the list, from 1 |
 | `hidden` | no | `true` takes the project off the site and keeps the file. Default `false` |
-| `type` | no | `Side project` (the default) or `Website`. Shown in the facts on the project page |
+| `type` | yes | What it is: `Web app`, `AI agent`, `Data project` or `Website`. Shown in the facts on the project page |
 | `screenshots` | yes | One or more, each with `src` (a path relative to the file, checked and optimized), `alt` (for screen readers) and `caption`. The first is the cover |
 | `links.github` | yes | The repository |
 | `links.live` | no | The live preview. Leave it out for a project that is not an app |
