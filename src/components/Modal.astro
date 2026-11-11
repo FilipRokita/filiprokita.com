@@ -1,0 +1,117 @@
+---
+interface Props {
+  /** The id that an opener points to with `data-modal-open="<id>"`. */
+  id: string;
+  /** The accessible name of the window. */
+  label: string;
+  /** Mono text on the left of the title bar, such as "Fig. 05.2". */
+  title?: string;
+  /** Mono text on the right of the title bar, before the X. */
+  caption?: string;
+}
+
+const { id, label, title, caption } = Astro.props;
+---
+
+<dialog id={id} class="modal" aria-label={label} data-bp="Modal.astro">
+  <div class="bar mono">
+    <span>{title}</span>
+    <span class="caption">{caption}</span>
+    <button type="button" class="close" data-modal-close aria-label="Close">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <path d="M3 3l10 10M13 3L3 13"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="body">
+    <slot />
+  </div>
+</dialog>
+
+<style>
+  /* A small window: a title bar with an X, then whatever is put inside. */
+  .modal {
+    width: fit-content;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    color: var(--fg);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+
+  .modal::backdrop {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 1rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .caption {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .close {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--fg);
+    background: none;
+    border: 0;
+    border-left: 1px solid var(--rule);
+    cursor: pointer;
+  }
+
+  .close:hover {
+    background: var(--bg);
+  }
+
+  .close path {
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+  }
+
+  /* An image inside fits the window, whatever its size. */
+  .body :global(img) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 2rem - 2.75rem - 1px);
+    margin-inline: auto;
+  }
+</style>
+
+<script>
+  // Anything with data-modal-open="<id>" opens that window. The X, Esc and a click on the
+  // backdrop close it. In blueprint mode the click never gets here: that mode catches it first.
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const opener = event.target.closest<HTMLElement>('[data-modal-open]');
+    if (opener) {
+      document
+        .querySelector<HTMLDialogElement>(`#${opener.dataset.modalOpen}`)
+        ?.showModal();
+    } else if (event.target.closest('[data-modal-close]')) {
+      event.target.closest('dialog')?.close();
+    } else if (event.target instanceof HTMLDialogElement) {
+      event.target.close();
+    }
+  });
+</script>

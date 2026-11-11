@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import Modal from './Modal.astro';
 
 interface Props {
   screenshots: { src: ImageMetadata; alt: string; caption: string }[];
@@ -19,7 +20,7 @@ const label = (index: number) =>
       <button
         type="button"
         class="mat"
-        data-open={`shot-${index}`}
+        data-modal-open={`shot-${index}`}
         aria-label={`Open screenshot: ${alt}`}
       >
         <i aria-hidden="true" />
@@ -42,7 +43,12 @@ const label = (index: number) =>
         <span>Fig. {label(index)}</span>
         <span>{caption}</span>
       </figcaption>
-      <dialog id={`shot-${index}`} class="preview" aria-label={caption}>
+      <Modal
+        id={`shot-${index}`}
+        label={caption}
+        title={`Fig. ${label(index)}`}
+        caption={caption}
+      >
         <Image
           src={src}
           alt={alt}
@@ -50,7 +56,7 @@ const label = (index: number) =>
           widths={[1600]}
           loading="lazy"
         />
-      </dialog>
+      </Modal>
     </figure>
   ))}
 </div>
@@ -133,27 +139,6 @@ const label = (index: number) =>
     color: var(--muted);
   }
 
-  .preview {
-    width: min(100vw - 2rem, 100rem);
-    max-height: calc(100dvh - 2rem);
-    padding: 0;
-    border: 1px solid var(--rule);
-    background: var(--panel);
-    cursor: zoom-out;
-  }
-
-  .preview::backdrop {
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-  }
-
-  .preview img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: calc(100dvh - 2rem);
-    object-fit: contain;
-  }
-
   /* On paper: the screenshot alone, no mat and no corners. */
   @media print {
     .mat {
@@ -166,20 +151,3 @@ const label = (index: number) =>
     }
   }
 </style>
-
-<script>
-  // A click on a screenshot opens its preview. Esc closes it, and so does a click on it
-  // or on the backdrop. In blueprint mode the click never gets here: that mode catches
-  // it first.
-  document.addEventListener('click', (event) => {
-    if (!(event.target instanceof Element)) return;
-    const opener = event.target.closest<HTMLElement>('[data-open]');
-    if (opener) {
-      document
-        .querySelector<HTMLDialogElement>(`#${opener.dataset.open}`)
-        ?.showModal();
-      return;
-    }
-    event.target.closest<HTMLDialogElement>('.preview')?.close();
-  });
-</script>

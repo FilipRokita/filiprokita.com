@@ -29,9 +29,10 @@ test('a click opens the screenshot large, Esc closes it and focus returns', asyn
   await expect(dialog).toBeHidden();
   await expect(opener).toBeFocused();
 
-  // A click on the screenshot itself closes it too.
+  // The X closes it, and a click on the image does not.
   await opener.click();
-  await expect(dialog).toBeVisible();
   await dialog.locator('img').click();
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: 'Close' }).click();
   await expect(dialog).toBeHidden();
 });

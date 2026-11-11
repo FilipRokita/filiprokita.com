@@ -137,6 +137,7 @@ focus ring style (`:focus-visible`), a faint static grain (not on phones, where 
 | Footer | `src/components/Footer.astro` | Build date and commit, links |
 | Arrow | `src/components/Arrow.astro` | The one arrow icon (right, left, up-right): a thin SVG stroke with a sharp tip, so every arrow matches the site's lines |
 | Link | `src/components/Link.astro` | One cue at rest: the ↗ arrow on outbound links, a pale underline on links without one (`underlined` adds it to a link with an arrow, as in the hero). A violet line fills in from the left on hover |
+| Modal | `src/components/Modal.astro` | A small window for anything that needs a closer look: a native `<dialog>` with a title bar and an X. Point any element at it with `data-modal-open="<id>"`. Esc, the X and a click on the backdrop close it. Used by the screenshots |
 | Container | `src/components/Container.astro` | The page width and edge padding |
 | Logo | `src/components/Logo.astro` | The logo, one version only |
 | Guides | `src/components/Guides.astro` | The faint column lines behind the hero |
