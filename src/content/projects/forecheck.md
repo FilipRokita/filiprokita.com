@@ -1,6 +1,6 @@
 ---
 title: Forecheck
-summary: How far can you trust a weather forecast? Models scored against real measurements.
+summary: Weather models scored against real measurements.
 order: 3
 type: Data Application
 screenshots:
