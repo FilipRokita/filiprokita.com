@@ -106,7 +106,7 @@ const { id, label, title, caption } = Astro.props;
   .status {
     display: flex;
     flex: 1;
-    gap: 1rem;
+    gap: 1.75rem;
     align-items: center;
     min-width: 0;
   }
@@ -115,7 +115,6 @@ const { id, label, title, caption } = Astro.props;
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -351,6 +350,9 @@ const { id, label, title, caption } = Astro.props;
     if (!dialog || !(event.target instanceof Node)) return;
     if (!dialog.contains(event.target)) return;
     event.preventDefault();
+    // A button clicked with the mouse would light its ring at the first arrow key,
+    // so the arrow keys hand the focus back to the window.
+    if (event.target !== dialog) dialog.focus();
     step(dialog, event.key === 'ArrowRight' ? 1 : -1);
   });
 </script>

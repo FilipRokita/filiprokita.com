@@ -166,6 +166,9 @@ test.describe('the preview as a gallery', () => {
     const next = dialog.getByRole('button', { name: 'Next' });
     await next.click();
     await expect(next).toBeFocused();
+    await browser.keyboard.press('ArrowLeft');
+    await expect(dialog).toBeFocused();
+    await expect(dialog.locator(':focus-visible')).toHaveCount(0);
   });
 
   test('only the current slide is exposed, and the set is a carousel of numbered slides', async ({
