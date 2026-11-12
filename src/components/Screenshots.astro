@@ -20,7 +20,8 @@ const label = (index: number) =>
       <button
         type="button"
         class="mat"
-        data-modal-open={`shot-${index}`}
+        data-modal-open="screenshots-preview"
+        data-modal-slide={index}
         aria-label={`Open screenshot: ${alt}`}
       >
         <i aria-hidden="true" />
@@ -43,23 +44,18 @@ const label = (index: number) =>
         <span>Fig. {label(index)}</span>
         <span>{caption}</span>
       </figcaption>
-      <Modal
-        id={`shot-${index}`}
-        label={caption}
-        title={`Fig. ${label(index)}`}
-        caption={caption}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          sizes="100vw"
-          widths={[1600]}
-          loading="lazy"
-        />
-      </Modal>
     </figure>
   ))}
 </div>
+
+<!-- One window for the whole set: the slides sit inside it, and the opener picks one. -->
+<Modal id="screenshots-preview" label="Screenshots">
+  {screenshots.map(({ src, alt, caption }, index) => (
+    <div data-slide data-title={`Fig. ${label(index)}`} data-caption={caption}>
+      <Image src={src} alt={alt} sizes="100vw" widths={[1600]} loading="lazy" />
+    </div>
+  ))}
+</Modal>
 
 <style>
   .shots {
