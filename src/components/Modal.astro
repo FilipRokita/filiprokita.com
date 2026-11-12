@@ -83,6 +83,12 @@ const { id, label, title, caption } = Astro.props;
     border: 1px solid var(--rule);
   }
 
+  /* The window itself is not a control: clicking its bar must not ring it. The buttons keep their rings. */
+  .modal:focus,
+  .modal:focus-visible {
+    outline: none;
+  }
+
   .modal::backdrop {
     background: color-mix(in srgb, var(--bg) 80%, transparent);
   }
@@ -94,6 +100,7 @@ const { id, label, title, caption } = Astro.props;
     padding-left: 1rem;
     color: var(--muted);
     border-bottom: 1px solid var(--rule);
+    user-select: none;
   }
 
   .status {
@@ -134,6 +141,11 @@ const { id, label, title, caption } = Astro.props;
     border: 0;
     border-left: 1px solid var(--rule);
     cursor: pointer;
+  }
+
+  /* The window clips anything outside it, so the ring sits inside the button. */
+  .cell:focus-visible {
+    outline-offset: -4px;
   }
 
   .cell:hover {
@@ -301,6 +313,12 @@ const { id, label, title, caption } = Astro.props;
         prepare(dialog);
         show(dialog, Number(opener.dataset.modalSlide ?? 0));
         dialog.showModal();
+        // In a gallery the arrow keys move the slides, so focus rests on the window itself.
+        // On a button it would light up its ring at the first arrow press.
+        if (dialog.hasAttribute('data-gallery')) {
+          dialog.tabIndex = -1;
+          dialog.focus();
+        }
       }
       return;
     }

@@ -156,11 +156,13 @@ test.describe('the preview as a gallery', () => {
     await expect(count).toHaveText('2 / 3');
   });
 
-  test('focus starts on Close and stays on a button after it is clicked', async ({
+  test('focus starts on the window, shows no ring on arrow keys, and stays on a clicked button', async ({
     page: browser,
   }) => {
     const dialog = await openPreview(browser, 0);
-    await expect(dialog.getByRole('button', { name: 'Close' })).toBeFocused();
+    await expect(dialog).toBeFocused();
+    await browser.keyboard.press('ArrowRight');
+    await expect(dialog.locator(':focus-visible')).toHaveCount(0);
     const next = dialog.getByRole('button', { name: 'Next' });
     await next.click();
     await expect(next).toBeFocused();
