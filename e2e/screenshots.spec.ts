@@ -145,6 +145,17 @@ test.describe('the preview as a gallery', () => {
     await expect(count).toHaveText('2 / 3');
   });
 
+  test('the arrow keys do not move the gallery while the command palette is on top of it', async ({
+    page: browser,
+  }) => {
+    const dialog = await openPreview(browser, 1);
+    const count = dialog.locator('[data-modal-count]');
+    await browser.keyboard.press('Control+k');
+    await expect(browser.locator('dialog[data-palette]')).toBeVisible();
+    await browser.keyboard.press('ArrowRight');
+    await expect(count).toHaveText('2 / 3');
+  });
+
   test('focus starts on Close and stays on a button after it is clicked', async ({
     page: browser,
   }) => {

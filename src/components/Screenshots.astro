@@ -10,6 +10,8 @@ interface Props {
 }
 
 const { screenshots, number } = Astro.props;
+// One preview per project page, named after its figure number so two sets never clash.
+const previewId = `screenshots-${number}`;
 const label = (index: number) =>
   index === 0 ? number : `${number}.${index + 1}`;
 ---
@@ -20,7 +22,7 @@ const label = (index: number) =>
       <button
         type="button"
         class="mat"
-        data-modal-open="screenshots-preview"
+        data-modal-open={previewId}
         data-modal-slide={index}
         aria-label={`Open screenshot: ${alt}`}
       >
@@ -49,7 +51,7 @@ const label = (index: number) =>
 </div>
 
 <!-- One window for the whole set: the slides sit inside it, and the opener picks one. -->
-<Modal id="screenshots-preview" label="Screenshots">
+<Modal id={previewId} label="Screenshots">
   {screenshots.map(({ src, alt, caption }, index) => (
     <div data-slide data-title={`Fig. ${label(index)}`} data-caption={caption}>
       <Image src={src} alt={alt} sizes="100vw" widths={[1600]} loading="lazy" />

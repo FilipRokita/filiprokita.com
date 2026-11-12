@@ -273,7 +273,7 @@ const { id, label, title, caption } = Astro.props;
     const slides = slidesOf(dialog);
     if (!slides.length) return;
     const last = slides.length - 1;
-    const at = Math.max(0, Math.min(index, last));
+    const at = Number.isFinite(index) ? Math.max(0, Math.min(index, last)) : 0;
     slides.forEach((slide, n) =>
       slide.toggleAttribute('data-active', n === at),
     );
@@ -329,7 +329,9 @@ const { id, label, title, caption } = Astro.props;
     const dialog = document.querySelector<HTMLDialogElement>(
       'dialog.modal[open][data-gallery]',
     );
-    if (!dialog) return;
+    // Only while the gallery itself has the focus: the command palette can sit on top of it.
+    if (!dialog || !(event.target instanceof Node)) return;
+    if (!dialog.contains(event.target)) return;
     event.preventDefault();
     step(dialog, event.key === 'ArrowRight' ? 1 : -1);
   });
